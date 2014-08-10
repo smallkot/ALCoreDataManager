@@ -1,5 +1,8 @@
-
 target 'ALCoreDataManager', :exclusive => true do
+  pod "ALCoreDataManager", :path => "../"
+end
+
+target 'Tests', :exclusive => true do
   pod "ALCoreDataManager", :path => "../"
 
   pod 'Specta', '~> 0.2.1'

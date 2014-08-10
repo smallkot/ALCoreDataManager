@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Aziz U. Latypov. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 @class NSManagedObjectModel;
 @class NSManagedObjectContext;
 @class NSPersistentStoreCoordinator;
-
-#import <Foundation/Foundation.h>
 
 @interface ALCoreDataManager : NSObject
 

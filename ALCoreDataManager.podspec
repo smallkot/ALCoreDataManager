@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "ALCoreDataManager"
-  s.version          = "0.1.1"
+  s.version          = "0.1.2"
   s.summary          = "Fast and easy way to get NSManagedObjectContext"
   s.description      = <<-DESC
                        Singleton class for getting NSManagedObjectContext in single Model apps fast and easy.
