@@ -6,6 +6,12 @@
 //  Copyright (c) 2014 Aziz U. Latypov. All rights reserved.
 //
 
+@class NSManagedObjectModel;
+@class NSManagedObjectContext;
+@class NSPersistentStoreCoordinator;
+
+#import <Foundation/Foundation.h>
+
 @interface ALCoreDataManager : NSObject
 
 - (instancetype)initWithModelName:(NSString*)modelName;

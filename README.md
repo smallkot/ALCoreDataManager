@@ -8,18 +8,19 @@
 ## Usage
 
 To use the Manager add the 
-
+```objc
 #import <ALCoreDataManager/Singleton.h>
-
+```
 to your pch file and than add
-
+```objc
 [ALCoreDataManage setDefaultCoreDataModelName:@"<#Model#>"];
-
+```
 in your AppDeligate before any other calls to ALCoreDataManager.
 
 To get the NSManagedObjectContext use
-
+```objc
 [ALCoreDataManager defaultManager].managedObjectContext
+```
 
 ## Requirements
 

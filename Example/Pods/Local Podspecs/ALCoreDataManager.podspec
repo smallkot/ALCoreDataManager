@@ -10,27 +10,27 @@
 Pod::Spec.new do |s|
   s.name             = "ALCoreDataManager"
   s.version          = "0.1.0"
-  s.summary          = "Fast and easy way to get NSManagedObjectContext"
+  s.summary          = "A short description of ALCoreDataManager."
   s.description      = <<-DESC
-                       Singleton class for getting NSManagedObjectContext in single Model apps fast and easy.
+                       An optional longer description of ALCoreDataManager
 
-                       * Just set the ModelName in your AppDelegate
-                       * Done!
+                       * Markdown format.
+                       * Don't worry about the indent, we strip it!
                        DESC
-  s.homepage         = "https://github.com/appleios/ALCoreDataManager"
+  s.homepage         = "https://github.com/<GITHUB_USERNAME>/ALCoreDataManager"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
-  s.author           = { "Aziz U. Latypov" => "vm06lau@mail.ru" }
-  s.source           = { :git => "https://github.com/appleios/ALCoreDataManager.git", :tag => s.version.to_s }
+  s.author           = { "aziz u. latypov" => "vm06lau@mail.ru" }
+  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/ALCoreDataManager.git", :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.platform     = :ios, '7.0'
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes'
-  # s.resources = 'Pod/Assets/*.png'
+  s.resources = 'Pod/Assets/*.png'
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  s.frameworks = 'CoreData', 'Foundation'
+  # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
 end

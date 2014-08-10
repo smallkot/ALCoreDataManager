@@ -1,13 +1,13 @@
 #import "ALCoreDataManager.h"
 #import "NSManagedObjectModel+KCOrderedAccessorFix.h"
 
+@import CoreData;
+
 @interface ALCoreDataManager ()
 
 @property (strong, nonatomic) NSString *modelName;
 @property (readonly) NSURL *modelURL;
 @property (readonly) NSURL *storeURL;
-
-@property (nonatomic) BOOL firstStart;
 
 @end
 
@@ -98,11 +98,6 @@
 try_again:
 #endif
         _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-        
-        // if the first start
-        if (![[NSFileManager defaultManager] fileExistsAtPath:[self.storeURL absoluteString]]) {
-            self.firstStart = YES;
-        }
         
         if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
                                                        configuration:nil

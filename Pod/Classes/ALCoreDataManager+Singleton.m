@@ -8,7 +8,7 @@
 
 #import "ALCoreDataManager+Singleton.h"
 
-static NSString *const DefaultCoreDataModelName = nil;
+static NSString *DefaultCoreDataModelName = nil;
 
 @implementation ALCoreDataManager (Singleton)
 
