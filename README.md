@@ -9,7 +9,7 @@
 
 To use the Manager add the 
 ```objc
-#import <ALCoreDataManager/Singleton.h>
+#import <ALCoreDataManager/ALCoreDataManager+Singleton.h>
 ```
 to your pch file and than add
 ```objc
