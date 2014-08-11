@@ -7,15 +7,14 @@
 
 ## Usage
 
-To use the Manager add the 
+To use the Manager add to your pch file the
 ```objc
 #import <ALCoreDataManager/ALCoreDataManager+Singleton.h>
 ```
-to your pch file and than add
+Than in your AppDeligate before any other calls to ALCoreDataManager add
 ```objc
 [ALCoreDataManage setDefaultCoreDataModelName:@"<#Model#>"];
 ```
-in your AppDeligate before any other calls to ALCoreDataManager.
 
 To get the NSManagedObjectContext use
 ```objc
@@ -24,7 +23,7 @@ To get the NSManagedObjectContext use
 
 ## Requirements
 
-CoreData
+CoreData (it will @import CoreData on demand)
 
 ## Installation
 
