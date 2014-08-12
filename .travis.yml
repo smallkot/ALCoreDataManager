@@ -3,4 +3,7 @@
 language: objective-c
 script:
 pod install
+- cd Example
+- pod install
+- cd ..
 - xctool test -workspace Example/ALCoreDataManager.xcworkspace -scheme ALCoreDataManager -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
