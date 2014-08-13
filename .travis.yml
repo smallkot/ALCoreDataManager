@@ -2,7 +2,6 @@
 
 language: objective-c
 script:
-pod install
 - cd Example
 - pod install
 - cd ..
