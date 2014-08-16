@@ -16,6 +16,14 @@ Than in your AppDeligate before any other calls to ALCoreDataManager add
 [ALCoreDataManage setDefaultCoreDataModelName:@"<#Model#>"];
 ```
 
+To save context on app termite add this code to your AppDelegate
+```objc
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+    [[SPCoreDataManager defaultManager] saveContext];
+}
+```
+
 To get the NSManagedObjectContext use
 ```objc
 [ALCoreDataManager defaultManager].managedObjectContext
