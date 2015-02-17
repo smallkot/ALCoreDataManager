@@ -100,7 +100,7 @@
 			}
 		}
 	}
-	fetchRequest.sortDescriptors = sortDescriptors;
+	fetchRequest.sortDescriptors = [sortDescriptors copy];
 	return fetchRequest;
 }
 
@@ -206,7 +206,7 @@
 	
 	if (aggregators.count) {
 		fetchRequest.resultType = NSDictionaryResultType;
-		fetchRequest.propertiesToFetch = aggregators;
+		[fetchRequest setPropertiesToFetch:[aggregators copy]];
 	}
 
 	return fetchRequest;
@@ -264,5 +264,41 @@
 	}
 	return fetchedObjects;
 }
+
+/*
+ 
+ COUNT
+ ====
+ 
+ There seems to be no difference at all (only that one returns an NSUInteger and the other returns an NSArray containing an NSNumber).
+ 
+ Setting the launch argument
+ 
+ -com.apple.CoreData.SQLDebug 3
+ reveals that both
+ 
+ NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Event"];
+ NSUInteger count = [context countForFetchRequest:request error:NULL];
+ and
+ 
+ NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Event"];
+ [request setResultType:NSCountResultType];
+ NSArray *result = [context executeFetchRequest:request error:NULL];
+ execute exactly the same SQLite statement
+ 
+ SELECT COUNT( DISTINCT t0.Z_PK) FROM ZEVENT t0
+ 
+ ==============================
+ 
+ NOTE:
+ 
+ - (void)setIncludesPendingChanges:(BOOL)yesNo
+ 
+ As per the documentation
+ 
+ A value of YES is not supported in conjunction with the result type  NSDictionaryResultType, including calculation of aggregate results (such as max and min). For dictionaries, the array returned from the fetch reflects the current state in the persistent store, and does not take into account any pending changes, insertions, or deletions in the context. If you need to take pending changes into account for some simple aggregations like max and min, you can instead use a normal fetch request, sorted on the attribute you want, with a fetch limit of 1.
+ 
+ 
+ */
 
 @end

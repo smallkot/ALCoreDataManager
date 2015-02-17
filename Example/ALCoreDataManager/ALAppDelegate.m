@@ -56,10 +56,20 @@
 						 ]
 		 withPredicate:[NSPredicate predicateWithFormat:@"price > 100"]]);
 	
+	[[ALCoreDataManager defaultManager] saveContext];
+	
 	NSLog(@"Sum amount:\n %@",
 	[Item findAggregatedBy:@[
 							 @[@"sum:", @"amount"]
-							 ]]);
+							 ]
+			 withPredicate:[NSPredicate predicateWithFormat:@"price > 0"]]);
+	
+	NSArray *all = [Item findAll];
+	for (Item *item in all) {
+		[[ALCoreDataManager defaultManager].managedObjectContext deleteObject:item];
+	}
+
+	[[ALCoreDataManager defaultManager] saveContext];
 	
     return YES;
 }
