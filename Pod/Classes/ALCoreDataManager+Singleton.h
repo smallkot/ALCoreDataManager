@@ -7,6 +7,7 @@
 //
 
 #import "ALCoreDataManager.h"
+#import "NSManagedObject+Query.h"
 
 @interface ALCoreDataManager (Singleton)
 

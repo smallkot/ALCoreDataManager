@@ -6,6 +6,17 @@
 //  Copyright (c) 2014 aziz u. latypov. All rights reserved.
 //
 
-SpecBegin(InitialSpecs)
+#import <Specta/Specta.h>
+#import <Expecta/Expecta.h>
+
+#import <ALCoreDataManager/ALCoreDataManager+Singleton.h>
+
+SpecBegin(ALCoreDataManager)
+
+describe(@"default manger", ^{
+	it(@"should not be nil", ^{
+		expect([ALCoreDataManager defaultManager]).notTo.beNil;
+	});
+});
 
 SpecEnd

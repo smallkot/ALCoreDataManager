@@ -1,0 +1,1 @@
+PODS_TESTS_ALCOREDATAMANAGER_OTHER_LDFLAGS = -framework "CoreData" -framework "Foundation"

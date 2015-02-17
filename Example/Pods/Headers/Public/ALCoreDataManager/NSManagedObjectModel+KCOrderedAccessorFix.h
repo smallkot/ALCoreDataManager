@@ -1,0 +1,1 @@
+../../../../../Pod/Classes/NSManagedObjectModel+KCOrderedAccessorFix.h
