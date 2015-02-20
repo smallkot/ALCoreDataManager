@@ -13,7 +13,7 @@ To use the Manager add to your pch file the
 ```
 Than in your AppDeligate before any other calls to ALCoreDataManager add
 ```objc
-[ALCoreDataManage setDefaultCoreDataModelName:@"<#Model#>"];
+[ALCoreDataManager setDefaultCoreDataModelName:@"<#Model#>"];
 ```
 
 To save context on app termite add this code to your AppDelegate
