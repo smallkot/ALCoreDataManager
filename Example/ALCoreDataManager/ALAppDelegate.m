@@ -22,54 +22,54 @@
     
     NSLog(@"%@",[ALCoreDataManager defaultManager].managedObjectContext);
 	
-	Item *a = (Item*)[Item create];
-	a.title = @"A";
-	a.price = @(100);
-	a.amount = @(100);
-	
-	Item *b = (Item*)[Item create];
-	b.title = @"B";
-	b.price = @(150);
-	b.amount = @(200);
-
-	Item *c = (Item*)[Item create];
-	c.title = @"C";
-	c.price = @(200);
-	c.amount = @(300);
-	
-	NSLog(@"All:\n %@",
-	[Item findAll]);
-	
-	NSLog(@"All with price > 100:\n %@",
-	[Item findAllWithPredicate:[NSPredicate predicateWithFormat:@"price > 100"]]);
-
-	NSLog(@"All sorted by price DESC, title ASC:\n %@",
-	[Item findSortedBy:@[
-						 @[@"price", @(NO)],
-						 @[@"title"]
-						 ]]);
-
-	NSLog(@"All sorted by price DESC, title ASC and price > 100:\n %@",
-	[Item findSortedBy:@[
-						 @[@"price", @(NO)],
-						 @[@"title"]
-						 ]
-		 withPredicate:[NSPredicate predicateWithFormat:@"price > 100"]]);
-	
-	[[ALCoreDataManager defaultManager] saveContext];
-	
-	NSLog(@"Sum amount:\n %@",
-	[Item findAggregatedBy:@[
-							 @[@"sum:", @"amount"]
-							 ]
-			 withPredicate:[NSPredicate predicateWithFormat:@"price > 0"]]);
-	
-	NSArray *all = [Item findAll];
-	for (Item *item in all) {
-		[[ALCoreDataManager defaultManager].managedObjectContext deleteObject:item];
-	}
-
-	[[ALCoreDataManager defaultManager] saveContext];
+//	Item *a = (Item*)[Item create];
+//	a.title = @"A";
+//	a.price = @(100);
+//	a.amount = @(100);
+//	
+//	Item *b = (Item*)[Item create];
+//	b.title = @"B";
+//	b.price = @(150);
+//	b.amount = @(200);
+//
+//	Item *c = (Item*)[Item create];
+//	c.title = @"C";
+//	c.price = @(200);
+//	c.amount = @(300);
+//	
+//	NSLog(@"All:\n %@",
+//	[Item findAll]);
+//	
+//	NSLog(@"All with price > 100:\n %@",
+//	[Item findAllWithPredicate:[NSPredicate predicateWithFormat:@"price > 100"]]);
+//
+//	NSLog(@"All sorted by price DESC, title ASC:\n %@",
+//	[Item findSortedBy:@[
+//						 @[@"price", @(NO)],
+//						 @[@"title"]
+//						 ]]);
+//
+//	NSLog(@"All sorted by price DESC, title ASC and price > 100:\n %@",
+//	[Item findSortedBy:@[
+//						 @[@"price", @(NO)],
+//						 @[@"title"]
+//						 ]
+//		 withPredicate:[NSPredicate predicateWithFormat:@"price > 100"]]);
+//	
+//	[[ALCoreDataManager defaultManager] saveContext];
+//	
+//	NSLog(@"Sum amount:\n %@",
+//	[Item findAggregatedBy:@[
+//							 @[@"sum:", @"amount"]
+//							 ]
+//			 withPredicate:[NSPredicate predicateWithFormat:@"price > 0"]]);
+//	
+//	NSArray *all = [Item findAll];
+//	for (Item *item in all) {
+//		[[ALCoreDataManager defaultManager].managedObjectContext deleteObject:item];
+//	}
+//
+//	[[ALCoreDataManager defaultManager] saveContext];
 	
     return YES;
 }

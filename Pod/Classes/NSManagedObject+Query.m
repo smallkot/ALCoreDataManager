@@ -9,36 +9,21 @@
 #import "NSManagedObject+Query.h"
 #import "NSManagedObject+Helper.h"
 #import "ALCoreDataManager+Singleton.h"
+#import "NSManagedObject+ActiveFetchRequest.h"
 
 #warning TODO: setting predicate to nil is bad idea => create methods without predicate and add predicate if needed
+
+#warning TODO: add COUNT fetches
+
+#warning TODO: add group by / having / sort / only distinct / fetch limit
+
+#warning TODO: leave the AR style queries and implement Query builder (like [[[Item fetchRequest] sortBy:@[...]] filterWithPredicate:...] )
 
 @implementation NSManagedObject (Query)
 
 //
 // findALl
 //
-
-+ (NSFetchRequest*)fetchRequestFindAllWithPredicate:(NSPredicate*)predicate
-							 inManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
-{
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [self entityDescriptionWithMangedObjectContext:managedObjectContext];
-
-	[fetchRequest setEntity:entity];
-	
-	if ([predicate isKindOfClass:NSPredicate.class]) {
-		fetchRequest.predicate = predicate;
-	}
-	
-	return fetchRequest;
-}
-
-+ (NSFetchRequest*)fetchRequestFindAllWithPredicate:(NSPredicate*)predicate
-{
-	NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;
-	return [self fetchRequestFindAllWithPredicate:predicate
-						   inManagedObjectContext:managedObjectContext];
-}
 
 + (NSArray*)findAllWithPredicate:(NSPredicate*)predicate
 		  inManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
@@ -78,40 +63,6 @@
  which stands for "sort by name ASC, surname DESC, age ASC". If second element is not supplied => assumed as ASC.
  
  */
-+ (NSFetchRequest*)fetchRequestFindSortedBy:(NSArray*)description
-							  withPredicate:(NSPredicate*)predicate
-					  inMangedObjectContext:(NSManagedObjectContext*)managedObjectContext
-{
-	NSFetchRequest *fetchRequest = [self fetchRequestFindAllWithPredicate:predicate
-												   inManagedObjectContext:managedObjectContext];
-	NSMutableArray *sortDescriptors = [NSMutableArray new];
-	for (NSArray *desc in description) {
-		if ([desc isKindOfClass:NSArray.class]) {
-			if (desc.count) {
-				NSString *by = nil;
-				NSNumber *asc = nil;
-				if ([desc.firstObject isKindOfClass:NSString.class]) {
-					by = desc.firstObject;
-				}
-				if (desc.count > 1) {
-					asc = [desc  objectAtIndex:1];
-				}
-				[sortDescriptors addObject:[NSSortDescriptor sortDescriptorWithKey:by ascending:asc.boolValue]];
-			}
-		}
-	}
-	fetchRequest.sortDescriptors = [sortDescriptors copy];
-	return fetchRequest;
-}
-
-+ (NSFetchRequest*)fetchRequestFindSortedBy:(NSArray*)description
-							  withPredicate:(NSPredicate*)predicate
-{
-	NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;
-	return [self fetchRequestFindSortedBy:description
-							withPredicate:predicate
-					inMangedObjectContext:managedObjectContext];
-}
 
 + (NSArray*)findSortedBy:(NSArray*)description
 		   withPredicate:(NSPredicate*)predicate
@@ -158,69 +109,6 @@
  
  */
 
-+ (NSFetchRequest*)fetchRequestFindAggregatedBy:(NSArray*)description
-								  withPredicate:(NSPredicate*)predicate
-						  inMangedObjectContext:(NSManagedObjectContext*)managedObjectContext
-{
-	NSFetchRequest *fetchRequest = [self fetchRequestFindAllWithPredicate:predicate
-												   inManagedObjectContext:managedObjectContext];
-	NSMutableArray *aggregators = [NSMutableArray new];
-	for (NSArray *desc in description) {
-		if ([desc isKindOfClass:NSArray.class]) {
-			if (desc.count > 1) {
-				id first, second;
-				first = desc.firstObject;
-				second = [desc objectAtIndex:1];
-				if (![first isKindOfClass:NSString.class] || ![second isKindOfClass:NSString.class]) {
-					continue;
-				}
-				
-				NSString *agr = (NSString*)first;
-				NSString *agrName = [agr stringByReplacingOccurrencesOfString:@":" withString:@""];
-				
-				NSString *field = (NSString*)second;
-				NSInteger fieldType = NSUndefinedAttributeType;
-				
-				NSEntityDescription *entity = [self entityDescriptionWithMangedObjectContext:managedObjectContext];
-				NSAttributeDescription *fieldDescription = [self attributeDescription:field
-																fromEntityDescription:entity];
-				
-				if (![fieldDescription isKindOfClass:NSAttributeDescription.class]) {
-					continue;
-				}
-				
-				fieldType = [fieldDescription attributeType];
-				
-				NSExpression *fieldExp = [NSExpression expressionForKeyPath:field];
-				NSExpression *agrExp = [NSExpression expressionForFunction:agr arguments:@[fieldExp]];
-				NSExpressionDescription *resultDescription = [[NSExpressionDescription alloc] init];
-				NSString *resultName = [NSString stringWithFormat:@"%@%@",agrName,[field capitalizedString]];
-				[resultDescription setName:resultName];
-				[resultDescription setExpression:agrExp];
-				[resultDescription setExpressionResultType:fieldType];
-
-				[aggregators addObject:resultDescription];
-			}
-		}
-	}
-	
-	if (aggregators.count) {
-		fetchRequest.resultType = NSDictionaryResultType;
-		[fetchRequest setPropertiesToFetch:[aggregators copy]];
-	}
-
-	return fetchRequest;
-}
-
-+ (NSFetchRequest*)fetchRequestFindAggregatedBy:(NSArray*)description
-								  withPredicate:(NSPredicate*)predicate
-{
-	NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;
-	return [self fetchRequestFindAggregatedBy:description
-								withPredicate:predicate
-						inMangedObjectContext:managedObjectContext];
-}
-
 + (NSArray*)findAggregatedBy:(NSArray*)description
 			   withPredicate:(NSPredicate*)predicate
 	  inManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
@@ -263,6 +151,12 @@
 		abort();
 	}
 	return fetchedObjects;
+}
+
++ (NSArray*)findWithFetchRequest:(NSFetchRequest*)fetchRequest
+{
+	NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;
+	return [self findWithFetchRequest:fetchRequest andManagedObjectContext:managedObjectContext];
 }
 
 /*

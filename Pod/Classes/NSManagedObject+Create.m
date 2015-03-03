@@ -10,6 +10,8 @@
 #import "NSManagedObject+Helper.h"
 #import "ALCoreDataManager+Singleton.h"
 
+#warning TODO: create object with dictionary containing fields
+
 @implementation NSManagedObject (Create)
 
 + (NSManagedObject*)createInMangedObjectContext:(NSManagedObjectContext*)managedObjectContext

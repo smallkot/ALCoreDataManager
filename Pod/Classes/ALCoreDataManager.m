@@ -1,5 +1,4 @@
 #import "ALCoreDataManager.h"
-#import "NSManagedObjectModel+KCOrderedAccessorFix.h"
 
 @import CoreData;
 
@@ -81,7 +80,6 @@
 {
     if (!_managedObjectModel) {
         _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:self.modelURL];
-        [_managedObjectModel kc_generateOrderedSetAccessors];
     }
     return _managedObjectModel;
 }

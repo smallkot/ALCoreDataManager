@@ -61,33 +61,11 @@
 + (NSArray*)findAggregatedBy:(NSArray*)description
 			   withPredicate:(NSPredicate*)predicate;
 
-//
-// Getting the Fetch Request
-//
+// helper methods
 
-// find all
++ (NSArray*)findWithFetchRequest:(NSFetchRequest*)fetchRequest;
 
-+ (NSFetchRequest*)fetchRequestFindAllWithPredicate:(NSPredicate*)predicate;
-
-+ (NSFetchRequest*)fetchRequestFindAllWithPredicate:(NSPredicate*)predicate
-							 inManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
-
-// find all sorted
-
-+ (NSFetchRequest*)fetchRequestFindSortedBy:(NSArray*)description
-							  withPredicate:(NSPredicate*)predicate;
-
-+ (NSFetchRequest*)fetchRequestFindSortedBy:(NSArray*)description
-							  withPredicate:(NSPredicate*)predicate
-					  inMangedObjectContext:(NSManagedObjectContext*)managedObjectContext;
-
-// find wiht aggregation
-
-+ (NSFetchRequest*)fetchRequestFindAggregatedBy:(NSArray*)description
-								  withPredicate:(NSPredicate*)predicate;
-
-+ (NSFetchRequest*)fetchRequestFindAggregatedBy:(NSArray*)description
-								  withPredicate:(NSPredicate*)predicate
-						  inMangedObjectContext:(NSManagedObjectContext*)managedObjectContext;
++ (NSArray*)findWithFetchRequest:(NSFetchRequest*)fetchRequest
+		 andManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 @end
