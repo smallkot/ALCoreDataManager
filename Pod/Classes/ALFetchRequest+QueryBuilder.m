@@ -11,8 +11,6 @@
 #import "ALCoreDataManager+Singleton.h"
 #import "ALFetchRequest.h"
 
-#warning TODO: leave the AR style queries and implement Query builder (like [[[Item fetchRequest] sortBy:@[...]] filterWithPredicate:...] )
-
 NSString *const kAggregatorSum = @"sum:";
 NSString *const kAggregatorCount = @"count:";
 NSString *const kAggregatorMin = @"min:";
@@ -20,33 +18,14 @@ NSString *const kAggregatorMax = @"max:";
 NSString *const kAggregatorAverage = @"average";
 NSString *const kAggregatorMedian = @"median";
 
-@implementation ALFetchRequest (QueryBuilder)
+NSString *const kOrderASC = @"ASC";
+NSString *const kOrderDESC = @"DESC";
 
-- (ALFetchRequest*)select:(NSArray*)description
-{
-	self.propertiesToFetch = description;
-	return self;
-}
+@implementation ALFetchRequest (QueryBuilder)
 
 - (ALFetchRequest*)orderBy:(NSArray*)description
 {
-	NSMutableArray *sortDescriptors = [NSMutableArray new];
-	for (NSArray *desc in description) {
-		if ([desc isKindOfClass:NSArray.class]) {
-			if (desc.count) {
-				NSString *by = nil;
-				NSNumber *asc = nil;
-				if ([desc.firstObject isKindOfClass:NSString.class]) {
-					by = desc.firstObject;
-				}
-				if (desc.count > 1) {
-					asc = [desc  objectAtIndex:1];
-				}
-				[sortDescriptors addObject:[NSSortDescriptor sortDescriptorWithKey:by ascending:asc.boolValue]];
-			}
-		}
-	}
-	self.sortDescriptors = [sortDescriptors copy];
+	self.sortDescriptors = [self sortDescriptorsFromDescription:description];
 	return self;
 }
 
@@ -57,6 +36,103 @@ NSString *const kAggregatorMedian = @"median";
 }
 
 - (ALFetchRequest*)aggregateBy:(NSArray*)description
+{
+	NSArray *aggregators = [self aggregatorsFromDescription:description];
+	if (aggregators.count) {
+		self.resultType = NSDictionaryResultType;
+		[self setPropertiesToFetch:aggregators];
+	}
+	return self;
+}
+
+- (ALFetchRequest*)groupBy:(NSArray*)description
+{
+	NSArray *properties = [self aggregatorsFromDescription:description];
+	if (properties.count) {
+		self.resultType = NSDictionaryResultType;
+		
+		NSArray *aggregators = [self propertiesToFetch];
+		NSMutableArray *aggregatorsAndGroupProperties = [NSMutableArray arrayWithArray:properties];
+		[aggregatorsAndGroupProperties addObjectsFromArray:aggregators];
+		
+		[self setPropertiesToFetch:aggregatorsAndGroupProperties];
+	}
+	return self;
+}
+
+- (ALFetchRequest*)having:(NSPredicate*)predicate
+{
+	self.havingPredicate = predicate;
+	return self;
+}
+
+- (ALFetchRequest*)limit:(NSInteger)limit
+{
+	self.fetchLimit = limit;
+	return self;
+}
+
+- (ALFetchRequest*)distinct
+{
+	self.returnsDistinctResults = YES;
+	return self;
+}
+
+- (ALFetchRequest*)count
+{
+	[self setResultType:NSCountResultType];
+	return self;
+}
+
+// utilities
+
+- (NSArray*)sortDescriptorsFromDescription:(NSArray*)description
+{
+	NSMutableArray *sortDescriptors = [NSMutableArray new];
+	for (NSArray *desc in description) {
+		if ([desc isKindOfClass:NSArray.class]) {
+			if (desc.count) {
+				NSString *by = nil;
+				NSString *ascString = nil;
+				NSNumber *asc = nil;
+				if ([desc.firstObject isKindOfClass:NSString.class]) {
+					by = desc.firstObject;
+				}
+				if (desc.count > 1) {
+					ascString = [desc  objectAtIndex:1];
+					asc = @([ascString isEqualToString:kOrderASC]);
+				}
+				[sortDescriptors addObject:[NSSortDescriptor sortDescriptorWithKey:by
+																		 ascending:asc.boolValue]];
+			}
+		}
+	}
+	return [sortDescriptors copy];
+}
+
+- (NSArray*)propertiesFromDescription:(NSArray*)description
+{
+	NSMutableArray *properties = [NSMutableArray new];
+	for (NSString *field in description) {
+		if ([field isKindOfClass:NSString.class]) {
+			
+			NSEntityDescription *entity =
+			[self.class entityDescriptionWithMangedObjectContext:self.managedObjectContext];
+			
+			NSAttributeDescription *fieldDescription = [self.class attributeDescription:field
+																  fromEntityDescription:entity];
+			
+			if (![fieldDescription isKindOfClass:NSAttributeDescription.class]) {
+				continue;
+			}
+			
+			[properties addObject:fieldDescription];
+		}
+	}
+	return properties;
+}
+
+- (NSArray*)aggregatorsFromDescription:(NSArray*)description
 {
 	NSMutableArray *aggregators = [NSMutableArray new];
 	for (NSArray *desc in description) {
@@ -79,7 +155,7 @@ NSString *const kAggregatorMedian = @"median";
 				[self.class entityDescriptionWithMangedObjectContext:self.managedObjectContext];
 				
 				NSAttributeDescription *fieldDescription = [self.class attributeDescription:field
-																fromEntityDescription:entity];
+																	  fromEntityDescription:entity];
 				
 				if (![fieldDescription isKindOfClass:NSAttributeDescription.class]) {
 					continue;
@@ -90,7 +166,8 @@ NSString *const kAggregatorMedian = @"median";
 				NSExpression *fieldExp = [NSExpression expressionForKeyPath:field];
 				NSExpression *agrExp = [NSExpression expressionForFunction:agr arguments:@[fieldExp]];
 				NSExpressionDescription *resultDescription = [[NSExpressionDescription alloc] init];
-				NSString *resultName = [NSString stringWithFormat:@"%@%@",agrName,[field capitalizedString]];
+				NSString *resultName =
+				[NSString stringWithFormat:@"%@%@",agrName,[field capitalizedString]];
 				[resultDescription setName:resultName];
 				[resultDescription setExpression:agrExp];
 				[resultDescription setExpressionResultType:fieldType];
@@ -99,32 +176,7 @@ NSString *const kAggregatorMedian = @"median";
 			}
 		}
 	}
-	
-	if (aggregators.count) {
-		self.resultType = NSDictionaryResultType;
-		[self setPropertiesToFetch:[aggregators copy]];
-	}
-	return self;
-}
-
-- (ALFetchRequest*)groupBy:(NSArray*)description
-{
-	return self;
-}
-
-- (ALFetchRequest*)having:(NSPredicate*)predicate
-{
-	return self;
-}
-
-- (ALFetchRequest*)limit:(NSInteger)limit
-{
-	return self;
-}
-
-- (ALFetchRequest*)distinct
-{
-	return self;
+	return aggregators;
 }
 
 @end

@@ -562,6 +562,68 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
+		8FEFD47B1AA5B0B400430771 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				E86143E87753C399E257BE18 /* ALCoreDataManager.h */,
+				DBD8CFF7510DD6B8684C349D /* ALCoreDataManager.m */,
+				CBB4C247DC5129639334E274 /* ALCoreDataManager+Singleton.h */,
+				B4011F70631E9964DEED4269 /* ALCoreDataManager+Singleton.m */,
+			);
+			name = Manager;
+			sourceTree = "<group>";
+		};
+		8FEFD47C1AA5B0C600430771 /* Query */ = {
+			isa = PBXGroup;
+			children = (
+				8FEFD47D1AA5B0CB00430771 /* Builder */,
+				8FEFD47E1AA5B0D000430771 /* ActiveRecord */,
+			);
+			name = Query;
+			sourceTree = "<group>";
+		};
+		8FEFD47D1AA5B0CB00430771 /* Builder */ = {
+			isa = PBXGroup;
+			children = (
+				8FEFD4721AA59CD000430771 /* ALFetchRequest+QueryBuilder.h */,
+				8FEFD4731AA59CD000430771 /* ALFetchRequest+QueryBuilder.m */,
+			);
+			name = Builder;
+			sourceTree = "<group>";
+		};
+		8FEFD47E1AA5B0D000430771 /* ActiveRecord */ = {
+			isa = PBXGroup;
+			children = (
+				8FEFD46C1AA59B4D00430771 /* NSManagedObject+ActiveFetchRequest.h */,
+				8FEFD46D1AA59B4D00430771 /* NSManagedObject+ActiveFetchRequest.m */,
+			);
+			name = ActiveRecord;
+			sourceTree = "<group>";
+		};
+		8FEFD47F1AA5B0EC00430771 /* FetchRequest */ = {
+			isa = PBXGroup;
+			children = (
+				8FEFD4781AA5A87000430771 /* ALFetchRequest.h */,
+				8FEFD4791AA5A87000430771 /* ALFetchRequest.m */,
+				8FEFD4751AA59DAE00430771 /* NSManagedObject+FetchRequest.h */,
+				8FEFD4761AA59DAE00430771 /* NSManagedObject+FetchRequest.m */,
+			);
+			name = FetchRequest;
+			sourceTree = "<group>";
+		};
+		8FEFD4801AA5B0FD00430771 /* NSManagedObject */ = {
+			isa = PBXGroup;
+			children = (
+				B661EA7FFE8781489FE879DB /* NSManagedObject+Create.h */,
+				83078341D12A757EE071DBBC /* NSManagedObject+Create.m */,
+				3C442979ACC7B223FAF709E8 /* NSManagedObject+Helper.h */,
+				1B1CD3D86A7196D6AA6BA14D /* NSManagedObject+Helper.m */,
+				C3F910043358449193FAED0F /* NSManagedObject+Query.h */,
+				CDAD5BE181459701396078BF /* NSManagedObject+Query.m */,
+			);
+			name = NSManagedObject;
+			sourceTree = "<group>";
+		};
 		A03B3C84E981EFE1AEE19990 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -652,24 +714,10 @@
 		E244D357B23A1F2348C61D16 /* ALCoreDataManager */ = {
 			isa = PBXGroup;
 			children = (
-				E86143E87753C399E257BE18 /* ALCoreDataManager.h */,
-				DBD8CFF7510DD6B8684C349D /* ALCoreDataManager.m */,
-				CBB4C247DC5129639334E274 /* ALCoreDataManager+Singleton.h */,
-				B4011F70631E9964DEED4269 /* ALCoreDataManager+Singleton.m */,
-				B661EA7FFE8781489FE879DB /* NSManagedObject+Create.h */,
-				83078341D12A757EE071DBBC /* NSManagedObject+Create.m */,
-				3C442979ACC7B223FAF709E8 /* NSManagedObject+Helper.h */,
-				1B1CD3D86A7196D6AA6BA14D /* NSManagedObject+Helper.m */,
-				C3F910043358449193FAED0F /* NSManagedObject+Query.h */,
-				CDAD5BE181459701396078BF /* NSManagedObject+Query.m */,
-				8FEFD46C1AA59B4D00430771 /* NSManagedObject+ActiveFetchRequest.h */,
-				8FEFD4751AA59DAE00430771 /* NSManagedObject+FetchRequest.h */,
-				8FEFD4761AA59DAE00430771 /* NSManagedObject+FetchRequest.m */,
-				8FEFD46D1AA59B4D00430771 /* NSManagedObject+ActiveFetchRequest.m */,
-				8FEFD4721AA59CD000430771 /* ALFetchRequest+QueryBuilder.h */,
-				8FEFD4731AA59CD000430771 /* ALFetchRequest+QueryBuilder.m */,
-				8FEFD4781AA5A87000430771 /* ALFetchRequest.h */,
-				8FEFD4791AA5A87000430771 /* ALFetchRequest.m */,
+				8FEFD4801AA5B0FD00430771 /* NSManagedObject */,
+				8FEFD47F1AA5B0EC00430771 /* FetchRequest */,
+				8FEFD47C1AA5B0C600430771 /* Query */,
+				8FEFD47B1AA5B0B400430771 /* Manager */,
 				2686B88D283C310E2622A2AF /* Support Files */,
 			);
 			name = ALCoreDataManager;

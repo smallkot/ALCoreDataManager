@@ -12,47 +12,71 @@
 
 @interface NSFetchRequest (QueryBuilder)
 
-- (ALFetchRequest*)select:(NSArray*)description;
-
-- (ALFetchRequest*)filterWithPredicate:(NSPredicate*)predicate;
-
 /*
- - (ALFetchRequest*)sortBy:(NSArray*)description;
- 
- Returns fetch request with sorting. Description is an array of arrays kinda:
- 
- @[
-	@["name", @(YES)],
-	@["surname", @(NO)],
-	@["age"]
- ]
- 
- which stands for "sort by name ASC, surname DESC, age ASC". If second element is not supplied => assumed as ASC.
- 
+ NSFetchRequest *request =
+ [[Item fetchRequest] where:[NSPredicate predicateWithString:@"..."]];
  */
-- (ALFetchRequest*)sortBy:(NSArray*)description;
-
+- (ALFetchRequest*)where:(NSPredicate*)predicate;
 
 /*
- - (ALFetchRequest*)aggregateBy:(NSArray*)description;
+ NSFetchRequest *request =
+ [[Item fetchRequest] orderBy:@[
+		@["name", kOrderASC],
+		@["surname", kOrderDESC],
+		@["age"]
+	 ]
+ ];
+ */
+- (ALFetchRequest*)orderBy:(NSArray*)description;
 
- Returns fetch request with aggregations. Description is an array of arrays kinda:
+/*
+ NSFetchRequest *request =
+ [[Item fetchRequest] aggregateBy:@[
+	@[kAggragateCount, @"items"],
+	@[kAggragateSum, @"amount"]
+ ];
  
- @[
-	@["count:", @"items"],
-	@["sum:", @"amount"]
- ]
- 
- which stands for "COUNT(name), SUM(amount)". Available aggregations are:
- + sum:
- + count:
- + min:
- + max:
- + average:
- + median:
- 
+ Available aggregations are:
+ + sum
+ + count
+ + min
+ + max
+ + average
+ + median
  */
 - (ALFetchRequest*)aggregateBy:(NSArray*)description;
+
+/*
+ NSFetchRequest *request =
+ [[[Item fetchRequest] aggregateBy:@[
+	@[kAggragateCount, @"items"],
+	@[kAggragateSum, @"amount"]
+ ] groupBy:@[@"country"]];
+ 
+ NOTE: groupBy MUST be called AFTER aggregateBy:
+ */
+- (ALFetchRequest*)groupBy:(NSArray*)description;
+
+/*
+ NSFetchRequest *request =
+ [[[[Item fetchRequest] aggregateBy:@[
+	@[kAggragateCount, @"items"],
+	@[kAggragateSum, @"amount"]
+ ] groupBy:@[@"country"] 
+ ] having:[NSPredicate predicateWithString:@"..."];
+ */
+- (ALFetchRequest*)having:(NSPredicate*)predicate;
+
+// sets a fetch limit
+- (ALFetchRequest*)limit:(NSInteger)limit;
+
+// enforces only distinct
+- (ALFetchRequest*)distinct;
+
+// changed result type to NSCountResultType
+- (ALFetchRequest*)count;
+
+@end
 
 extern NSString *const kAggregatorSum;
 extern NSString *const kAggregatorCount;
@@ -60,5 +84,3 @@ extern NSString *const kAggregatorMin;
 extern NSString *const kAggregatorMax;
 extern NSString *const kAggregatorAverage;
 extern NSString *const kAggregatorMedian;
-
-@end

@@ -11,7 +11,9 @@
 @interface NSManagedObject (Helper)
 
 + (NSString*)entityName;
+
 + (NSEntityDescription*)entityDescriptionWithMangedObjectContext:(NSManagedObjectContext*)managedObjectContext;
+
 + (NSAttributeDescription*)attributeDescription:(NSString*)attributeName
 						  fromEntityDescription:(NSEntityDescription*)entityDescription;
 

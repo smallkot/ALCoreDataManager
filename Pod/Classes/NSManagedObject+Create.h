@@ -10,7 +10,7 @@
 
 @interface NSManagedObject (Create)
 
-+ (NSManagedObject*)createInMangedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 + (NSManagedObject*)create;
++ (NSManagedObject*)createInMangedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 @end
