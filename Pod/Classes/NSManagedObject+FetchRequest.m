@@ -56,21 +56,4 @@
 	return [self allInManagedObjectContext:managedObjectContext];
 }
 
-/**
- Casts a ALFetchRequest to NSFetchRequest.
- 
- @returns Returns NSFetchRequest.
- 
- @code
- NSFetchRequest *request =
- [[[Item fetchReques] orderBy:@[@"title"]] request];
- @endcode
- 
- Example above collects all @b Items orderd by @em title. The default managed context is used.
- */
-- (NSFetchRequest *)request
-{
-	return (NSFetchRequest*)self;
-}
-
 @end

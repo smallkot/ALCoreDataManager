@@ -7,12 +7,12 @@
 //
 
 #import <CoreData/CoreData.h>
-
+#import "NSManagedObject+FetchRequest.h"
 #import "ALFetchRequest.h"
 
 @interface ALFetchRequest (QueryBuilder)
 
-- (ALFetchRequest*)where:(NSString*)predicate, ...;
+- (ALFetchRequest*)where:(NSPredicate*)predicate;
 
 - (ALFetchRequest*)orderedBy:(NSArray*)description;
 
@@ -20,7 +20,7 @@
 
 - (ALFetchRequest*)groupedBy:(NSArray*)description;
 
-- (ALFetchRequest*)having:(NSString*)predicate, ...;
+- (ALFetchRequest*)having:(NSPredicate*)predicate;
 
 - (ALFetchRequest*)limit:(NSInteger)limit;
 
@@ -29,6 +29,8 @@
 - (ALFetchRequest*)count;
 
 - (id)execute;
+
+- (NSFetchRequest*)request;
 
 @end
 

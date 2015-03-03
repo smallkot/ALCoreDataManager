@@ -13,7 +13,6 @@ Pod::Spec.new do |s|
   s.summary          = "Fast and easy way to get NSManagedObjectContext"
   s.description      = <<-DESC
                        Singleton class for getting NSManagedObjectContext in single Model apps fast and easy.
-
                        * Just set the ModelName in your AppDelegate
                        * Done!
                        DESC

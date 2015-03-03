@@ -54,17 +54,14 @@ NSString *const kOrderDESC = @"DESC";
  
  @code
  NSArray *items =
- [[[Item all] where:@"count > %d",minCount] execute];
+ [[[Item all] where:[NSPredicate predicateWithFormat:@"count > %d",minCount]] execute];
  @endcode
  
  Example above collects all @b Items where count is more than value of variable minCount.
  */
-- (ALFetchRequest*)where:(NSString*)predicate, ...
+- (ALFetchRequest*)where:(NSPredicate*)predicate
 {
-	va_list argumentList;
-	NSPredicate *p = [NSPredicate predicateWithFormat:predicate
-											arguments:argumentList];
-	self.predicate = p;
+	self.predicate = predicate;
 	return self;
 }
 
@@ -153,7 +150,7 @@ NSString *const kOrderDESC = @"DESC";
 	@["count:", @"items"],
 	@["sum:", @"amount"]
  ]] groupedBy:@[@"county"]
- ] having:@"sum > 100"
+ ] having:[NSPredicate predicateWithFormat:@"sum > 100"]
  ] execute];
  
  [d valueForKey:@"countItems"];
@@ -161,12 +158,9 @@ NSString *const kOrderDESC = @"DESC";
  
  Example above aggregates @b Items and counts @em items ASC and sums @em amount and groups by @em county.
  */
-- (ALFetchRequest*)having:(NSString*)predicate, ...
+- (ALFetchRequest*)having:(NSPredicate*)predicate
 {
-	va_list argumentList;
-	NSPredicate *p = [NSPredicate predicateWithFormat:predicate
-											arguments:argumentList];
-	self.havingPredicate = p;
+	self.havingPredicate = predicate;
 	return self;
 }
 
@@ -180,7 +174,7 @@ NSString *const kOrderDESC = @"DESC";
  
  @code
  NSArray *item =
- [[[[Item all] where:@"title == %@",title] limit:1] execute];
+ [[[[Item all] where:[NSPredicate predicateWithFormat:@"title = %@",title]] limit:1] execute];
  @endcode
  
  Example above gets not more than 1 @b Item with given @em title.
@@ -199,7 +193,7 @@ NSString *const kOrderDESC = @"DESC";
  
  @code
  NSArray *item =
- [[[[Item all] where:@"title == %@",title] distinct] execute];
+ [[[[Item all] where:[NSPredicate predicateWithFormat:@"title = %@",title]] distinct] execute];
  @endcode
  
  Example above gets only distinct @b Item with given @em title.
@@ -246,6 +240,23 @@ NSString *const kOrderDESC = @"DESC";
 	NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
 	return [managedObjectContext executeFetchRequest:self
 											   error:nil];
+}
+
+/**
+ Casts a ALFetchRequest to NSFetchRequest.
+ 
+ @returns Returns NSFetchRequest.
+ 
+ @code
+ NSFetchRequest *request =
+ [[[Item fetchReques] orderBy:@[@"title"]] request];
+ @endcode
+ 
+ Example above collects all @b Items orderd by @em title. The default managed context is used.
+ */
+- (NSFetchRequest *)request
+{
+	return (NSFetchRequest*)self;
 }
 
 // utilities

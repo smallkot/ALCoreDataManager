@@ -16,6 +16,4 @@
 
 + (ALFetchRequest*)allInManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
-- (NSFetchRequest*)request;
-
 @end
