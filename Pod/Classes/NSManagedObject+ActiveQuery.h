@@ -8,7 +8,7 @@
 
 #import <CoreData/CoreData.h>
 
-@interface NSManagedObject (ActiveFetchRequest)
+@interface NSManagedObject (ActiveQuery)
 
 // find all filtered by predicate
 

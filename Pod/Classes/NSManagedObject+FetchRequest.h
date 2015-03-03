@@ -12,8 +12,10 @@
 
 @interface NSManagedObject (FetchRequest)
 
-+ (ALFetchRequest*)fetchRequest;
++ (ALFetchRequest*)all;
 
-+ (ALFetchRequest*)fetchRequestInManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
++ (ALFetchRequest*)allInManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
+
+- (NSFetchRequest*)request;
 
 @end

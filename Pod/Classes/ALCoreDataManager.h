@@ -23,4 +23,9 @@
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 
+- (NSManagedObjectContext*)newContext;
+
+- (void)performBlock:(void(^)(NSManagedObjectContext *localContext))block
+ andEmitNotification:(NSString *)notificationName;
+
 @end

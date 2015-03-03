@@ -8,73 +8,27 @@
 
 #import <CoreData/CoreData.h>
 
-@class ALFetchRequest;
+#import "ALFetchRequest.h"
 
-@interface NSFetchRequest (QueryBuilder)
+@interface ALFetchRequest (QueryBuilder)
 
-/*
- NSFetchRequest *request =
- [[Item fetchRequest] where:[NSPredicate predicateWithString:@"..."]];
- */
-- (ALFetchRequest*)where:(NSPredicate*)predicate;
+- (ALFetchRequest*)where:(NSString*)predicate, ...;
 
-/*
- NSFetchRequest *request =
- [[Item fetchRequest] orderBy:@[
-		@["name", kOrderASC],
-		@["surname", kOrderDESC],
-		@["age"]
-	 ]
- ];
- */
-- (ALFetchRequest*)orderBy:(NSArray*)description;
+- (ALFetchRequest*)orderedBy:(NSArray*)description;
 
-/*
- NSFetchRequest *request =
- [[Item fetchRequest] aggregateBy:@[
-	@[kAggragateCount, @"items"],
-	@[kAggragateSum, @"amount"]
- ];
- 
- Available aggregations are:
- + sum
- + count
- + min
- + max
- + average
- + median
- */
-- (ALFetchRequest*)aggregateBy:(NSArray*)description;
+- (ALFetchRequest*)aggregatedBy:(NSArray*)description;
 
-/*
- NSFetchRequest *request =
- [[[Item fetchRequest] aggregateBy:@[
-	@[kAggragateCount, @"items"],
-	@[kAggragateSum, @"amount"]
- ] groupBy:@[@"country"]];
- 
- NOTE: groupBy MUST be called AFTER aggregateBy:
- */
-- (ALFetchRequest*)groupBy:(NSArray*)description;
+- (ALFetchRequest*)groupedBy:(NSArray*)description;
 
-/*
- NSFetchRequest *request =
- [[[[Item fetchRequest] aggregateBy:@[
-	@[kAggragateCount, @"items"],
-	@[kAggragateSum, @"amount"]
- ] groupBy:@[@"country"] 
- ] having:[NSPredicate predicateWithString:@"..."];
- */
-- (ALFetchRequest*)having:(NSPredicate*)predicate;
+- (ALFetchRequest*)having:(NSString*)predicate, ...;
 
-// sets a fetch limit
 - (ALFetchRequest*)limit:(NSInteger)limit;
 
-// enforces only distinct
 - (ALFetchRequest*)distinct;
 
-// changed result type to NSCountResultType
 - (ALFetchRequest*)count;
+
+- (id)execute;
 
 @end
 
@@ -84,3 +38,6 @@ extern NSString *const kAggregatorMin;
 extern NSString *const kAggregatorMax;
 extern NSString *const kAggregatorAverage;
 extern NSString *const kAggregatorMedian;
+
+extern NSString *const kOrderASC;
+extern NSString *const kOrderDESC;

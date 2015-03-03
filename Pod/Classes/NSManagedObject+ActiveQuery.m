@@ -9,20 +9,23 @@
 #import "NSManagedObject+ActiveFetchRequest.h"
 #import "ALCoreDataManager+Singleton.h"
 #import "NSManagedObject+Helper.h"
-#import "NSManagedObject+FetchRequest.h"
+#import "NSManagedObject+ActiveQuery"
 
-@implementation NSManagedObject (ActiveFetchRequest)
+#import "ALFetchRequest+QueryBuilder.h"
+#import "ALFetchRequest.h"
+
+@implementation NSManagedObject (ActiveQuery)
 
 + (NSFetchRequest*)fetchRequestFindAllWithPredicate:(NSPredicate*)predicate
 							 inManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
-	NSFetchRequest *fetchRequest = [self fetchRequest];
+	ALFetchRequest *fetchRequest = [self fetchRequest];
 	
 	if ([predicate isKindOfClass:NSPredicate.class]) {
 		fetchRequest.predicate = predicate;
 	}
 	
-	return fetchRequest;
+	return (NSFetchRequest*)fetchRequest;
 }
 
 + (NSFetchRequest*)fetchRequestFindAllWithPredicate:(NSPredicate*)predicate

@@ -12,6 +12,10 @@
 #import <ALCoreDataManager/ALCoreDataManager+Singleton.h>
 #import <ALCoreDataManager/NSManagedObject+Create.h>
 #import <ALCoreDataManager/NSManagedObject+Query.h>
+#import <ALCoreDataManager/ALFetchRequest.h>
+#import <ALCoreDataManager/NSManagedObject+FetchRequest.h>
+#import <ALCoreDataManager/ALFetchRequest+QueryBuilder.h>
+
 #import "Item.h"
 
 SpecBegin(ALCoreDataManager)
@@ -92,9 +96,9 @@ describe(@"CRUD", ^{
 	});
 	
 	it(@"should be fetched", ^{
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title = 'A' && price = 100 && amount = 100"];
 		NSFetchRequest *fetchA =
-		[Item fetchRequestFindAllWithPredicate:[NSPredicate predicateWithFormat:@"title = A, price = 100, amount = 100"]];
-		fetchA.fetchLimit = 1;
+		[[[Item fetchRequest] where:predicate] limit:1];
 		NSArray *items = [Item findWithFetchRequest:fetchA];
 		
 		Item *a = [items firstObject];

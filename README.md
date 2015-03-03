@@ -16,7 +16,7 @@ Import these files
 
 Than in your AppDeligate before any other calls to ALCoreDataManager add:
 ```objc
-[ALCoreDataManage setDefaultCoreDataModelName:@"<#Model#>"];
+[ALCoreDataManager setDefaultCoreDataModelName:@"<#Model#>"];
 ```
 
 For saving the context on app termite add this code to your AppDelegate
@@ -91,6 +91,21 @@ You can use active record style queries.
 
 */
 ```
+
+## Limitations
+
+As noted by apple:
+```
+NOTE:
+
+- (void)setIncludesPendingChanges:(BOOL)yesNo
+
+As per the documentation
+
+A value of YES is not supported in conjunction with the result type  NSDictionaryResultType, including calculation of aggregate results (such as max and min). For dictionaries, the array returned from the fetch reflects the current state in the persistent store, and does not take into account any pending changes, insertions, or deletions in the context. If you need to take pending changes into account for some simple aggregations like max and min, you can instead use a normal fetch request, sorted on the attribute you want, with a fetch limit of 1.
+```
+
+So using aggregatedBy/groupBy/having WILL ignore data, which was not saved into store.
 
 ## Requirements
 

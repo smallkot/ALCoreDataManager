@@ -13,7 +13,20 @@
 
 @implementation NSManagedObject (FetchRequest)
 
-+ (ALFetchRequest*)fetchRequestInManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+/**
+ Fetch request for query builder. Lets you build a query.
+ 
+ @returns Returns fetch request which is used for quiery building.
+ 
+ @param managedObjectContext Context for fetch request.
+ 
+ @code
+ [[Item fetchRequestInManagedObjectContext:context] orderBy:@[@"title"]];
+ @endcode
+ 
+ Example above collects all @b Items orderd by @em title.
+ */
++ (ALFetchRequest*)allInManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
 
 {
 	ALFetchRequest *fetchRequest = [[ALFetchRequest alloc] init];
@@ -25,10 +38,39 @@
 	return fetchRequest;
 }
 
-+ (ALFetchRequest*)fetchRequest
+/**
+ Fetch request for query builder. Lets you build a query.
+ 
+ @returns Returns fetch request which is used for quiery building.
+ 
+ @code
+ NSArray *items =
+ [[[Item fetchReques] orderBy:@[@"title"]] execute];
+ @endcode
+ 
+ Example above collects all @b Items orderd by @em title. The default managed context is used.
+ */
++ (ALFetchRequest*)all
 {
 	NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;
-	return [self fetchRequestInManagedObjectContext:managedObjectContext];
+	return [self allInManagedObjectContext:managedObjectContext];
+}
+
+/**
+ Casts a ALFetchRequest to NSFetchRequest.
+ 
+ @returns Returns NSFetchRequest.
+ 
+ @code
+ NSFetchRequest *request =
+ [[[Item fetchReques] orderBy:@[@"title"]] request];
+ @endcode
+ 
+ Example above collects all @b Items orderd by @em title. The default managed context is used.
+ */
+- (NSFetchRequest *)request
+{
+	return (NSFetchRequest*)self;
 }
 
 @end

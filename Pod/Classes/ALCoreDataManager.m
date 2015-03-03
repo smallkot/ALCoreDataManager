@@ -8,6 +8,9 @@
 @property (readonly) NSURL *modelURL;
 @property (readonly) NSURL *storeURL;
 
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
+@property (nonatomic, strong) NSOperationQueue *notificationQueue;
+
 @end
 
 @implementation ALCoreDataManager
@@ -23,6 +26,70 @@
         self.modelName = modelName;
     }
     return self;
+}
+
+#pragma - Block -
+
+- (NSOperationQueue *)operationQueue
+{
+	if (!_operationQueue) {
+		_operationQueue = [[NSOperationQueue alloc] init];
+		_operationQueue.name = @"ALCoreDataManager Concurrent Queue";
+		_operationQueue.maxConcurrentOperationCount = 3;
+	}
+	return _operationQueue;
+}
+
+- (NSOperationQueue *)notificationQueue
+{
+	if (!_notificationQueue) {
+		_notificationQueue = [[NSOperationQueue alloc] init];
+		_notificationQueue.name = @"ALCoreDataManager Notification Handling Queue";
+		_notificationQueue.maxConcurrentOperationCount = 1;
+	}
+	return _notificationQueue;
+}
+
+- (NSManagedObjectContext*)newContext
+{
+	NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+	context.persistentStoreCoordinator = self.managedObjectContext.persistentStoreCoordinator;
+	return context;
+}
+
+- (void)performBlock:(void(^)(NSManagedObjectContext *localContext))block
+ andEmitNotification:(NSString *)notificationName;
+{
+	__weak ALCoreDataManager *weakSelf = self;
+	
+	NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+		
+		NSManagedObjectContext *localContext = [weakSelf newContext];
+		
+		[[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextDidSaveNotification
+														  object:localContext
+														   queue:weakSelf.notificationQueue
+													  usingBlock:^(NSNotification *notification)
+		 {
+			 [self.managedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+			 
+			 // emit
+			 if (notificationName.length) {
+				 [[NSNotificationCenter defaultCenter] postNotificationName:notificationName
+																	 object:nil];
+			 }
+		 }];
+		
+		block(localContext);
+		
+		if ([localContext hasChanges]) {
+			NSError *error = nil;
+			[localContext save:&error];
+		}
+		
+	}];
+	
+	[self.operationQueue addOperation:operation];
 }
 
 #pragma mark - Helpers

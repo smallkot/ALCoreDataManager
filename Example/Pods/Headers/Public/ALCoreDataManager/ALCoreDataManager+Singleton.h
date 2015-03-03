@@ -1,1 +1,0 @@
-../../../../../Pod/Classes/ALCoreDataManager+Singleton.h

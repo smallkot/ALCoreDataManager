@@ -11,20 +11,25 @@
 #import "ALCoreDataManager+Singleton.h"
 #import "NSManagedObject+ActiveFetchRequest.h"
 
-#warning TODO: setting predicate to nil is bad idea => create methods without predicate and add predicate if needed
-
 #warning TODO: add COUNT fetches
-
-#warning TODO: add group by / having / sort / only distinct / fetch limit
-
-#warning TODO: leave the AR style queries and implement Query builder (like [[[Item fetchRequest] sortBy:@[...]] filterWithPredicate:...] )
 
 @implementation NSManagedObject (Query)
 
-//
-// findALl
-//
-
+/**
+ Find all and filter with given predicate.
+ 
+ @returns Returns fetch request with predicate set accordingly.
+ 
+ @param predicate A predicate for filtering the results of the fetch.
+ @param managedObjectContext Context for fetch request.
+ 
+ @code
+ [Item findAllWithPredicate:[NSPredicate predicateWithString:@"count > 10"] 
+	 inManagedObjectContext:context];
+ @endcode
+ 
+ Example above collects all @b Items where @em count is more than 10.
+ */
 + (NSArray*)findAllWithPredicate:(NSPredicate*)predicate
 		  inManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
@@ -33,6 +38,19 @@
 	return [self findWithFetchRequest:fetchRequest andManagedObjectContext:managedObjectContext];
 }
 
+/**
+ Find all and filter with given predicate.
+ 
+ @returns Returns fetch request with predicate set accordingly.
+ 
+ @param predicate A predicate for filtering the results of the fetch.
+ 
+ @code
+ [Item findAllWithPredicate:[NSPredicate predicateWithString:@"count > 10"]];
+ @endcode
+ 
+ Example above collects all @b Items where @em count is more than 10. The default managed context is used.
+ */
 + (NSArray*)findAllWithPredicate:(NSPredicate*)predicate
 {
 	NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;
@@ -40,6 +58,17 @@
 			   inManagedObjectContext:managedObjectContext];
 }
 
+/**
+ Find all and filter with given predicate.
+ 
+ @returns Returns fetch request with predicate for given entity.
+ 
+ @code
+ [Item findAll];
+ @endcode
+ 
+ Example above collects all @b Items. The default managed context is used.
+ */
 + (NSArray*)findAll
 {
 	NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;
@@ -47,23 +76,26 @@
 			   inManagedObjectContext:managedObjectContext];
 }
 
-//
-// findSorted
-//
-
-/*
- Returns fetch request with sorting. Description is an array of arrays kinda:
+/**
+ Find All and Order.
  
- @[
-	@["name", @(YES)],
-	@["surname", @(NO)],
+ @returns Returns fetch request with sort descriptors set according to description parameter.
+
+ @param description Is an array of arrays describing a desired sorting.
+ @param predicate A predicate for filtering the results of the fetch.
+ @param managedObjectContext Context for fetch request.
+ 
+ @code
+ [Item findSortedBy:@[
+	@["name", kOrderASC],
+	@["surname", kOrderDESC],
 	@["age"]
- ]
+ ] withPredicate:nil
+ inManagedObjectContext:context];
+ @endcode
  
- which stands for "sort by name ASC, surname DESC, age ASC". If second element is not supplied => assumed as ASC.
- 
+ Example above collects all @b Items sorted by @em name ASC and @em surname DESC and @em age ASC. The default sort oreder is ASC.
  */
-
 + (NSArray*)findSortedBy:(NSArray*)description
 		   withPredicate:(NSPredicate*)predicate
   inManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
@@ -74,6 +106,25 @@
 	return [self findWithFetchRequest:fetchRequest andManagedObjectContext:managedObjectContext];
 }
 
+/**
+ Find All and Order.
+ 
+ @returns Returns fetch request with sort descriptors set according to description parameter.
+ 
+ @param description Is an array of arrays describing a desired sorting.
+ @param predicate A predicate for filtering the results of the fetch.
+ 
+ @code
+ [Item findSortedBy:@[
+	@["name", kOrderASC],
+	@["surname", kOrderDESC],
+	@["age"]
+ ] withPredicate:nil];
+ @endcode
+ 
+ Example above collects all @b Items sorted by @em name ASC and @em surname DESC and @em age ASC. 
+ The default sort oreder is ASC. The default managed context is used.
+ */
 + (NSArray*)findSortedBy:(NSArray*)description
 		   withPredicate:(NSPredicate*)predicate
 {
@@ -83,6 +134,24 @@
 	   inManagedObjectContext:managedObjectContext];
 }
 
+/**
+ Find All and Order.
+ 
+ @returns Returns fetch request with sort descriptors set according to description parameter.
+ 
+ @param description Is an array of arrays describing a desired sorting.
+ 
+ @code
+ [Item findSortedBy:@[
+	@["name", kOrderASC],
+	@["surname", kOrderDESC],
+	@["age"]
+ ]];
+ @endcode
+ 
+ Example above collects all @b Items sorted by @em name ASC and @em surname DESC and @em age ASC. 
+ The default sort oreder is ASC. The default managed context is used.
+ */
 + (NSArray*)findSortedBy:(NSArray*)description
 {
 	NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;
@@ -91,24 +160,33 @@
 	   inManagedObjectContext:managedObjectContext];
 }
 
-//
-// findAggregated
-//
-
-/*
- Returns fetch request with aggregations. Description is an array of arrays kinda:
+/**
+ Aggregator functions over items.
  
- @[
+ @returns Returns fetch request with aggregations set according to description parameter.
+ 
+ @param description Is an array of arrays describing a desired aggregations. 
+ Available aggregation functions are 
+ @b count,
+ @b sum,
+ @b min, 
+ @b max,
+ @b average,
+ @b median.
+ 
+ @param predicate A predicate for filtering the results of the fetch.
+ @param managedObjectContext Context for fetch request.
+ 
+ @code
+ [Collection findAggregatedBy:@[
 	@["count:", @"items"],
 	@["sum:", @"amount"]
- ]
+ ] withPredicate:nil
+ inManagedObjectContext:context];
+ @endcode
  
- which stands for "COUNT(name)". Available aggregations are:
- + count:
- + sum:
- 
+ Example above aggregates @b Items and counts @em items ASC and sums @em amount.
  */
-
 + (NSArray*)findAggregatedBy:(NSArray*)description
 			   withPredicate:(NSPredicate*)predicate
 	  inManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
@@ -119,6 +197,32 @@
 	return [self findWithFetchRequest:fetchRequest andManagedObjectContext:managedObjectContext];
 }
 
+/**
+ Aggregator functions over items.
+ 
+ @returns Returns fetch request with aggregations set according to description parameter.
+ 
+ @param description Is an array of arrays describing a desired aggregations.
+ Available aggregation functions are
+ @b count,
+ @b sum,
+ @b min,
+ @b max,
+ @b average,
+ @b median.
+ 
+ @param predicate A predicate for filtering the results of the fetch.
+ 
+ @code
+ [Collection findAggregatedBy:@[
+	@["count:", @"items"],
+	@["sum:", @"amount"]
+ ] withPredicate:nil];
+ @endcode
+ 
+ Example above aggregates @b Items and counts @em items ASC and sums @em amount.
+ The default managed context is used.
+ */
 + (NSArray*)findAggregatedBy:(NSArray*)description
 			   withPredicate:(NSPredicate*)predicate
 {
@@ -128,6 +232,31 @@
 		   inManagedObjectContext:managedObjectContext];
 }
 
+/**
+ Aggregator functions over items.
+ 
+ @returns Returns fetch request with aggregations set according to description parameter.
+ 
+ @param description Is an array of arrays describing a desired aggregations.
+ Available aggregation functions are
+ @b count,
+ @b sum,
+ @b min,
+ @b max,
+ @b average,
+ @b median.
+ 
+ @code
+ [Collection findAggregatedBy:@[
+	@["count:", @"items"],
+	@["sum:", @"amount"]
+ ] withPredicate:nil
+ inManagedObjectContext:context];
+ @endcode
+ 
+ Example above aggregates @b Items and counts @em items ASC and sums @em amount.
+ The default managed context is used.
+ */
 + (NSArray*)findAggregatedBy:(NSArray*)description
 {
 	NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;
@@ -137,9 +266,23 @@
 }
 
 //
-// Supporting Methods
+// Helper Methods
 //
 
+/**
+ Performs given fetch request using specified managed object context.
+ 
+ @returns Returns an array of fetched objects.
+ 
+ @param fetchRequest Fetch request to be executed.
+ @param managedObjectContext Context for fetch request.
+ 
+ @code
+ [Item findWithFetchRequest:fetchRequest andManagedObjectContext:context];
+ @endcode
+ 
+ Example above returns an array of items according to given fetcheRequest.
+ */
 + (NSArray*)findWithFetchRequest:(NSFetchRequest*)fetchRequest
 		 andManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
@@ -153,10 +296,25 @@
 	return fetchedObjects;
 }
 
+/**
+ Performs given fetch request using specified managed object context.
+ 
+ @returns Returns an array of fetched objects.
+ 
+ @param fetchRequest Fetch request to be executed.
+ 
+ @code
+ [Item findWithFetchRequest:fetchRequest andManagedObjectContext:context];
+ @endcode
+ 
+ Example above returns an array of items according to given fetcheRequest.
+ 
+ */
 + (NSArray*)findWithFetchRequest:(NSFetchRequest*)fetchRequest
 {
 	NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;
-	return [self findWithFetchRequest:fetchRequest andManagedObjectContext:managedObjectContext];
+	return [self findWithFetchRequest:fetchRequest
+			  andManagedObjectContext:managedObjectContext];
 }
 
 /*
@@ -181,17 +339,6 @@
  execute exactly the same SQLite statement
  
  SELECT COUNT( DISTINCT t0.Z_PK) FROM ZEVENT t0
- 
- ==============================
- 
- NOTE:
- 
- - (void)setIncludesPendingChanges:(BOOL)yesNo
- 
- As per the documentation
- 
- A value of YES is not supported in conjunction with the result type  NSDictionaryResultType, including calculation of aggregate results (such as max and min). For dictionaries, the array returned from the fetch reflects the current state in the persistent store, and does not take into account any pending changes, insertions, or deletions in the context. If you need to take pending changes into account for some simple aggregations like max and min, you can instead use a normal fetch request, sorted on the attribute you want, with a fetch limit of 1.
- 
  
  */
 

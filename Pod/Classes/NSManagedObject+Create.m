@@ -10,22 +10,27 @@
 #import "NSManagedObject+Helper.h"
 #import "ALCoreDataManager+Singleton.h"
 
-#warning TODO: create object with dictionary containing fields
-
 @implementation NSManagedObject (Create)
 
-+ (NSManagedObject*)createInMangedObjectContext:(NSManagedObjectContext*)managedObjectContext
++ (NSManagedObject*)createWithFields:(NSDictionary*)fields
+	 inMangedObjectContext:(NSManagedObjectContext*)managedObjectContext
 {
 	NSString *entityName = [self entityName];
 	NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:entityName
 															inManagedObjectContext:managedObjectContext];
+	for (NSString *key in fields) {
+		id value = [fields valueForKey:key];
+		[object setValue:value
+				  forKey:key];
+	}
 	return object;
 }
 
-+ (NSManagedObject*)create
++ (NSManagedObject*)createWithFields:(NSDictionary*)fields
 {
 	NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;
-	return [self createInMangedObjectContext:managedObjectContext];
+	return [self createWithFields:fields
+			inMangedObjectContext:managedObjectContext];
 }
 
 @end

@@ -10,7 +10,9 @@
 
 @interface NSManagedObject (Create)
 
-+ (NSManagedObject*)create;
-+ (NSManagedObject*)createInMangedObjectContext:(NSManagedObjectContext*)managedObjectContext;
++ (NSManagedObject*)createWithFields:(NSDictionary*)fields;
+
++ (NSManagedObject*)createWithFields:(NSDictionary*)fields
+			   inMangedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 @end
