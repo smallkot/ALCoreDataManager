@@ -9,10 +9,11 @@
 #ifndef Pods_ALCoreData_h
 #define Pods_ALCoreData_h
 
-#import "ALCoreDataManager+Singleton.h"
-#import "ALFetchRequest+QueryBuilder.h"
-#import "NSManagedObject+FetchRequest.h"
-#import "NSManagedObject+ActiveQuery.h"
-#import "NSManagedObject+Create.h"
+#import <ALCoreDataManager/ALCoreDataManager+Singleton.h>
+#import <ALCoreDataManager/ALManagedObjectFactory+Singleton.h>
+#import <ALCoreDataManager/NSManagedObject+Create.h>
+#import <ALCoreDataManager/NSManagedObject+FetchRequest.h>
+#import <ALCoreDataManager/ALFetchRequest+QueryBuilder.h>
+#import <ALCoreDataManager/NSManagedObject+ActiveQuery.h>
 
 #endif
