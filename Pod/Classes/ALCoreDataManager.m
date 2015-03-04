@@ -146,7 +146,11 @@
 - (NSManagedObjectModel *)managedObjectModel
 {
     if (!_managedObjectModel) {
-        _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:self.modelURL];
+		if (self.modelName.length) {
+			_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:self.modelURL];
+		}else{
+			_managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
+		}
     }
     return _managedObjectModel;
 }

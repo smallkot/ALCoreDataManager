@@ -1,11 +1,15 @@
 PODS:
   - ALCoreDataManager (0.2.0)
   - Expecta (0.3.2)
+  - OCHamcrest (4.1.1)
+  - OCMockito (1.4.0):
+    - OCHamcrest (~> 4.0)
   - Specta (0.2.1)
 
 DEPENDENCIES:
   - ALCoreDataManager (from `../`)
   - Expecta
+  - OCMockito (~> 1.0)
   - Specta (~> 0.2.1)
 
 EXTERNAL SOURCES:
@@ -13,8 +17,10 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  ALCoreDataManager: 08230e0726918ce2f1d4ccc51662c299ce0adb3f
+  ALCoreDataManager: f0f74cc2af03d6db8c81cd16c3a8dc14c085fd58
   Expecta: ee641011fe10aa1855d487b40e4976dac50ec342
+  OCHamcrest: af1c7c5ea345de69ea6c9c2958f65f3044e5c420
+  OCMockito: 991936bb775cc4c27f063d38f5e17b9161fbd21c
   Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
 
 COCOAPODS: 0.35.0

@@ -8,11 +8,15 @@
 
 #import <CoreData/CoreData.h>
 
+@class ALManagedObjectFactory;
+
 @interface NSManagedObject (Create)
 
 + (NSManagedObject*)createWithFields:(NSDictionary*)fields;
 
 + (NSManagedObject*)createWithFields:(NSDictionary*)fields
-			   inMangedObjectContext:(NSManagedObjectContext*)managedObjectContext;
+						usingFactory:(ALManagedObjectFactory*)factory;
+
+- (void)remove;
 
 @end

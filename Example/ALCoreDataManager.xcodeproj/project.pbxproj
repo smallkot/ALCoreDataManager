@@ -25,7 +25,7 @@
 		660DFB60D3C849CBA26653E4 /* libPods-ALCoreDataManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AA9F310612F47F5B603067F /* libPods-ALCoreDataManager.a */; };
 		8F7B1AC81A93C88D00BE9975 /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7B1AC71A93C88D00BE9975 /* Item.m */; };
 		8F9BDCF91997F73000B79B79 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8F9BDCF71997F73000B79B79 /* Model.xcdatamodeld */; };
-		8FC594C51AA64306002A110A /* ALCoreDataManager.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 8FC594C41AA64306002A110A /* ALCoreDataManager.podspec */; };
+		8FC594CE1AA6B71C002A110A /* ALCoreDataManager.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 8FC594CD1AA6B71C002A110A /* ALCoreDataManager.podspec */; };
 		F85B8D1D8A7C4B5081F0A0B8 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 768EE021494142E7B8E3DB4B /* libPods-Tests.a */; };
 /* End PBXBuildFile section */
 
@@ -71,7 +71,7 @@
 		8F7B1AC61A93C88D00BE9975 /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
 		8F7B1AC71A93C88D00BE9975 /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
 		8F9BDCF81997F73000B79B79 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
-		8FC594C41AA64306002A110A /* ALCoreDataManager.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ALCoreDataManager.podspec; sourceTree = "<group>"; };
+		8FC594CD1AA6B71C002A110A /* ALCoreDataManager.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ALCoreDataManager.podspec; path = ../ALCoreDataManager.podspec; sourceTree = "<group>"; };
 		D348B717734FBFFF3CB43425 /* Pods-ALCoreDataManager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ALCoreDataManager.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ALCoreDataManager/Pods-ALCoreDataManager.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -186,9 +186,9 @@
 		60FF7A9C1954A5C5007DD14C /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
-				8FC594C41AA64306002A110A /* ALCoreDataManager.podspec */,
 				4E9DE7585F2B49AA8FC6064E /* README.md */,
 				67C7CBA0ABCB4E458D798770 /* LICENSE */,
+				8FC594CD1AA6B71C002A110A /* ALCoreDataManager.podspec */,
 			);
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
@@ -286,7 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6003F5A4195388D20070C39A /* Main_iPad.storyboard in Resources */,
-				8FC594C51AA64306002A110A /* ALCoreDataManager.podspec in Resources */,
+				8FC594CE1AA6B71C002A110A /* ALCoreDataManager.podspec in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F5A1195388D20070C39A /* Main_iPhone.storyboard in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,

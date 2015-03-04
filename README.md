@@ -7,16 +7,9 @@
 
 ## Usage
 
-Import these files
+Import the header
 ```objc
-#import <ALCoreDataManager/ALCoreDataManager+Singleton.h>
-#import <ALCoreDataManager/NSManagedObject+Query.h>
-#import <ALCoreDataManager/NSManagedObject+Create.h>
-```
-
-Than in your AppDeligate before any other calls to ALCoreDataManager add:
-```objc
-[ALCoreDataManager setDefaultCoreDataModelName:@"<#Model#>"];
+#import <ALCoreDataManager/ALCoreData.h>
 ```
 
 For saving the context on app termite add this code to your AppDelegate
@@ -36,61 +29,52 @@ To get the NSManagedObjectContext use
 
 You can use simple create method to create managed object:
 ```objc
-Item *item = [Item create];
+Item *a = [Item create];
+
+Item *b = [Item createWithDictionary:@{
+                                       @"title" : @"an item"
+                                      }];
+
+Item *c = [Item createWithDictionary:nil 
+                        usingFactory:factory];
 ```
 
-## Active Record Style Queries
-
-You can use active record style queries.
-
-### Find All
-```objc
-[Item findAll];
-
-[Item findAllWithPredicate:[NSPredicate ]];
-```
-
-### Find All Sorted:
+## Query Builder
 
 ```objc
-+ (NSArray*)findSortedBy:(NSArray*)description;
-+ (NSArray*)findSortedBy:(NSArray*)description andPredicate:(NSPredicate*)predicate;
+NSArray *items = [[Item all] execute];
 
-/*
-	Description is an array of arrays kinda:
+NSArray *filteredItems = [[[Item all] where:predicate] execute];
 
-	@[
-		@["name", @(YES)],
-		@["surname", @(NO)],
-		@["age"]
-	]
+NSArray *oneItem = [[[[Item all] where:predicate] limit:1] execute];
 
-	which stands for "sort by name ASC, surname DESC, age ASC". If second element is not supplied => assumed as ASC.
+NSArray *onlyDistinctItems = [[[[Item all] whre:predicate] distinct] execute];
 
-*/
+
+NSArray *sortedItems = 
+[[[Item all] orderBy:@[
+					   @[@"title", kOrderDESC],
+					   @[@"price", kOrderASC]
+]] execute];
+
+NSDictionary *aggregatedItems = 
+[[[Item all] aggregatedBy:@[
+  						    @[kAggregateSum, @"amount"],
+							@[kAggregateMedian, @"price"]]
+] groupedBy:@[@"country"]
+] having:predicate
+] execute];
 ```
 
-### Find with Aggregation (sum:, count:, ...)
+For orderedBy: you may specify only the field, which means than sorting oreder is ASC.
 
-```objc
-+ (NSArray*)findAggregatedBy:(NSArray*)description;
-+ (NSArray*)findAggregatedBy:(NSArray*)description andPredicate:(NSPredicate*)predicate;
-
-/*
-	Returns fetch request with aggregations. Description is an array of arrays kinda:
-
-	@[
-		@["count:", @"items"],
-		@["sum:", @"amount"]
-	]
-
-	which stands for "COUNT(name)". Available aggregations are:
-		+ count:
-		+ sum:
-		+ ...
-
-*/
-```
+Available aggreagations are:
+* kAggregateSum
+* kAggregateCount
+* kAggregateMin
+* kAggregateMax
+* kAggregateAverage
+* kAggregateMedian
 
 ## Limitations
 
@@ -105,7 +89,7 @@ As per the documentation
 A value of YES is not supported in conjunction with the result type  NSDictionaryResultType, including calculation of aggregate results (such as max and min). For dictionaries, the array returned from the fetch reflects the current state in the persistent store, and does not take into account any pending changes, insertions, or deletions in the context. If you need to take pending changes into account for some simple aggregations like max and min, you can instead use a normal fetch request, sorted on the attribute you want, with a fetch limit of 1.
 ```
 
-So using aggregatedBy/groupBy/having WILL ignore data, which was not saved into store.
+So using aggregatedBy/groupedBy/having WILL ignore data, which was not saved into store.
 
 ## Requirements
 

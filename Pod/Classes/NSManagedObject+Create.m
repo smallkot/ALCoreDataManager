@@ -9,15 +9,16 @@
 #import "NSManagedObject+Create.h"
 #import "NSManagedObject+Helper.h"
 #import "ALCoreDataManager+Singleton.h"
+#import "ALManagedObjectFactory+Singleton.h"
 
 @implementation NSManagedObject (Create)
 
 + (NSManagedObject*)createWithFields:(NSDictionary*)fields
-	 inMangedObjectContext:(NSManagedObjectContext*)managedObjectContext
+						usingFactory:(ALManagedObjectFactory*)factory;
 {
 	NSString *entityName = [self entityName];
-	NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:entityName
-															inManagedObjectContext:managedObjectContext];
+	NSManagedObject *object = [factory createObjectForEntityName:entityName];
+	
 	for (NSString *key in fields) {
 		id value = [fields valueForKey:key];
 		[object setValue:value
@@ -28,9 +29,14 @@
 
 + (NSManagedObject*)createWithFields:(NSDictionary*)fields
 {
-	NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;
+	ALManagedObjectFactory *factory = [ALManagedObjectFactory defaultFactory];
 	return [self createWithFields:fields
-			inMangedObjectContext:managedObjectContext];
+					 usingFactory:factory];
+}
+
+- (void)remove
+{
+	[self.managedObjectContext deleteObject:self];
 }
 
 @end
