@@ -29,4 +29,6 @@
 - (void)performBlock:(void(^)(NSManagedObjectContext *localContext))block
  andPostNotification:(NSString *)notificationName;
 
+- (void)removeStore;
+
 @end

@@ -12,13 +12,15 @@
 
 @interface ALFetchRequest (QueryBuilder)
 
+- (ALFetchRequest*)properties:(NSArray*)properties;
+
 - (ALFetchRequest*)where:(NSPredicate*)predicate;
 
-- (ALFetchRequest*)orderedBy:(NSArray*)description;
+- (ALFetchRequest*)orderedBy:(NSArray*)orderDescription;
 
-- (ALFetchRequest*)aggregatedBy:(NSArray*)description;
+- (ALFetchRequest*)aggregatedBy:(NSArray*)aggreateDescription;
 
-- (ALFetchRequest*)groupedBy:(NSArray*)description;
+- (ALFetchRequest*)groupedBy:(NSArray*)groupDescription;
 
 - (ALFetchRequest*)having:(NSPredicate*)predicate;
 
@@ -29,10 +31,6 @@
 - (ALFetchRequest*)count;
 
 - (id)execute;
-
-- (NSArray*)array;
-
-- (NSDictionary*)dictionary;
 
 - (NSFetchRequest*)request;
 

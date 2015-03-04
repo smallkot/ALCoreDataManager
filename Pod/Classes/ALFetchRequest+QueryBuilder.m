@@ -7,7 +7,6 @@
 //
 
 #import "ALFetchRequest+QueryBuilder.h"
-#import "NSManagedObject+Helper.h"
 
 NSString *const kAggregatorSum = @"sum:";
 NSString *const kAggregatorCount = @"count:";
@@ -22,6 +21,30 @@ NSString *const kOrderDESC = @"DESC";
 @implementation ALFetchRequest (QueryBuilder)
 
 /**
+ Fetch request for query builder. Lets you build a query with selecting only given properties.
+ 
+ @returns Returns fetch request which is used for quiery building.
+ 
+ @param managedObjectContext Context for fetch request.
+ 
+ @code
+ [[Item fetchRequestInManagedObjectContext:context] orderBy:@[@"title"]];
+ @endcode
+ 
+ Example above collects all @b Items orderd by @em title.
+ 
+ NOTE: Don't use select: with aggreateBy:.
+ NOTE: Result type is automaticaly set to NSDictionaryResultType.
+ */
+- (ALFetchRequest*)properties:(NSArray*)properties
+{
+	NSArray *properiesToFetch = [self propertiesFromDescription:properties];
+	self.resultType = NSDictionaryResultType;
+	self.propertiesToFetch = properiesToFetch;
+	return self;
+}
+
+/**
  Set an @b order for query.
  
  @returns Returns fetch request with sort descriptors set according to description parameter.
@@ -31,9 +54,15 @@ NSString *const kOrderDESC = @"DESC";
  @code
  NSArray *items =
  [[Item all] orderedBy:@[
-	@["name", kOrderASC],
-	@["surname", kOrderDESC],
-	@["age"]
+	@["title", kOrderASC],
+	@["price", kOrderDESC],
+	@["amount"]
+ ] execute];
+ 
+ // or
+ 
+ NSArray *items =
+ [[[Item all] orderedBy:@[@title", @"amount"]
  ] execute];
  @endcode
  
@@ -80,12 +109,13 @@ NSString *const kOrderDESC = @"DESC";
  @b median.
  
  @code
- NSDictionary *d =
+ NSArray *items =
  [[[Item all] aggregatedBy:@[
 	@[kAggregatorCount, @"items"],
 	@[kAggregatorSum, @"amount"]
  ]] execute];
  
+ NSDictionary *d = [items firstObject];
  [d valueForKey:@"countItems"];
  @endcode
  
@@ -109,13 +139,14 @@ NSString *const kOrderDESC = @"DESC";
  @param description Is an array
  
  @code
- NSDictionary *d =
+ NSArray *items =
  [[[[Item all] aggregatedBy:@[
 	@["count:", @"items"],
 	@["sum:", @"amount"]
  ]] groupedBy:@[@"county"]
  ] execute];
  
+ NSDictionary *d = [items firstObject];
  [d valueForKey:@"countItems"];
  @endcode
  
@@ -145,7 +176,7 @@ NSString *const kOrderDESC = @"DESC";
  @param description Is an array
  
  @code
- NSDictionary *d =
+ NSArray *items =
  [[[[Item all] aggregatedBy:@[
 	@["count:", @"items"],
 	@["sum:", @"amount"]
@@ -153,6 +184,7 @@ NSString *const kOrderDESC = @"DESC";
  ] having:[NSPredicate predicateWithFormat:@"sum > 100"]
  ] execute];
  
+ NSDictionary *d = [items firstObject];
  [d valueForKey:@"countItems"];
  @endcode
  
@@ -235,45 +267,15 @@ NSString *const kOrderDESC = @"DESC";
  
  Example above gets only distinct @b Item with given @em title.
  */
-- (id)execute
+- (NSArray*)execute
 {
+	NSError *error;
 	NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-	return [managedObjectContext executeFetchRequest:self
-											   error:nil];
-}
-
-/**
- Execute given request and return a pointer to an array.
- 
- @returns Returns fetch request result as NSArray.
- 
- @code
- NSArray *item =
- [[[[Item all] where:@"title == %@",title] distinct] array];
- @endcode
- 
- Example above gets only distinct @b Item with given @em title.
- */
-- (NSArray*)array
-{
-	return (NSArray*)[self execute];
-}
-
-/**
- Execute given request and return a pointer to a dictionary.
- 
- @returns Returns fetch request result as NSDictionary.
- 
- @code
- NSArray *item =
- [[[[Item all] where:@"title == %@",title] distinct] array];
- @endcode
- 
- Example above gets only distinct @b Item with given @em title.
- */
-- (NSDictionary*)dicitonary
-{
-	return (NSDictionary*)[self execute];
+	NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:self error:&error];
+	if (!fetchedObjects || error) {
+		NSLog(@"Error: Execution of the fetchRequest: %@, Failed with Description: %@",self,error);
+	}
+	return fetchedObjects;
 }
 
 /**
@@ -293,28 +295,36 @@ NSString *const kOrderDESC = @"DESC";
 	return (NSFetchRequest*)self;
 }
 
-// utilities
+// utility methods
 
 - (NSArray*)sortDescriptorsFromDescription:(NSArray*)description
 {
 	NSMutableArray *sortDescriptors = [NSMutableArray new];
-	for (NSArray *desc in description) {
+	for (id desc in description) {
+		if(![desc isKindOfClass:NSArray.class] && ![desc isKindOfClass:NSString.class])
+			continue;
+		
+		NSString *by = nil;
+		NSString *ascString = nil;
+		NSNumber *asc = nil;
+		
 		if ([desc isKindOfClass:NSArray.class]) {
-			if (desc.count) {
-				NSString *by = nil;
-				NSString *ascString = nil;
-				NSNumber *asc = nil;
-				if ([desc.firstObject isKindOfClass:NSString.class]) {
-					by = desc.firstObject;
+			NSArray *a = (NSArray*)desc;
+			if (a.count) {
+				if ([a.firstObject isKindOfClass:NSString.class]) {
+					by = a.firstObject;
 				}
-				if (desc.count > 1) {
-					ascString = [desc  objectAtIndex:1];
+				if (a.count > 1) {
+					ascString = [a  objectAtIndex:1];
 					asc = @([ascString isEqualToString:kOrderASC]);
 				}
-				[sortDescriptors addObject:[NSSortDescriptor sortDescriptorWithKey:by
-																		 ascending:asc.boolValue]];
 			}
+		}else if ([desc isKindOfClass:NSString.class]){
+			by = (NSString*)desc;
+			asc = @(YES);
 		}
+		[sortDescriptors addObject:[NSSortDescriptor sortDescriptorWithKey:by
+																 ascending:asc.boolValue]];
 	}
 	return [sortDescriptors copy];
 }
@@ -325,11 +335,12 @@ NSString *const kOrderDESC = @"DESC";
 	for (NSString *field in description) {
 		if ([field isKindOfClass:NSString.class]) {
 			
-			NSEntityDescription *entity =
-			[self.class entityDescriptionWithMangedObjectContext:self.managedObjectContext];
+			NSString *entityName = [self entityName];
+			NSEntityDescription *entity = [NSEntityDescription entityForName:entityName
+													  inManagedObjectContext:self.managedObjectContext];
 			
-			NSAttributeDescription *fieldDescription = [self.class attributeDescription:field
-																  fromEntityDescription:entity];
+			NSDictionary *availableKeys = [entity attributesByName];
+			NSAttributeDescription *fieldDescription = [availableKeys valueForKey:field];
 			
 			if (![fieldDescription isKindOfClass:NSAttributeDescription.class]) {
 				continue;
@@ -360,11 +371,12 @@ NSString *const kOrderDESC = @"DESC";
 				NSString *field = (NSString*)second;
 				NSInteger fieldType = NSUndefinedAttributeType;
 				
-				NSEntityDescription *entity =
-				[self.class entityDescriptionWithMangedObjectContext:self.managedObjectContext];
+				NSString *entityName = [self entityName];
+				NSEntityDescription *entity = [NSEntityDescription entityForName:entityName
+														  inManagedObjectContext:self.managedObjectContext];
 				
-				NSAttributeDescription *fieldDescription = [self.class attributeDescription:field
-																	  fromEntityDescription:entity];
+				NSDictionary *availableKeys = [entity attributesByName];
+				NSAttributeDescription *fieldDescription = [availableKeys valueForKey:field];
 				
 				if (![fieldDescription isKindOfClass:NSAttributeDescription.class]) {
 					continue;

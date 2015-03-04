@@ -48,6 +48,11 @@
 	return self;
 }
 
+- (void)removeStore
+{
+	[[NSFileManager defaultManager] removeItemAtURL:self.storeURL error:NULL];
+}
+
 #pragma - Block -
 
 - (NSOperationQueue *)operationQueue
@@ -193,7 +198,7 @@ try_again:
                                                              options:@{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES}
                                                                error:&error]) {
 #ifdef DEBUG
-            [[NSFileManager defaultManager] removeItemAtURL:self.storeURL error:nil];
+            [self removeStore];
             if (numberOfTries < 1) {
                 numberOfTries++;
                 goto try_again;

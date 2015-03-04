@@ -34,6 +34,7 @@
 	NSEntityDescription *entity = [self entityDescriptionWithMangedObjectContext:managedObjectContext];
 	
 	[fetchRequest setEntity:entity];
+	[fetchRequest setIncludesPendingChanges:YES];
 	
 	return fetchRequest;
 }
