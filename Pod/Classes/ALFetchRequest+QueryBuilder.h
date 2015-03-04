@@ -30,6 +30,10 @@
 
 - (id)execute;
 
+- (NSArray*)array;
+
+- (NSDictionary*)dictionary;
+
 - (NSFetchRequest*)request;
 
 @end

@@ -243,6 +243,40 @@ NSString *const kOrderDESC = @"DESC";
 }
 
 /**
+ Execute given request and return a pointer to an array.
+ 
+ @returns Returns fetch request result as NSArray.
+ 
+ @code
+ NSArray *item =
+ [[[[Item all] where:@"title == %@",title] distinct] array];
+ @endcode
+ 
+ Example above gets only distinct @b Item with given @em title.
+ */
+- (NSArray*)array
+{
+	return (NSArray*)[self execute];
+}
+
+/**
+ Execute given request and return a pointer to a dictionary.
+ 
+ @returns Returns fetch request result as NSDictionary.
+ 
+ @code
+ NSArray *item =
+ [[[[Item all] where:@"title == %@",title] distinct] array];
+ @endcode
+ 
+ Example above gets only distinct @b Item with given @em title.
+ */
+- (NSDictionary*)dicitonary
+{
+	return (NSDictionary*)[self execute];
+}
+
+/**
  Casts a ALFetchRequest to NSFetchRequest.
  
  @returns Returns NSFetchRequest.

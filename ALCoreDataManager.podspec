@@ -13,12 +13,12 @@ Pod::Spec.new do |s|
   s.summary          = "Fast and easy way to get NSManagedObjectContext"
   s.description      = <<-DESC
                        Singleton class for getting NSManagedObjectContext in single Model apps fast and easy.
-                       * Nothing need to be done to access defaultContext.
-                       * Cool query builder ([[[Item all] where:predicate] execute])
-                       * ActiveRecord style queries ([Item findAll])
-                       * All sort of aggregations and grouping.
-                       * Concurrency with your core data (thread safety guarantied).
+                       * Access the default context with [ALCoreDataManager defaultContext].
+                       * Query your model with [[[Item all] where:predicate] execute].
+                       * Order, aggregate and group.
+                       * Concurrency with core data (thread safety guarantied).
                        * Create objects simply with [Item create] or [Item createWithDictionary:@{@"title" : @"ABC"}].
+                       * ActiveRecord style queries ([Item findAll]) - Comming Soon!
                        DESC
   s.homepage         = "https://github.com/appleios/ALCoreDataManager"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"

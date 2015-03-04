@@ -15,11 +15,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-    [ALCoreDataManager setDefaultCoreDataModelName:@"Model"];
-    
-    NSLog(@"%@",[ALCoreDataManager defaultManager].managedObjectContext);
-
     return YES;
 }
 							

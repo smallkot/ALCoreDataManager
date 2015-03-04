@@ -64,13 +64,13 @@ NSDictionary *aggregatedItems =
 [[[[[Item all
 ] aggregatedBy:@[
    		         @[kAggregateSum, @"amount"],
-				 @[kAggregateMedian, @"price"]
+				 @[kAggregateMedian, @"price"]]
 ] groupedBy:@[@"country"]
 ] having:predicate
 ] execute];
 ```
 
-For *orderedBy:* you may specify only the field name - by default sorting oreder is ASC.
+For *orderedBy:* you may omit the ordering ASC/DESC - default oreder is ASC.
 
 Available aggreagations are:
 * kAggregateSum
@@ -83,19 +83,21 @@ Available aggreagations are:
 ## Concurrency
 
 ```objc
-[[ALCoreDataManager defaultManager] performBlock:^(NSManagedObjectContext *localContext))
+[[ALCoreDataManager defaultManager] performBlock:^(NSManagedObjectContext *localContext)
 {
   NSArray *remoteUpdates = ...;
 
   ALManagedObjectFactory *factory = [[ALManagedObjectFactory alloc] initWithManagedObjectContext:localContext];
 
   for(NSDictionary *d in remoteUpdates){
-    [Item createWithDictionary:d usingFactory:factory];
+    [Item createWithDictionary:d 
+                  usingFactory:factory];
   }
-} andEmitNotification:@"FetchingUpdatesDone"];
+
+} andPostNotification:@"FetchingUpdatesDone"];
 ```
 
-This will automaticaly save changed into localContext and *merge* it with the defaultContext.
+This will automaticaly save changed into localContext and *merge* it with the defaultContext and emit the notification when done.
 
 ## Limitations
 

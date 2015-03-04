@@ -17,7 +17,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  ALCoreDataManager: f0f74cc2af03d6db8c81cd16c3a8dc14c085fd58
+  ALCoreDataManager: d487ceaca84ff0fa25885bd55dec02baeb31b539
   Expecta: ee641011fe10aa1855d487b40e4976dac50ec342
   OCHamcrest: af1c7c5ea345de69ea6c9c2958f65f3044e5c420
   OCMockito: 991936bb775cc4c27f063d38f5e17b9161fbd21c

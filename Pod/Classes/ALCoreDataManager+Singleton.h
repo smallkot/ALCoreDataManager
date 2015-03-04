@@ -13,4 +13,6 @@
 + (void)setDefaultCoreDataModelName:(NSString*)modelName;
 + (instancetype)defaultManager;
 
++ (NSManagedObjectContext*)defaultContext;
+
 @end

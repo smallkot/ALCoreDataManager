@@ -8,6 +8,7 @@
 {
 	if (self = [super init]) {
 		self.managedObjectContext = managedObjectContext;
+		self.entityDescriptionClass = NSEntityDescription.class;
 	}
 	return self;
 }

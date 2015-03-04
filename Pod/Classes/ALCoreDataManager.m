@@ -8,6 +8,10 @@
 @property (readonly) NSURL *modelURL;
 @property (readonly) NSURL *storeURL;
 
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+@property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, strong) NSOperationQueue *notificationQueue;
 
@@ -26,6 +30,22 @@
         self.modelName = modelName;
     }
     return self;
+}
+
+- (instancetype)initWithInMemoryStore
+{
+	self = [super init];
+	if (self) {
+		NSError *error = nil;
+		self.persistentStoreCoordinator =
+		[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
+		[self.persistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType
+													  configuration:nil
+																URL:nil
+															options:nil
+															  error:&error];
+	}
+	return self;
 }
 
 #pragma - Block -
@@ -58,7 +78,7 @@
 }
 
 - (void)performBlock:(void(^)(NSManagedObjectContext *localContext))block
- andEmitNotification:(NSString *)notificationName;
+ andPostNotification:(NSString *)notificationName;
 {
 	__weak ALCoreDataManager *weakSelf = self;
 	
@@ -131,10 +151,9 @@
 - (NSManagedObjectContext *)managedObjectContext
 {
     if (!_managedObjectContext) {
-        NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-        if (coordinator != nil) {
+        if (self.persistentStoreCoordinator) {
             _managedObjectContext = [[NSManagedObjectContext alloc] init];
-            [_managedObjectContext setPersistentStoreCoordinator:coordinator];
+            [_managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
         }
     }
     

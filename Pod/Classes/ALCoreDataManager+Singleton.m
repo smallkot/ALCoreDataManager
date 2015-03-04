@@ -26,4 +26,9 @@ static NSString *DefaultCoreDataModelName = nil;
     return _sharedInstance;
 }
 
++ (NSManagedObjectContext *)defaultContext
+{
+	return [ALCoreDataManager defaultManager].managedObjectContext;
+}
+
 @end

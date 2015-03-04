@@ -15,6 +15,7 @@
 @interface ALCoreDataManager : NSObject
 
 - (instancetype)initWithModelName:(NSString*)modelName;
+- (instancetype)initWithInMemoryStore;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
@@ -26,6 +27,6 @@
 - (NSManagedObjectContext*)newContext;
 
 - (void)performBlock:(void(^)(NSManagedObjectContext *localContext))block
- andEmitNotification:(NSString *)notificationName;
+ andPostNotification:(NSString *)notificationName;
 
 @end
