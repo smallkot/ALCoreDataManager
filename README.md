@@ -50,23 +50,24 @@ NSArray *oneItem = [[[[Item all] where:predicate] limit:1] execute];
 
 NSArray *onlyDistinctItems = [[[[Item all] whre:predicate] distinct] execute];
 
-
 NSArray *sortedItems = 
-[[[Item all] orderBy:@[
-					   @[@"title", kOrderDESC],
-					   @[@"price", kOrderASC]
-]] execute];
+[[[Item all
+] orderBy:@[
+			@[@"title", kOrderDESC],
+			@[@"price", kOrderASC]]
+] execute];
 
 NSDictionary *aggregatedItems = 
-[[[Item all] aggregatedBy:@[
-  						    @[kAggregateSum, @"amount"],
-							@[kAggregateMedian, @"price"]]
+[[[[[Item all
+] aggregatedBy:@[
+   		         @[kAggregateSum, @"amount"],
+				 @[kAggregateMedian, @"price"]]
 ] groupedBy:@[@"country"]
 ] having:predicate
 ] execute];
 ```
 
-For orderedBy: you may specify only the field, which means than sorting oreder is ASC.
+For *orderedBy:* you may specify only the field, which means than sorting oreder is ASC.
 
 Available aggreagations are:
 * kAggregateSum
@@ -79,15 +80,14 @@ Available aggreagations are:
 ## Limitations
 
 As noted by apple:
-```
-NOTE:
 
-- (void)setIncludesPendingChanges:(BOOL)yesNo
+> NOTE:
+> 
+> - (void)setIncludesPendingChanges:(BOOL)yesNo
+> 
+> As per the documentation
 
-As per the documentation
-
-A value of YES is not supported in conjunction with the result type  NSDictionaryResultType, including calculation of aggregate results (such as max and min). For dictionaries, the array returned from the fetch reflects the current state in the persistent store, and does not take into account any pending changes, insertions, or deletions in the context. If you need to take pending changes into account for some simple aggregations like max and min, you can instead use a normal fetch request, sorted on the attribute you want, with a fetch limit of 1.
-```
+> A value of YES is not supported in conjunction with the result type  NSDictionaryResultType, including calculation of aggregate results (such as max and min). For dictionaries, the array returned from the fetch reflects the current state in the persistent store, and does not take into account any pending changes, insertions, or deletions in the context. If you need to take pending changes into account for some simple aggregations like max and min, you can instead use a normal fetch request, sorted on the attribute you want, with a fetch limit of 1.
 
 So using aggregatedBy/groupedBy/having WILL ignore data, which was not saved into store.
 
@@ -96,10 +96,14 @@ So using aggregatedBy/groupedBy/having WILL ignore data, which was not saved int
 You MUST overide method +entityName if your entitie's name differs from its class name
 
 ```objc
+@implementation Item
+
 + (NSString*)entityName
 {
-	return @"Item";
+	return @"AnItem";
 }
+
+@end
 ```
 
 ## Installation
