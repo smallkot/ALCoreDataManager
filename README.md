@@ -85,7 +85,7 @@ As noted by apple:
 > 
 > - (void)setIncludesPendingChanges:(BOOL)yesNo
 > 
-> As per the documentation
+> As per the [documentation](https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSFetchRequest_Class/index.html#//apple_ref/occ/instp/NSFetchRequest/includesPendingChanges)
 
 > A value of YES is not supported in conjunction with the result type  NSDictionaryResultType, including calculation of aggregate results (such as max and min). For dictionaries, the array returned from the fetch reflects the current state in the persistent store, and does not take into account any pending changes, insertions, or deletions in the context. If you need to take pending changes into account for some simple aggregations like max and min, you can instead use a normal fetch request, sorted on the attribute you want, with a fetch limit of 1.
 
