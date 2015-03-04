@@ -9,6 +9,8 @@
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) Class entityDescriptionClass;
 
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)context;
+
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)context
                    andEntityDescriptionClass:(__unsafe_unretained Class)entityDescriptionClass;
 

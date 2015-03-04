@@ -34,6 +34,11 @@
 					 usingFactory:factory];
 }
 
++ (NSManagedObject *)create
+{
+	return [self createWithFields:nil];
+}
+
 - (void)remove
 {
 	[self.managedObjectContext deleteObject:self];

@@ -37,6 +37,8 @@ Item *b = [Item createWithDictionary:@{
 
 Item *c = [Item createWithDictionary:nil 
                         usingFactory:factory];
+
+[c remove]; // will remove the item
 ```
 
 ## Query Builder
@@ -50,24 +52,25 @@ NSArray *oneItem = [[[[Item all] where:predicate] limit:1] execute];
 
 NSArray *onlyDistinctItems = [[[[Item all] whre:predicate] distinct] execute];
 
-NSArray *sortedItems = 
+NSArray *orderedItems = 
 [[[Item all
-] orderBy:@[
-			@[@"title", kOrderDESC],
-			@[@"price", kOrderASC]]
+] orderedBy:@[
+		 	  @[@"title", kOrderDESC],
+			  @[@"price", kOrderASC],
+              @[@"amount"]]
 ] execute];
 
 NSDictionary *aggregatedItems = 
 [[[[[Item all
 ] aggregatedBy:@[
    		         @[kAggregateSum, @"amount"],
-				 @[kAggregateMedian, @"price"]]
+				 @[kAggregateMedian, @"price"]
 ] groupedBy:@[@"country"]
 ] having:predicate
 ] execute];
 ```
 
-For *orderedBy:* you may specify only the field, which means than sorting oreder is ASC.
+For *orderedBy:* you may specify only the field name - by default sorting oreder is ASC.
 
 Available aggreagations are:
 * kAggregateSum
@@ -77,23 +80,37 @@ Available aggreagations are:
 * kAggregateAverage
 * kAggregateMedian
 
+## Concurrency
+
+```objc
+[[ALCoreDataManager defaultManager] performBlock:^(NSManagedObjectContext *localContext))
+{
+  NSArray *remoteUpdates = ...;
+
+  ALManagedObjectFactory *factory = [[ALManagedObjectFactory alloc] initWithManagedObjectContext:localContext];
+
+  for(NSDictionary *d in remoteUpdates){
+    [Item createWithDictionary:d usingFactory:factory];
+  }
+} andEmitNotification:@"FetchingUpdatesDone"];
+```
+
+This will automaticaly save changed into localContext and *merge* it with the defaultContext.
+
 ## Limitations
 
-As noted by apple:
+As per the [documentation](https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSFetchRequest_Class/index.html#//apple_ref/occ/instp/NSFetchRequest/includesPendingChanges):
 
-> NOTE:
 > 
 > - (void)setIncludesPendingChanges:(BOOL)yesNo
 > 
-> As per the [documentation](https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreDataFramework/Classes/NSFetchRequest_Class/index.html#//apple_ref/occ/instp/NSFetchRequest/includesPendingChanges)
-
 > A value of YES is not supported in conjunction with the result type  NSDictionaryResultType, including calculation of aggregate results (such as max and min). For dictionaries, the array returned from the fetch reflects the current state in the persistent store, and does not take into account any pending changes, insertions, or deletions in the context. If you need to take pending changes into account for some simple aggregations like max and min, you can instead use a normal fetch request, sorted on the attribute you want, with a fetch limit of 1.
 
-So using aggregatedBy/groupedBy/having WILL ignore data, which was not saved into store.
+So using aggregatedBy/groupedBy/having *will ignore* data, which was not saved.
 
 ## Requirements
 
-You MUST overide method +entityName if your entitie's name differs from its class name
+You *must* overide method +entityName if your entitie's name differs from its class name
 
 ```objc
 @implementation Item

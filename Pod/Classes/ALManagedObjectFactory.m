@@ -5,6 +5,14 @@
 @implementation ALManagedObjectFactory
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+{
+	if (self = [super init]) {
+		self.managedObjectContext = managedObjectContext;
+	}
+	return self;
+}
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
                    andEntityDescriptionClass:(__unsafe_unretained Class)entityDescriptionClass
 {
     if (self = [super init]) {

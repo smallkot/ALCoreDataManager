@@ -12,6 +12,8 @@
 
 @interface NSManagedObject (Create)
 
++ (NSManagedObject*)create;
+
 + (NSManagedObject*)createWithFields:(NSDictionary*)fields;
 
 + (NSManagedObject*)createWithFields:(NSDictionary*)fields
