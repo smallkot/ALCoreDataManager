@@ -13,19 +13,6 @@
 
 @implementation NSManagedObject (FetchRequest)
 
-/**
- Fetch request for query builder. Lets you build a query.
- 
- @returns Returns fetch request which is used for quiery building.
- 
- @param managedObjectContext Context for fetch request.
- 
- @code
- [[Item fetchRequestInManagedObjectContext:context] orderBy:@[@"title"]];
- @endcode
- 
- Example above collects all @b Items orderd by @em title.
- */
 + (ALFetchRequest*)allInManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
 
 {
@@ -39,18 +26,6 @@
 	return fetchRequest;
 }
 
-/**
- Fetch request for query builder. Lets you build a query.
- 
- @returns Returns fetch request which is used for quiery building.
- 
- @code
- NSArray *items =
- [[[Item fetchReques] orderBy:@[@"title"]] execute];
- @endcode
- 
- Example above collects all @b Items orderd by @em title. The default managed context is used.
- */
 + (ALFetchRequest*)all
 {
 	NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;

@@ -20,22 +20,6 @@ NSString *const kOrderDESC = @"DESC";
 
 @implementation ALFetchRequest (QueryBuilder)
 
-/**
- Fetch request for query builder. Lets you build a query with selecting only given properties.
- 
- @returns Returns fetch request which is used for quiery building.
- 
- @param managedObjectContext Context for fetch request.
- 
- @code
- [[Item fetchRequestInManagedObjectContext:context] orderBy:@[@"title"]];
- @endcode
- 
- Example above collects all @b Items orderd by @em title.
- 
- NOTE: Don't use select: with aggreateBy:.
- NOTE: Result type is automaticaly set to NSDictionaryResultType.
- */
 - (ALFetchRequest*)properties:(NSArray*)properties
 {
 	NSArray *properiesToFetch = [self propertiesFromDescription:properties];
@@ -44,83 +28,18 @@ NSString *const kOrderDESC = @"DESC";
 	return self;
 }
 
-/**
- Set an @b order for query.
- 
- @returns Returns fetch request with sort descriptors set according to description parameter.
- 
- @param description Is an array of arrays describing a desired sorting.
- 
- @code
- NSArray *items =
- [[Item all] orderedBy:@[
-	@["title", kOrderASC],
-	@["price", kOrderDESC],
-	@["amount"]
- ] execute];
- 
- // or
- 
- NSArray *items =
- [[[Item all] orderedBy:@[@title", @"amount"]
- ] execute];
- @endcode
- 
- Example above collects all @b Items sorted by @em name ASC and @em surname DESC and @em age ASC.
- */
 - (ALFetchRequest*)orderedBy:(NSArray*)description
 {
 	self.sortDescriptors = [self sortDescriptorsFromDescription:description];
 	return self;
 }
 
-/**
- Set a @b predicate on query.
- 
- @returns Returns fetch request with predicate set accordingly.
- 
- @param predicate A predicate format string as for +predicateWithFormat:.
- 
- @code
- NSArray *items =
- [[[Item all] where:[NSPredicate predicateWithFormat:@"count > %d",minCount]] execute];
- @endcode
- 
- Example above collects all @b Items where count is more than value of variable minCount.
- */
 - (ALFetchRequest*)where:(NSPredicate*)predicate
 {
 	self.predicate = predicate;
 	return self;
 }
 
-/**
- Set an aggregator functions on query.
- 
- @returns Returns fetch request with aggregations set according to description parameter.
- 
- @param description Is an array of arrays describing a desired aggregations.
- Available aggregation functions are
- @b count,
- @b sum,
- @b min,
- @b max,
- @b average,
- @b median.
- 
- @code
- NSArray *items =
- [[[Item all] aggregatedBy:@[
-	@[kAggregatorCount, @"items"],
-	@[kAggregatorSum, @"amount"]
- ]] execute];
- 
- NSDictionary *d = [items firstObject];
- [d valueForKey:@"countItems"];
- @endcode
- 
- Example above aggregates @b Items and counts @em items ASC and sums @em amount.
- */
 - (ALFetchRequest*)aggregatedBy:(NSArray*)description
 {
 	NSArray *aggregators = [self aggregatorsFromDescription:description];
@@ -131,27 +50,6 @@ NSString *const kOrderDESC = @"DESC";
 	return self;
 }
 
-/**
- Set grouping on aggregated query.
- 
- @returns Returns fetch request with grouping set according to description parameter.
- 
- @param description Is an array
- 
- @code
- NSArray *items =
- [[[[Item all] aggregatedBy:@[
-	@["count:", @"items"],
-	@["sum:", @"amount"]
- ]] groupedBy:@[@"county"]
- ] execute];
- 
- NSDictionary *d = [items firstObject];
- [d valueForKey:@"countItems"];
- @endcode
- 
- Example above aggregates @b Items and counts @em items ASC and sums @em amount and groups by @em county.
- */
 - (ALFetchRequest*)groupedBy:(NSArray*)description
 {
 	NSArray *properties = [self propertiesFromDescription:description];
@@ -168,105 +66,30 @@ NSString *const kOrderDESC = @"DESC";
 	return self;
 }
 
-/**
- Set an @em having on aggregated query.
- 
- @returns Returns fetch request with having set according to description parameter.
- 
- @param description Is an array
- 
- @code
- NSArray *items =
- [[[[Item all] aggregatedBy:@[
-	@["count:", @"items"],
-	@["sum:", @"amount"]
- ]] groupedBy:@[@"county"]
- ] having:[NSPredicate predicateWithFormat:@"sum > 100"]
- ] execute];
- 
- NSDictionary *d = [items firstObject];
- [d valueForKey:@"countItems"];
- @endcode
- 
- Example above aggregates @b Items and counts @em items ASC and sums @em amount and groups by @em county.
- */
 - (ALFetchRequest*)having:(NSPredicate*)predicate
 {
 	self.havingPredicate = predicate;
 	return self;
 }
 
-/**
- Set limit on query.
- 
- @returns Returns fetch request with fetch limit set accordingly.
- 
- @param limit A value for fetchLimit.
- 
- 
- @code
- NSArray *item =
- [[[[Item all] where:[NSPredicate predicateWithFormat:@"title = %@",title]] limit:1] execute];
- @endcode
- 
- Example above gets not more than 1 @b Item with given @em title.
- */
 - (ALFetchRequest*)limit:(NSInteger)limit
 {
 	self.fetchLimit = limit;
 	return self;
 }
 
-/**
- Set returnsDistinctResults to YES.
- 
- @returns Returns fetch request with only distinct set to YES.
- 
- 
- @code
- NSArray *item =
- [[[[Item all] where:[NSPredicate predicateWithFormat:@"title = %@",title]] distinct] execute];
- @endcode
- 
- Example above gets only distinct @b Item with given @em title.
- */
 - (ALFetchRequest*)distinct
 {
 	self.returnsDistinctResults = YES;
 	return self;
 }
 
-/**
- Set returnsDistinctResults to YES.
- 
- @returns Returns fetch request with only distinct set to YES.
- 
- 
- @code
- NSArray *item =
- [[[[Item all] where:@"title == %@",title] distinct] execute];
- @endcode
- 
- Example above gets only distinct @b Item with given @em title.
- */
 - (ALFetchRequest*)count
 {
 	[self setResultType:NSCountResultType];
 	return self;
 }
 
-/**
- Execute given request.
- 
- @returns Returns fetch request result (NSArray or NSDictionary).
- 
- @code
- NSArray *item =
- [[[[Item all] where:@"title == %@",title] distinct] execute];
- @endcode
- 
- Example above gets only distinct @b Item with given @em title.
- */
 - (NSArray*)execute
 {
 	NSError *error;
@@ -278,18 +101,6 @@ NSString *const kOrderDESC = @"DESC";
 	return fetchedObjects;
 }
 
-/**
- Casts a ALFetchRequest to NSFetchRequest.
- 
- @returns Returns NSFetchRequest.
- 
- @code
- NSFetchRequest *request =
- [[[Item fetchReques] orderBy:@[@"title"]] request];
- @endcode
- 
- Example above collects all @b Items orderd by @em title. The default managed context is used.
- */
 - (NSFetchRequest *)request
 {
 	return (NSFetchRequest*)self;
