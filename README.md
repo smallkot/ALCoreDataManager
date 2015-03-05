@@ -44,13 +44,20 @@ Item *c = [Item createWithDictionary:nil
 ## Query Builder
 
 ```objc
-NSArray *items = [[Item all] execute];
+NSArray *items = 
+[[Item all] execute];
 
-NSArray *filteredItems = [[[Item all] where:predicate] execute];
+NSArray *filteredItems = 
+[[[Item all] where:predicate] execute];
 
-NSArray *oneItem = [[[[Item all] where:predicate] limit:1] execute];
+NSArray *oneItem = 
+[[[[Item all] where:predicate] limit:1] execute];
 
-NSArray *onlyDistinctItems = [[[[Item all] whre:predicate] distinct] execute];
+NSArray *onlyDistinctItems = 
+[[[[Item all] properties:@[@"amount"]] distinct] execute];
+
+NSArray *countItems =
+[[[[Item all] where:predicate] count] execute];
 
 NSArray *orderedItems = 
 [[[Item all
