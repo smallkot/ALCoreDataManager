@@ -65,16 +65,6 @@
 	return _operationQueue;
 }
 
-- (NSOperationQueue *)notificationQueue
-{
-	if (!_notificationQueue) {
-		_notificationQueue = [[NSOperationQueue alloc] init];
-		_notificationQueue.name = @"ALCoreDataManager Notification Handling Queue";
-		_notificationQueue.maxConcurrentOperationCount = 1;
-	}
-	return _notificationQueue;
-}
-
 - (NSManagedObjectContext*)newContext
 {
 	NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
@@ -93,10 +83,10 @@
 		
 		[[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextDidSaveNotification
 														  object:localContext
-														   queue:weakSelf.notificationQueue
+														   queue:[NSOperationQueue mainQueue]
 													  usingBlock:^(NSNotification *notification)
 		 {
-			 [self.managedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+			 [weakSelf.managedObjectContext mergeChangesFromContextDidSaveNotification:notification];
 			 
 			 // emit
 			 if (notificationName.length) {
@@ -110,6 +100,11 @@
 		if ([localContext hasChanges]) {
 			NSError *error = nil;
 			[localContext save:&error];
+		}else{
+			if (notificationName.length) {
+				[[NSNotificationCenter defaultCenter] postNotificationName:notificationName
+																	object:nil];
+			}
 		}
 		
 	}];

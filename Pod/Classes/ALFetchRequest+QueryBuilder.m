@@ -112,14 +112,17 @@ NSString *const kOrderDESC = @"DESC";
 {
 	NSMutableArray *sortDescriptors = [NSMutableArray new];
 	for (id desc in description) {
-		if(![desc isKindOfClass:NSArray.class] && ![desc isKindOfClass:NSString.class])
+		if(![desc respondsToSelector:@selector(count)] &&
+		   ![desc respondsToSelector:@selector(objectAtIndex:)] &&	// not an Array
+		   ![desc isKindOfClass:NSString.class])					// and not a String
 			continue;
 		
 		NSString *by = nil;
 		NSString *ascString = nil;
 		NSNumber *asc = nil;
 		
-		if ([desc isKindOfClass:NSArray.class]) {
+		if ([desc respondsToSelector:@selector(count)] &&
+			[desc respondsToSelector:@selector(objectAtIndex:)]) {	// is an Array
 			NSArray *a = (NSArray*)desc;
 			if (a.count) {
 				if ([a.firstObject isKindOfClass:NSString.class]) {
@@ -167,11 +170,13 @@ NSString *const kOrderDESC = @"DESC";
 {
 	NSMutableArray *aggregators = [NSMutableArray new];
 	for (NSArray *desc in description) {
-		if ([desc isKindOfClass:NSArray.class]) {
+		if ([desc respondsToSelector:@selector(count)] &&
+			[desc respondsToSelector:@selector(objectAtIndex:)]) {	// is an Array
 			if (desc.count > 1) {
 				id first, second;
-				first = desc.firstObject;
+				first = [desc objectAtIndex:0];
 				second = [desc objectAtIndex:1];
+				
 				if (![first isKindOfClass:NSString.class] || ![second isKindOfClass:NSString.class]) {
 					continue;
 				}
