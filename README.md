@@ -54,7 +54,7 @@ NSArray *oneItem =
 [[[[Item all] where:predicate] limit:1] execute];
 
 NSArray *onlyDistinctItems = 
-[[[[Item all] properties:@[@"amount"]] distinct] execute];
+[[[[Item all] properties:@[@"title"]] distinct] execute];
 
 NSArray *countItems =
 [[[[Item all] where:predicate] count] execute];
@@ -70,8 +70,8 @@ NSArray *orderedItems =
 NSDictionary *aggregatedItems = 
 [[[[[Item all
 ] aggregatedBy:@[
-   		         @[kAggregateSum, @"amount"],
-				 @[kAggregateMedian, @"price"]]
+                 @[kAggregateSum, @"amount"],
+                 @[kAggregateMedian, @"price"]]
 ] groupedBy:@[@"country"]
 ] having:predicate
 ] execute];
@@ -90,7 +90,7 @@ Available aggreagations are:
 ## Concurrency
 
 ```objc
-[[ALCoreDataManager defaultManager] performBlock:^(NSManagedObjectContext *localContext)
+[[ALCoreDataManager defaultManager] saveAfterPerformingBlock:^(NSManagedObjectContext *localContext)
 {
   NSArray *remoteUpdates = ...;
 
@@ -101,7 +101,10 @@ Available aggreagations are:
                   usingFactory:factory];
   }
 
-} andPostNotification:@"FetchingUpdatesDone"];
+} withCompletionHandler:^{
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"FetchingUpdatesDone" 
+                                                      object:nil];
+}];
 ```
 
 This will automaticaly save changed into localContext and *merge* it with the defaultContext and emit the notification when done.

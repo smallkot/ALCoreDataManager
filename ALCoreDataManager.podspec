@@ -9,16 +9,15 @@
 
 Pod::Spec.new do |s|
   s.name             = "ALCoreDataManager"
-  s.version          = "0.2.1"
-  s.summary          = "Fast and easy way to get NSManagedObjectContext"
+  s.version          = "0.2.2"
+  s.summary          = "CoreData and QueryBuilder, easy CRUD and fetches: [[Item all] orderedBy:@[@"name"]]"
   s.description      = <<-DESC
                        Singleton class for getting NSManagedObjectContext in single Model apps fast and easy.
-                       * Access the default context with [ALCoreDataManager defaultContext].
+                       Very simmilar to MagicRecord, but different:
                        * Query your model with [[[Item all] where:predicate] execute].
-                       * Order, aggregate and group.
+                       * Order, aggregate and group by, i.e. [[[Item all] orderedBy:@[@"title"]] execute].
                        * Concurrency with core data (thread safety guarantied).
-                       * Create objects simply with [Item create] or [Item createWithDictionary:@{@"title" : @"ABC"}].
-                       * ActiveRecord style queries ([Item findAll]) - Comming Soon!
+                       * Create objects simply with [Item create] or [Item createWithDictionary:@{@"title" : @"the item 1"}].
                        DESC
   s.homepage         = "https://github.com/appleios/ALCoreDataManager"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"

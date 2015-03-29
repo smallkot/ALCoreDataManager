@@ -26,8 +26,8 @@
 
 - (NSManagedObjectContext*)newContext;
 
-- (void)performBlock:(void(^)(NSManagedObjectContext *localContext))block
- andPostNotification:(NSString *)notificationName;
+- (void)saveAfterPerformingBlock:(void(^)(NSManagedObjectContext *localContext))block
+		   withCompletionHandler:(void(^)())completionBlock;
 
 - (void)removeStore;
 

@@ -72,8 +72,8 @@
 	return context;
 }
 
-- (void)performBlock:(void(^)(NSManagedObjectContext *localContext))block
- andPostNotification:(NSString *)notificationName;
+- (void)saveAfterPerformingBlock:(void(^)(NSManagedObjectContext *localContext))block
+		   withCompletionHandler:(void(^)())completionBlock
 {
 	__weak ALCoreDataManager *weakSelf = self;
 	
@@ -87,12 +87,7 @@
 													  usingBlock:^(NSNotification *notification)
 		 {
 			 [weakSelf.managedObjectContext mergeChangesFromContextDidSaveNotification:notification];
-			 
-			 // emit
-			 if (notificationName.length) {
-				 [[NSNotificationCenter defaultCenter] postNotificationName:notificationName
-																	 object:nil];
-			 }
+			 completionBlock();
 		 }];
 		
 		block(localContext);
@@ -101,15 +96,12 @@
 			NSError *error = nil;
 			[localContext save:&error];
 		}else{
-			if (notificationName.length) {
-				[[NSNotificationCenter defaultCenter] postNotificationName:notificationName
-																	object:nil];
-			}
+			completionBlock();
 		}
 		
 	}];
-	
-	[self.operationQueue addOperation:operation];
+
+	[self.operationQueue addOperation:operation];	
 }
 
 #pragma mark - Helpers

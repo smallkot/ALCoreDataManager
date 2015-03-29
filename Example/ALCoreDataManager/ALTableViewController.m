@@ -24,6 +24,8 @@ static NSString *const TableViewCellReuseIdentifier = @"Cell";
 
 @implementation ALTableViewController
 
+#pragma mark - View Lifecycle -
+
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
@@ -40,17 +42,7 @@ static NSString *const TableViewCellReuseIdentifier = @"Cell";
 	}];
 }
 
-- (void)loadItems
-{
-	self.items = [[[Item all] orderedBy:@[@"title", @"price"]] execute];
-	[self.tableView reloadData];
-}
-
-- (IBAction)actionDeleteAll:(id)sender {
-	[self.items makeObjectsPerformSelector:@selector(remove)];
-	[[ALCoreDataManager defaultManager] saveContext];
-	[self.tableView reloadData];
-}
+#pragma mark - TableView DataSource and Delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -66,11 +58,30 @@ static NSString *const TableViewCellReuseIdentifier = @"Cell";
 	return cell;
 }
 
-- (IBAction)actionRefresh:(id)sender {
-	[[ALCoreDataManager defaultManager] performBlock:^(NSManagedObjectContext *localContext) {
+#pragma mark - Utils -
+
+- (void)loadItems
+{
+	self.items = [[[Item all] orderedBy:@[@"title", @"price"]] execute];
+	[self.tableView reloadData];
+}
+
+#pragma mark - Actions -
+
+- (IBAction)actionDeleteAll:(id)sender
+{
+	[self.items makeObjectsPerformSelector:@selector(remove)];
+	[[ALCoreDataManager defaultManager] saveContext];
+	[self.tableView reloadData];
+}
+
+- (IBAction)actionRefresh:(id)sender
+{
+	[[ALCoreDataManager defaultManager] saveAfterPerformingBlock:^(NSManagedObjectContext *localContext) {
 		
 		int i;
-		ALManagedObjectFactory *factory = [[ALManagedObjectFactory alloc] initWithManagedObjectContext:localContext];
+		ALManagedObjectFactory *factory =
+		[[ALManagedObjectFactory alloc] initWithManagedObjectContext:localContext];
 		
 		for(i=0; i<18; i++){
 			Item *a = (Item*)[Item createWithFields:nil
@@ -81,7 +92,10 @@ static NSString *const TableViewCellReuseIdentifier = @"Cell";
 			a.amount = @(10 + (rand()%10));
 		}
 		
-	} andPostNotification:UpdateFinishedNotification];
+	} withCompletionHandler:^{
+		[[NSNotificationCenter defaultCenter] postNotificationName:UpdateFinishedNotification
+															object:nil];
+	}];
 }
 
 
