@@ -29,29 +29,24 @@ static NSString *const TableViewCellReuseIdentifier = @"Cell";
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-	
 	[self loadItems];
-	
-	[[NSNotificationCenter defaultCenter] addObserverForName:UpdateFinishedNotification
-													  object:nil
-													   queue:nil
-												  usingBlock:^(NSNotification *note)
-	{
-		[self.activityIndicator endRefreshing];
-		[self loadItems];
-	}];
 }
 
 #pragma mark - TableView DataSource and Delegate
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)tableView
+ numberOfRowsInSection:(NSInteger)section
 {
 	return [self.items count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView
+		 cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewCellReuseIdentifier forIndexPath:indexPath];
+	UITableViewCell *cell =
+	[self.tableView dequeueReusableCellWithIdentifier:TableViewCellReuseIdentifier
+										 forIndexPath:indexPath];
+	
 	Item * item = [self.items objectAtIndex:indexPath.row];
 	cell.textLabel.text = item.title;
 	cell.detailTextLabel.text = [item.price stringValue];
@@ -93,8 +88,8 @@ static NSString *const TableViewCellReuseIdentifier = @"Cell";
 		}
 		
 	} withCompletionHandler:^{
-		[[NSNotificationCenter defaultCenter] postNotificationName:UpdateFinishedNotification
-															object:nil];
+		[self.activityIndicator endRefreshing];
+		[self loadItems];
 	}];
 }
 
