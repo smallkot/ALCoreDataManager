@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 aziz u. latypov. All rights reserved.
 //
 
-#import "Item.h"
+#import "Product.h"
 
 
-@implementation Item
+@implementation Product
 
 @dynamic title;
 @dynamic price;

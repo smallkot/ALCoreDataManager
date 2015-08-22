@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
-@interface ALTableViewController : UITableViewController
+@interface ALProductsTableViewController : UITableViewController
 
 @end

@@ -13,7 +13,7 @@
 
 #import <ALCoreDataManager/ALCoreData.h>
 
-#import "Item.h"
+#import "Product.h"
 
 SpecBegin(ALCoreDataManager)
 
@@ -29,15 +29,15 @@ describe(@"in memory store", ^{
 	__block NSManagedObjectContext *context;
 	__block ALManagedObjectFactory *factory;
 	
-	Item*(^item)(NSString *title, NSNumber *price, NSNumber *amount) =
+	Product*(^item)(NSString *title, NSNumber *price, NSNumber *amount) =
 	^(NSString *title, NSNumber *price, NSNumber *amount)
 	{
 		NSPredicate *predicate =
 		[NSPredicate predicateWithFormat:@"title = %@ && price = %@ && amount = %@",title,price,amount];
 		NSArray *items =
-		[[[[Item allInManagedObjectContext:context] where:predicate] limit:1] execute];
+		[[[[Product allInManagedObjectContext:context] where:predicate] limit:1] execute];
 		
-		Item *a = [items firstObject];
+		Product *a = [items firstObject];
 		return a;
 	};
 
@@ -49,9 +49,9 @@ describe(@"in memory store", ^{
 	});
 	
 	it(@"should create item without dictionary", ^{
-		[factory createObjectForEntityName:@"Item"];
+		[factory createObjectForEntityName:@"Product"];
 		
-		Item *a = (Item*)[Item createWithFields:nil
+		Product *a = (Product*)[Product createWithFields:nil
 								   usingFactory:factory];
 		
 		expect(a).notTo.beNil;
@@ -59,9 +59,9 @@ describe(@"in memory store", ^{
 	
 	
 	it(@"should create item", ^{
-		[factory createObjectForEntityName:@"Item"];
+		[factory createObjectForEntityName:@"Product"];
 		
-		Item *a = (Item*)[Item createWithFields:@{
+		Product *a = (Product*)[Product createWithFields:@{
 												  @"title" : @"A",
 												  @"price" : @(100),
 												  @"amount" : @(10)
@@ -77,7 +77,7 @@ describe(@"in memory store", ^{
 	
 	it(@"should be fetched", ^{
 		
-		Item *a = item(@"A",@(100),@(10));
+		Product *a = item(@"A",@(100),@(10));
 		
 		expect(a).notTo.beNil;
 		expect(a.title).to.equal(@"A");
@@ -86,7 +86,7 @@ describe(@"in memory store", ^{
 	});
 	
 	it(@"should be update", ^{
-		Item *a = item(@"A",@(100),@(10));
+		Product *a = item(@"A",@(100),@(10));
 		
 		a.title = @"B";
 		a.price = @(120);
@@ -100,7 +100,7 @@ describe(@"in memory store", ^{
 	});
 	
 	it(@"should be remove",^{
-		Item *a = item(@"B",@(120),@(160));
+		Product *a = item(@"B",@(120),@(160));
 		
 		[a remove];
 		expect(a.deleted).to.beTruthy;
@@ -126,8 +126,8 @@ describe(@"query builder", ^{
 		context = manager.managedObjectContext;
 		factory = [[ALManagedObjectFactory alloc] initWithManagedObjectContext:context];
 		
-		NSArray *existingItems = [[Item allInManagedObjectContext:context] execute];
-		for(Item *a in existingItems){
+		NSArray *existingItems = [[Product allInManagedObjectContext:context] execute];
+		for(Product *a in existingItems){
 			[a remove];
 		}
 		
@@ -137,7 +137,7 @@ describe(@"query builder", ^{
 		int i;
 		
 		for(i=0; i<18; i++){
-			Item *a = (Item*)[Item createWithFields:nil
+			Product *a = (Product*)[Product createWithFields:nil
 									   usingFactory:factory];
 			
 			a.title = [NSString stringWithFormat:@"%c",'A'+i];
@@ -145,14 +145,14 @@ describe(@"query builder", ^{
 			a.amount = @(10 + (rand()%10));
 		}
 		
-		Item *a = (Item*)[Item createWithFields:nil
+		Product *a = (Product*)[Product createWithFields:nil
 								   usingFactory:factory];
 		
 		a.title = [NSString stringWithFormat:@"%c",'a'];
 		a.price = @(200);
 		a.amount = @(10);
 
-		Item *b = (Item*)[Item createWithFields:nil
+		Product *b = (Product*)[Product createWithFields:nil
 								   usingFactory:factory];
 		
 		b.title = [NSString stringWithFormat:@"%c",'Z'];
@@ -163,26 +163,26 @@ describe(@"query builder", ^{
 	});
 	
 	it(@"should fetch all", ^{
-		NSArray *items = [[Item allInManagedObjectContext:context] execute];
+		NSArray *items = [[Product allInManagedObjectContext:context] execute];
 		
 		expect(items.count).equal(20);
 	});
 	
 	it(@"should filter", ^{
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title = 'B'"];
-		NSArray *items = [[[Item allInManagedObjectContext:context] where:predicate] execute];
+		NSArray *items = [[[Product allInManagedObjectContext:context] where:predicate] execute];
 		
 		expect(items.count).equal(1);
 	});
 	
 	it(@"should sort", ^{
-		NSArray *items = [[[Item allInManagedObjectContext:context] orderedBy:@[@"title"]] execute];
+		NSArray *items = [[[Product allInManagedObjectContext:context] orderedBy:@[@"title"]] execute];
 		
 		BOOL isSorted = YES;
 		int i;
-		Item *a = [items firstObject];
+		Product *a = [items firstObject];
 		for(i=1; i<items.count; i++){
-			Item *b = [items objectAtIndex:i];
+			Product *b = [items objectAtIndex:i];
 			NSComparisonResult r = [b.title compare:a.title];
 			if(r == NSOrderedAscending){
 				isSorted = NO;
@@ -195,7 +195,7 @@ describe(@"query builder", ^{
 	});
 	
 	it(@"should count all", ^{
-		NSArray *items = [[[Item allInManagedObjectContext:context] count] execute];
+		NSArray *items = [[[Product allInManagedObjectContext:context] count] execute];
 		NSNumber *count = items.firstObject;
 		
 		expect(count.integerValue).equal(20);
@@ -203,27 +203,27 @@ describe(@"query builder", ^{
 	
 	it(@"should count with predicate", ^{
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title = 'B'"];
-		NSArray *items = [[[[Item allInManagedObjectContext:context] where:predicate] count] execute];
+		NSArray *items = [[[[Product allInManagedObjectContext:context] where:predicate] count] execute];
 		NSNumber *count = items.firstObject;
 		
 		expect(count.integerValue).equal(1);
 	});
 
 	it(@"should limit", ^{
-		NSArray *items = [[[Item allInManagedObjectContext:context] limit:10] execute];
+		NSArray *items = [[[Product allInManagedObjectContext:context] limit:10] execute];
 		
 		expect(items.count).equal(10);
 	});
 	
 	it(@"should return only distinct", ^{
 		NSString *key = @"amount";
-		NSArray *items = [[[[Item allInManagedObjectContext:context] properties:@[key]] distinct] execute];
+		NSArray *items = [[[[Product allInManagedObjectContext:context] properties:@[key]] distinct] execute];
 		
 		BOOL onlyDistinct = YES;
-		Item *a = nil;
+		Product *a = nil;
 		NSMutableSet* set = [NSMutableSet new];
 		
-		for(Item *b in items){
+		for(Product *b in items){
 			if(a){
 				if([set containsObject:[b valueForKey:key]]){
 					onlyDistinct = NO;
@@ -240,11 +240,11 @@ describe(@"query builder", ^{
 	});
 	
 	it(@"should aggregate", ^{
-		NSArray *items = [[[[[Item allInManagedObjectContext:context]
-						   aggregatedBy:@[@[kAggregatorMax,@"price"]]]
-						   groupedBy:@[@"amount"]]
-						  having:[NSPredicate predicateWithFormat:@"amount >= 10"]]
-						  execute];
+		NSArray *items = [[[[[Product allInManagedObjectContext:context
+						   ] aggregatedBy:@[@[kAggregatorMax,@"price"]]
+						   ] groupedBy:@[@"amount"]
+						  ] having:[NSPredicate predicateWithFormat:@"amount >= 10"]
+						  ] execute];
 		
 		double maxPrice = -1;
 		for(NSDictionary *d in items){

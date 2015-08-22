@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3ED515311B887700006FA2BC /* ALProductInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ED515301B887700006FA2BC /* ALProductInfoTableViewController.m */; };
+		3ED515361B887B3A006FA2BC /* ALTextEditTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ED515351B887B3A006FA2BC /* ALTextEditTableViewCell.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -22,10 +24,10 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		660DFB60D3C849CBA26653E4 /* libPods-ALCoreDataManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AA9F310612F47F5B603067F /* libPods-ALCoreDataManager.a */; };
-		8F7B1AC81A93C88D00BE9975 /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7B1AC71A93C88D00BE9975 /* Item.m */; };
+		8F7B1AC81A93C88D00BE9975 /* Product.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7B1AC71A93C88D00BE9975 /* Product.m */; };
 		8F9BDCF91997F73000B79B79 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8F9BDCF71997F73000B79B79 /* Model.xcdatamodeld */; };
 		8FC594CE1AA6B71C002A110A /* ALCoreDataManager.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 8FC594CD1AA6B71C002A110A /* ALCoreDataManager.podspec */; };
-		8FFD97551AB55952003D417E /* ALTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FFD97541AB55952003D417E /* ALTableViewController.m */; };
+		8FFD97551AB55952003D417E /* ALProductsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FFD97541AB55952003D417E /* ALProductsTableViewController.m */; };
 		F85B8D1D8A7C4B5081F0A0B8 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 768EE021494142E7B8E3DB4B /* libPods-Tests.a */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +46,10 @@
 		14A0AA846987F614593337FA /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		2AA9F310612F47F5B603067F /* libPods-ALCoreDataManager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ALCoreDataManager.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EB275AB9A4D1391B4F04585 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		3ED5152F1B887700006FA2BC /* ALProductInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALProductInfoTableViewController.h; sourceTree = "<group>"; };
+		3ED515301B887700006FA2BC /* ALProductInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALProductInfoTableViewController.m; sourceTree = "<group>"; };
+		3ED515341B887B3A006FA2BC /* ALTextEditTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTextEditTableViewCell.h; sourceTree = "<group>"; };
+		3ED515351B887B3A006FA2BC /* ALTextEditTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTextEditTableViewCell.m; sourceTree = "<group>"; };
 		4E9DE7585F2B49AA8FC6064E /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* ALCoreDataManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ALCoreDataManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -66,12 +72,12 @@
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		67C7CBA0ABCB4E458D798770 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		768EE021494142E7B8E3DB4B /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8F7B1AC61A93C88D00BE9975 /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
-		8F7B1AC71A93C88D00BE9975 /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
+		8F7B1AC61A93C88D00BE9975 /* Product.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Product.h; sourceTree = "<group>"; };
+		8F7B1AC71A93C88D00BE9975 /* Product.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Product.m; sourceTree = "<group>"; };
 		8F9BDCF81997F73000B79B79 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		8FC594CD1AA6B71C002A110A /* ALCoreDataManager.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ALCoreDataManager.podspec; path = ../ALCoreDataManager.podspec; sourceTree = "<group>"; };
-		8FFD97531AB55952003D417E /* ALTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTableViewController.h; sourceTree = "<group>"; };
-		8FFD97541AB55952003D417E /* ALTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTableViewController.m; sourceTree = "<group>"; };
+		8FFD97531AB55952003D417E /* ALProductsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALProductsTableViewController.h; sourceTree = "<group>"; };
+		8FFD97541AB55952003D417E /* ALProductsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALProductsTableViewController.m; sourceTree = "<group>"; };
 		D348B717734FBFFF3CB43425 /* Pods-ALCoreDataManager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ALCoreDataManager.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ALCoreDataManager/Pods-ALCoreDataManager.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,6 +107,88 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3ED515281B8876AA006FA2BC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8F9BDCF71997F73000B79B79 /* Model.xcdatamodeld */,
+				8F7B1AC61A93C88D00BE9975 /* Product.h */,
+				8F7B1AC71A93C88D00BE9975 /* Product.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		3ED515291B8876B3006FA2BC /* App */ = {
+			isa = PBXGroup;
+			children = (
+				6003F59C195388D20070C39A /* ALAppDelegate.h */,
+				6003F59D195388D20070C39A /* ALAppDelegate.m */,
+			);
+			name = App;
+			sourceTree = "<group>";
+		};
+		3ED5152A1B8876BC006FA2BC /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				3ED5152B1B8876CE006FA2BC /* iPad */,
+				3ED5152C1B8876D5006FA2BC /* iPhone */,
+				3ED5152D1B8876DC006FA2BC /* Shared */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
+		3ED5152B1B8876CE006FA2BC /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+				6003F5A2195388D20070C39A /* Main_iPad.storyboard */,
+			);
+			name = iPad;
+			sourceTree = "<group>";
+		};
+		3ED5152C1B8876D5006FA2BC /* iPhone */ = {
+			isa = PBXGroup;
+			children = (
+				6003F59F195388D20070C39A /* Main_iPhone.storyboard */,
+			);
+			name = iPhone;
+			sourceTree = "<group>";
+		};
+		3ED5152D1B8876DC006FA2BC /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				3ED5152E1B8876E0006FA2BC /* ViewControllers */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+		3ED5152E1B8876E0006FA2BC /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				3ED515321B887717006FA2BC /* Products */,
+				3ED515331B88771F006FA2BC /* ProductDetail */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		3ED515321B887717006FA2BC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8FFD97531AB55952003D417E /* ALProductsTableViewController.h */,
+				8FFD97541AB55952003D417E /* ALProductsTableViewController.m */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3ED515331B88771F006FA2BC /* ProductDetail */ = {
+			isa = PBXGroup;
+			children = (
+				3ED5152F1B887700006FA2BC /* ALProductInfoTableViewController.h */,
+				3ED515301B887700006FA2BC /* ALProductInfoTableViewController.m */,
+				3ED515341B887B3A006FA2BC /* ALTextEditTableViewCell.h */,
+				3ED515351B887B3A006FA2BC /* ALTextEditTableViewCell.m */,
+			);
+			name = ProductDetail;
+			sourceTree = "<group>";
+		};
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
@@ -138,16 +226,9 @@
 		6003F593195388D20070C39A /* ALCoreDataManager */ = {
 			isa = PBXGroup;
 			children = (
-				8F9BDCF71997F73000B79B79 /* Model.xcdatamodeld */,
-				8F7B1AC61A93C88D00BE9975 /* Item.h */,
-				8F7B1AC71A93C88D00BE9975 /* Item.m */,
-				6003F59C195388D20070C39A /* ALAppDelegate.h */,
-				6003F59D195388D20070C39A /* ALAppDelegate.m */,
-				6003F59F195388D20070C39A /* Main_iPhone.storyboard */,
-				6003F5A2195388D20070C39A /* Main_iPad.storyboard */,
-				8FFD97531AB55952003D417E /* ALTableViewController.h */,
-				8FFD97541AB55952003D417E /* ALTableViewController.m */,
-				6003F5A8195388D20070C39A /* Images.xcassets */,
+				3ED515291B8876B3006FA2BC /* App */,
+				3ED515281B8876AA006FA2BC /* Models */,
+				3ED5152A1B8876BC006FA2BC /* Storyboards */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
 			path = ALCoreDataManager;
@@ -156,6 +237,7 @@
 		6003F594195388D20070C39A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F595195388D20070C39A /* ALCoreDataManager-Info.plist */,
 				6003F596195388D20070C39A /* InfoPlist.strings */,
 				6003F599195388D20070C39A /* main.m */,
@@ -371,11 +453,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8F7B1AC81A93C88D00BE9975 /* Item.m in Sources */,
+				8F7B1AC81A93C88D00BE9975 /* Product.m in Sources */,
 				6003F59E195388D20070C39A /* ALAppDelegate.m in Sources */,
+				3ED515361B887B3A006FA2BC /* ALTextEditTableViewCell.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				8F9BDCF91997F73000B79B79 /* Model.xcdatamodeld in Sources */,
-				8FFD97551AB55952003D417E /* ALTableViewController.m in Sources */,
+				3ED515311B887700006FA2BC /* ALProductInfoTableViewController.m in Sources */,
+				8FFD97551AB55952003D417E /* ALProductsTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
