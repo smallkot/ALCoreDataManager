@@ -29,46 +29,52 @@ To get the NSManagedObjectContext use
 
 You can use simple create method to create managed object:
 ```objc
-Item *a = [Item create];
+Product *a = [Product create];
+Product *b = [Product createWithDictionary:@{ @"title" : @"best product" }];
 
-Item *b = [Item createWithDictionary:@{
-                                       @"title" : @"an item"
-                                      }];
+// or using Factory class
+NSManagedObjectContext *context = [ALCoreDataManager defaultManager].managedObjectContext;
+ALManagedObjectFactory *factory =
+[[ALManagedObjectFactory alloc] initWithManagedObjectContext:context];
 
-Item *c = [Item createWithDictionary:nil 
-                        usingFactory:factory];
+Product *c = [Product createWithDictionary:nil 
+                              usingFactory:factory];
+c.title = @"best product 2";
 
-[c remove]; // will remove the item
+Product *d = [Product createWithDictionary:@{ @"title" : @"best product 3", @"price" : @(100) } 
+                              usingFactory:factory];
+
+[d remove]; // remove an object
 ```
 
 ## Query Builder
 
 ```objc
-NSArray *items = 
-[[Item all] execute];
+NSArray *allProducts = 
+[[Product all] execute];
 
-NSArray *filteredItems = 
-[[[Item all] where:predicate] execute];
+NSArray *productsFilteredWithPredicate = 
+[[[Product all] where:predicate] execute];
 
-NSArray *oneItem = 
-[[[[Item all] where:predicate] limit:1] execute];
+NSArray *singleProduct = 
+[[[[Product all] where:predicate] limit:1] execute];
 
-NSArray *onlyDistinctItems = 
-[[[[Item all] properties:@[@"title"]] distinct] execute];
+NSArray *onlyDistinctProductTitles = 
+[[[[Product all] properties:@[@"title"]] distinct] execute];
 
-NSArray *countItems =
-[[[[Item all] where:predicate] count] execute];
+NSArray *countProducts =
+[[[[Product all] where:predicate] count] execute];
 
 NSArray *orderedItems = 
-[[[Item all
+[[[Product all
 ] orderedBy:@[
-		 	  @[@"title", kOrderDESC],
-			  @[@"price", kOrderASC],
+              @[@"title", kOrderDESC],
+              @[@"price", kOrderASC],
               @[@"amount"]]
 ] execute];
 
 NSArray *aggregatedItems = 
-[[[[[Item all
+[[[[[Product all
 ] aggregatedBy:@[
                  @[kAggregateSum, @"amount"],
                  @[kAggregateMedian, @"price"]]
@@ -86,6 +92,18 @@ Available aggreagations are:
 * kAggregateMax
 * kAggregateAverage
 * kAggregateMedian
+
+You can also get request:
+```objc
+NSFetchRequest *request = [[[Product all] orderedBy:@[@"title", @"price"]] request];
+NSManagedObjectContext *context = [ALCoreDataManager defaultManager].managedObjectContext;
+NSFetchedResultsController *controller =
+[[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                    managedObjectContext:context
+                                      sectionNameKeyPath:nil
+                                               cacheName:nil];
+[controller performFetch:nil];
+```
 
 ## Concurrency
 
