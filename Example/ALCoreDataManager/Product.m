@@ -14,5 +14,6 @@
 @dynamic title;
 @dynamic price;
 @dynamic amount;
+@dynamic country;
 
 @end
