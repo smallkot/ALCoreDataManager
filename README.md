@@ -67,7 +67,7 @@ NSArray *orderedItems =
               @[@"amount"]]
 ] execute];
 
-NSDictionary *aggregatedItems = 
+NSArray *aggregatedItems = 
 [[[[[Item all
 ] aggregatedBy:@[
                  @[kAggregateSum, @"amount"],
