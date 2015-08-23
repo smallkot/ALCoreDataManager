@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "ALCoreDataManager"
-  s.version          = "0.2.2"
+  s.version          = "0.2.3"
   s.summary          = "Readable Core Data Querying: ordering, aggregations, counting, etc. Async data saving made easy."
   s.description      = <<-DESC
 ALCoreData provides a simple yet powerfull syntax for getting fetches similar to query builders in popular web frameworks. 
