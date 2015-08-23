@@ -44,39 +44,21 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem title="Clear" id="ZNS-at-XPR">
-                            <connections>
-                                <action selector="actionDeleteAll:" destination="p3a-2I-NnX" id="43X-Qy-eHP"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="inJ-Ac-01X"/>
                         <barButtonItem title="Statistics" id="xch-5e-6aZ">
                             <connections>
                                 <action selector="actionStats:" destination="p3a-2I-NnX" id="ITa-Wg-dEj"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="5SM-BO-ugC"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Products" id="t4O-Mn-rP0">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="CJf-Em-8iV">
-                            <connections>
-                                <action selector="actionEdit:" destination="p3a-2I-NnX" id="ZwO-3l-QoH"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="e5r-Rk-YMI">
                             <connections>
                                 <action selector="actionAdd:" destination="p3a-2I-NnX" id="YTx-Zx-iYO"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="MrM-G5-f9A">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <connections>
-                            <action selector="actionRefresh:" destination="p3a-2I-NnX" eventType="valueChanged" id="RTz-4l-Y28"/>
-                        </connections>
-                    </refreshControl>
-                    <connections>
-                        <outlet property="activityIndicator" destination="MrM-G5-f9A" id="F2k-vV-Imv"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q6K-zO-3hH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
