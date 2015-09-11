@@ -11,11 +11,14 @@
 
 #import "ALTableViewDataSource.h"
 
+@class ALDataSourceWithFetchedResultsController;
+
 @interface ALTableViewDataSourceWithFetchedResultsController : ALTableViewDataSource
 
-- (instancetype)initWithFetchRequest:(NSFetchRequest*)fetchRequest
-                managedObjectContext:(NSManagedObjectContext*)managedObjectContext
-              cellConfigurationBlock:(ALTableViewCellConfigurationBlock)cellConfigurationBlock
-              andReuseIdentiferBlock:(ALTableViewCellReuseIdentiferBlock)reuseIdentifierBlock;
+@property (strong, nonatomic) ALDataSourceWithFetchedResultsController *realDataSource;
+
+- (instancetype)initWithRealDataSource:(ALDataSourceWithFetchedResultsController*)realDataSource
+                cellConfigurationBlock:(ALTableViewCellConfigurationBlock)cellConfigurationBlock
+                andReuseIdentiferBlock:(ALTableViewCellReuseIdentiferBlock)reuseIdentifierBlock;
 
 @end

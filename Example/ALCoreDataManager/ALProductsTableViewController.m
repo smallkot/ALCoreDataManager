@@ -23,6 +23,7 @@ static NSString *const SegueIdentifierForProductInfo = @"Segue";
 static NSString *const kTitle = @"title";
 static NSString *const kPrice = @"price";
 static NSString *const kAmount = @"amount";
+static NSString *const kCountry = @"country";
 
 @interface ALProductsTableViewController () <UIAlertViewDelegate, UIActionSheetDelegate>
 
@@ -38,15 +39,27 @@ static NSString *const kAmount = @"amount";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.dataSource = [[[Product all] orderedBy:@[kTitle, kPrice]] tableViewDataSource];
+
     __weak typeof(self) weakSelf = self;
-    self.dataSource.cellConfigurationBlock = ^(UITableViewCell *cell, NSIndexPath *indexPath){
+    ALTableViewCellConfigurationBlock configurationBlock = ^(UITableViewCell *cell, NSIndexPath *indexPath){
         [weakSelf configureCell:cell atIndexPath:indexPath];
     };
-    self.dataSource.reuseIdentifierBlock = ^(NSIndexPath *indexPath){
+    ALTableViewCellReuseIdentiferBlock reuseIdentiferBlock = ^(NSIndexPath *indexPath){
         return TableViewCellReuseIdentifier;
     };
+    NSManagedObjectContext *context = [ALCoreDataManager defaultManager].managedObjectContext;
+    ALFetchRequest *request = [[[Product all] orderedBy:@[kTitle, kPrice]] groupedBy:@[kCountry]];
+    assert(request);
+    ALDataSourceWithFetchedResultsController *realDataSource =
+    [[ALDataSourceWithFetchedResultsController alloc] initWithFetchRequest:request
+                                                      managedObjectContext:context
+                                                        sectionNameKeyPath:@"country.name"
+                                                                 cacheName:nil];
+
+    self.dataSource = [realDataSource tableViewDataSource];
+    self.dataSource.cellConfigurationBlock = configurationBlock;
+    self.dataSource.reuseIdentifierBlock = reuseIdentiferBlock;
+    
     self.dataSource.tableView = self.tableView;
 }
 
@@ -61,7 +74,7 @@ static NSString *const kAmount = @"amount";
 
 - (Product*)productAtIndexPath:(NSIndexPath*)indexPath
 {
-    return (Product *)[self.dataSource itemAtIndexPath:indexPath];
+    return (Product *)[self.dataSource objectAtIndexPath:indexPath];
 }
 
 #pragma mark - Actions -

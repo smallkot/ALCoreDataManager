@@ -7,21 +7,29 @@
 //
 
 #import "ALFetchRequest+DataSource.h"
+#import "ALDataSourceWithFetchedResultsController.h"
 
 @implementation ALFetchRequest (DataSource)
 
 - (ALTableViewDataSourceWithFetchedResultsController*)tableViewDataSource
 {
-    ALTableViewDataSourceWithFetchedResultsController *dataSource =
-    [[ALTableViewDataSourceWithFetchedResultsController alloc] initWithFetchRequest:[self request] managedObjectContext:self.managedObjectContext cellConfigurationBlock:nil andReuseIdentiferBlock:nil];
-    return dataSource;
+    ALDataSourceWithFetchedResultsController *realDataSource =
+    [[ALDataSourceWithFetchedResultsController alloc] initWithFetchRequest:[self request] managedObjectContext:self.managedObjectContext];
+    return [realDataSource tableViewDataSource];
 }
 
 - (ALCollectionViewDataSourceWithFetchedResultsController*)collectionViewDataSource
 {
-    ALCollectionViewDataSourceWithFetchedResultsController *dataSource =
-    [[ALCollectionViewDataSourceWithFetchedResultsController alloc] initWithFetchRequest:[self request] managedObjectContext:self.managedObjectContext cellConfigurationBlock:nil andReuseIdentiferBlock:nil];
-    return dataSource;
+    ALDataSourceWithFetchedResultsController *realDataSource =
+    [[ALDataSourceWithFetchedResultsController alloc] initWithFetchRequest:[self request] managedObjectContext:self.managedObjectContext];
+    return [realDataSource collectionViewDataSource];
+}
+
+- (ALPickerViewDataSourceWithFetchedResultsController*)pickerViewDataSource
+{
+    ALDataSourceWithFetchedResultsController *realDataSource =
+    [[ALDataSourceWithFetchedResultsController alloc] initWithFetchRequest:[self request] managedObjectContext:self.managedObjectContext];
+    return [realDataSource pickerViewDataSource];
 }
 
 @end

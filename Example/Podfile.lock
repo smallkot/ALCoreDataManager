@@ -1,15 +1,17 @@
 PODS:
-  - ALCoreDataManager (0.2.2)
+  - ALCoreDataManager (0.2.3)
   - Expecta (1.0.2)
   - OCHamcrest (4.1.1)
   - OCMockito (1.4.0):
     - OCHamcrest (~> 4.0)
+  - RMPickerViewController (1.3.3)
   - Specta (0.2.1)
 
 DEPENDENCIES:
   - ALCoreDataManager (from `../`)
   - Expecta
   - OCMockito (~> 1.0)
+  - RMPickerViewController
   - Specta (~> 0.2.1)
 
 EXTERNAL SOURCES:
@@ -17,10 +19,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ALCoreDataManager: afa4cdc1a0715d0c14cee72c9083c734c09cd69e
+  ALCoreDataManager: 3daa7b2d64db341161d390c18a15237935a69e67
   Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
   OCHamcrest: 6f03ffa81d12feab872638490a44ab0a6d3aca10
   OCMockito: 4981140c9a9ec06c31af40f636e3c0f25f27e6b2
+  RMPickerViewController: 1a64e211e86ac3d961214c9c376de7c0241ac25b
   Specta: 15a276a6343867b426d5ed135d5aa4d04123a573
 
 COCOAPODS: 0.38.2

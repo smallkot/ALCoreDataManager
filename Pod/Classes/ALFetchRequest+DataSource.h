@@ -11,13 +11,15 @@
 #import "ALFetchRequest.h"
 #import "ALFetchRequest+QueryBuilder.h"
 
+#import "ALDataSourceWithFetchedResultsController.h"
 #import "ALTableViewDataSourceWithFetchedResultsController.h"
 #import "ALCollectionViewDataSourceWithFetchedResultsController.h"
+#import "ALPickerViewDataSourceWithFetchedResultsController.h"
 
 @interface ALFetchRequest (DataSource)
 
 /**
- Crates a UITableViewDataSource object for your tableView from request built by query builder.
+ Creates a UITableViewDataSource object for your tableView from request built by query builder.
  
  @returns A tableView DataSource with NSFetchedResultsController inside.
  
@@ -25,7 +27,7 @@
  
  @code
  ALTableViewDataSource *dataSource =
- [[[Product all] orderedBy:@[kTitle, kPrice]] tableViewDataSource];
+ [[[Product all] orderedBy:@[@"title", @"price"]] tableViewDataSource];
  
  __weak typeof(self) weakSelf = self;
  dataSource.cellConfigurationBlock = void(^)(UITableViewCell *cell, NSIndexPath *indexPath){
@@ -33,7 +35,7 @@
  };
  
  dataSource.reuseIdentifierBlock = NSString*(^)(NSIndexPath *indexPath){
-     return TableViewCellReuseIdentifier;
+     return @"Cell";
  };
  
  self.dataSource.tableView = self.tableView;
@@ -43,7 +45,7 @@
 
 
 /**
- Crate a data source for your collectionView with request build by query builder.
+ Creates a data source for your collectionView with request build by query builder.
  
  @returns A collectionView DataSource with NSFetchedResultsController inside.
  
@@ -51,9 +53,23 @@
  ALCollectionViewDataSourceWithFetchedResultsController *dataSource =
  [[[Product allInManagedObjectContext:context] orderedBy:@[@"price"]] collectionViewDataSource];
  
- dataSource.collectionView = self.tableView;
+ dataSource.collectionView = self.collectionView;
  @endcode
  */
 - (ALCollectionViewDataSourceWithFetchedResultsController*)collectionViewDataSource;
+
+/**
+ Creates a data source for your pickerView with request build by query builder.
+ 
+ @returns A pickerView DataSource with NSFetchedResultsController inside.
+ 
+ @code
+ ALPickerViewDataSourceWithFetchedResultsController *dataSource =
+ [[[Product allInManagedObjectContext:context] orderedBy:@[@"price"]] pickerViewDataSource];
+ 
+ dataSource.pickerView = self.pickerView;
+ @endcode
+ */
+- (ALPickerViewDataSourceWithFetchedResultsController*)pickerViewDataSource;
 
 @end

@@ -7,8 +7,9 @@
 //
 
 #import "ALCollectionViewDataSourceWithFetchedResultsController.h"
+#import "ALDataSourceWithFetchedResultsController.h"
 
-@interface ALCollectionViewDataSourceWithFetchedResultsController () <NSFetchedResultsControllerDelegate>
+@interface ALCollectionViewDataSourceWithFetchedResultsController () <ALDataSourceWithFetchedResultsControllerDelegate>
 {
     NSMutableArray *_objectChanges; //for collection view
 }
@@ -16,83 +17,64 @@
 @property (nonatomic, strong) NSBlockOperation *blockOperation; //for collection view
 @property (nonatomic) BOOL shouldReloadCollectionView; //for collection view
 
-@property (strong, nonatomic) NSFetchRequest *fetchRequest;
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
-// fetched results controller
-@property (strong, nonatomic) NSFetchedResultsController *fetchResultsController;
-
 @end
 
 @implementation ALCollectionViewDataSourceWithFetchedResultsController
-@synthesize fetchResultsController = _fetchResultsController;
 
--(instancetype)initWithFetchRequest:(NSFetchRequest *)fetchRequest
-               managedObjectContext:(NSManagedObjectContext *)managedObjectContext
-             cellConfigurationBlock:(ALCollectionViewCellConfigurationBlock)cellConfigurationBlock
-             andReuseIdentiferBlock:(ALCollectionViewCellReuseIdentiferBlock)reuseIdentifierBlock
+-(instancetype)initWithRealDataSource:(ALDataSourceWithFetchedResultsController*)realDataSource
+               cellConfigurationBlock:(ALCollectionViewCellConfigurationBlock)cellConfigurationBlock
+               andReuseIdentiferBlock:(ALCollectionViewCellReuseIdentiferBlock)reuseIdentifierBlock
 {
     if (self = [super initWithCellConfigurationBlock:cellConfigurationBlock
-                              andReuseIdentiferBlock:reuseIdentifierBlock]) {
-        self.fetchRequest = fetchRequest;
-        self.managedObjectContext = managedObjectContext;
+                              andReuseIdentiferBlock:reuseIdentifierBlock])
+    {
+        self.realDataSource.delegate = self;
     }
     return self;
 }
 
-#pragma mark - Predicate -
-
-- (void)setPredicate:(NSPredicate*)predicate
+- (void)setRealDataSource:(ALDataSourceWithFetchedResultsController *)realDataSource
 {
-    self.fetchResultsController.fetchRequest.predicate = predicate;
-    NSError *error;
-    if(![self.fetchResultsController performFetch:&error]){
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-    [self.collectionView reloadData];
+    _realDataSource = realDataSource;
+    _realDataSource.delegate = self;
 }
 
-- (NSPredicate *)predicate
-{
-    return self.fetchResultsController.fetchRequest.predicate;
+#pragma mark - Adapter -
+
+- (void)setPredicate:(NSPredicate *)predicate {
+    [self.realDataSource setPredicate:predicate];
 }
 
-#pragma mark - Object At IndexPath -
-
-- (NSInteger)itemsCount
-{
-    return [[[[self.fetchResultsController sections] firstObject] objects] count];
+- (NSPredicate *)predicate {
+    return self.realDataSource.predicate;
 }
 
-- (id)itemAtIndexPath:(NSIndexPath*)indexPath
-{
-    return [self.fetchResultsController objectAtIndexPath:indexPath];
+- (NSInteger)numberOfSections {
+    return [self.realDataSource numberOfSections];
 }
 
-#pragma mark - Delete -
+- (NSInteger)numberOfObjectsInSection:(NSInteger)sectionIndex {
+    return [self.realDataSource numberOfObjectsInSection:sectionIndex];
+}
 
-#pragma mark - Fetch Request -
+- (id<ALDataSourceAbstractSectionItem>)sectionAtIndex:(NSInteger)sectionIndex {
+    return [self.realDataSource sectionAtIndex:sectionIndex];
+}
 
-- (NSFetchedResultsController*)fetchResultsController
-{
-    if (!_fetchResultsController) {
-        _fetchResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:self.fetchRequest
-                                                                      managedObjectContext:self.managedObjectContext
-                                                                        sectionNameKeyPath:nil
-                                                                                 cacheName:nil];
-        _fetchResultsController.delegate = self;
-        
-        NSError *error = nil;
-        if(![_fetchResultsController performFetch:&error]){
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }
-    }
-    return _fetchResultsController;
+- (id)objectAtIndexPath:(NSIndexPath*)indexPath {
+    return [self.realDataSource objectAtIndexPath:indexPath];
+}
+
+- (NSIndexPath*)indexPathForObject:(id)object {
+    return [self.realDataSource indexPathForObject:object];
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate -
+
+- (void)reloadDataWithDataSourceWithFetchedResultsController:(ALDataSourceWithFetchedResultsController *)dataSourceWithFetchedResultsController
+{
+    [self.collectionView reloadData];
+}
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
@@ -131,7 +113,11 @@
     }
 }
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
 {
     __weak UICollectionView *collectionView = self.collectionView;
     switch (type) {

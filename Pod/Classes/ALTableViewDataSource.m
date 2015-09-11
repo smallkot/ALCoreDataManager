@@ -28,9 +28,14 @@
 
 #pragma mark - UITableViewDataSource -
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return [self numberOfSections];
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self itemsCount];
+    return [self numberOfObjectsInSection:section];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -42,6 +47,11 @@
     self.cellConfigurationBlock(cell, indexPath);
     
     return cell;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return [[self sectionAtIndex:section] name];
 }
 
 - (void)configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath

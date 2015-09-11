@@ -10,18 +10,23 @@
 
 @implementation ALDataSourceAbstract
 
-- (NSInteger)itemsCount
-{
+- (NSInteger)numberOfSections {
     return 0;
 }
 
-- (id)itemAtIndexPath:(NSIndexPath*)indexPath
-{
+- (NSInteger)numberOfObjectsInSection:(NSInteger)sectionIndex {
+    return 0;
+}
+
+- (id<ALDataSourceAbstractSectionItem>)sectionAtIndex:(NSInteger)sectionIndex {
     return nil;
 }
 
-- (NSIndexPath*)indexPathForItem:(id)item
-{
+- (id)objectAtIndexPath:(NSIndexPath*)indexPath {
+    return nil;
+}
+
+- (NSIndexPath*)indexPathForObject:(id)object {
     return nil;
 }
 

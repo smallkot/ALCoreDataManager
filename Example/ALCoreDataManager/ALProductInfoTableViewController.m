@@ -9,8 +9,10 @@
 #import "ALProductInfoTableViewController.h"
 
 #import "Product.h"
+#import "Country.h"
 
 #import "ALTextEditTableViewCell.h"
+#import "ALSelectContryTableViewCell.h"
 
 #import <ALCoreDataManager/ALCoreData.h>
 
@@ -36,7 +38,7 @@ static NSString *const CellReuseIdentifierForALTextEditTableViewCell = @"ALTextE
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -58,6 +60,10 @@ static NSString *const CellReuseIdentifierForALTextEditTableViewCell = @"ALTextE
             
         case 2:
             title = NSLocalizedString(@"AMOUNT", @"");
+            break;
+            
+        case 3:
+            title = NSLocalizedString(@"COUNTRY", @"");
             break;
             
         default:
@@ -87,6 +93,7 @@ static NSString *const CellReuseIdentifierForALTextEditTableViewCell = @"ALTextE
     ALTextEditTableViewCell *titleCell = (ALTextEditTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     ALTextEditTableViewCell *priceCell = (ALTextEditTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     ALTextEditTableViewCell *amountCell = (ALTextEditTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+    ALSelectContryTableViewCell *countryCell = (ALSelectContryTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
     
     titleCell.textField.text = self.product.title;
     
@@ -95,6 +102,8 @@ static NSString *const CellReuseIdentifierForALTextEditTableViewCell = @"ALTextE
     
     priceCell.textField.text = [numberFormatter stringFromNumber:self.product.price];
     amountCell.textField.text = [numberFormatter stringFromNumber:self.product.amount];
+    
+    countryCell.textField.text = self.product.country.name;
 }
 
 #pragma mark - Actions -
@@ -104,6 +113,7 @@ static NSString *const CellReuseIdentifierForALTextEditTableViewCell = @"ALTextE
     ALTextEditTableViewCell *titleCell = (ALTextEditTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     ALTextEditTableViewCell *priceCell = (ALTextEditTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     ALTextEditTableViewCell *amountCell = (ALTextEditTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+    ALSelectContryTableViewCell *countryCell = (ALSelectContryTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
 
     NSString *title = titleCell.textField.text;
     self.product.title = title;
@@ -113,6 +123,8 @@ static NSString *const CellReuseIdentifierForALTextEditTableViewCell = @"ALTextE
 
     self.product.price = [numberFormatter numberFromString:priceCell.textField.text];
     self.product.amount = [numberFormatter numberFromString:amountCell.textField.text];
+    
+    self.product.country  = countryCell.contry;
     
     [[ALCoreDataManager defaultManager] saveContext];
     

@@ -11,11 +11,14 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class ALDataSourceWithFetchedResultsController;
+
 @interface ALCollectionViewDataSourceWithFetchedResultsController : ALCollectionViewDataSource
 
--(instancetype)initWithFetchRequest:(NSFetchRequest *)fetchRequest
-               managedObjectContext:(NSManagedObjectContext *)managedObjectContext
-             cellConfigurationBlock:(ALCollectionViewCellConfigurationBlock)cellConfigurationBlock
-             andReuseIdentiferBlock:(ALCollectionViewCellReuseIdentiferBlock)reuseIdentifierBlock;
+@property (strong, nonatomic) ALDataSourceWithFetchedResultsController *realDataSource;
+
+-(instancetype)initWithRealDataSource:(ALDataSourceWithFetchedResultsController*)realDataSource
+               cellConfigurationBlock:(ALCollectionViewCellConfigurationBlock)cellConfigurationBlock
+               andReuseIdentiferBlock:(ALCollectionViewCellReuseIdentiferBlock)reuseIdentifierBlock;
 
 @end

@@ -1,5 +1,8 @@
 target 'ALCoreDataManager', :exclusive => true do
   pod "ALCoreDataManager", :path => "../"
+
+  pod "RMPickerViewController"
+
 end
 
 target 'Tests', :exclusive => true do

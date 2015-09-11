@@ -7,93 +7,71 @@
 //
 
 #import "ALTableViewDataSourceWithFetchedResultsController.h"
+#import "ALDataSourceWithFetchedResultsController.h"
 
-@interface ALTableViewDataSourceWithFetchedResultsController () <NSFetchedResultsControllerDelegate>
-
-// dependencies
-@property (strong, nonatomic) NSFetchRequest *fetchRequest;
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
-// fetched results controller
-@property (strong, nonatomic) NSFetchedResultsController *fetchResultsController;
+@interface ALTableViewDataSourceWithFetchedResultsController () <ALDataSourceWithFetchedResultsControllerDelegate>
 
 @end
 
 @implementation ALTableViewDataSourceWithFetchedResultsController
 
-@synthesize fetchResultsController = _fetchResultsController;
-
--(instancetype)initWithFetchRequest:(NSFetchRequest *)fetchRequest
-               managedObjectContext:(NSManagedObjectContext *)managedObjectContext
-             cellConfigurationBlock:(ALTableViewCellConfigurationBlock)cellConfigurationBlock
-             andReuseIdentiferBlock:(ALTableViewCellReuseIdentiferBlock)reuseIdentifierBlock
+- (instancetype)initWithRealDataSource:(ALDataSourceWithFetchedResultsController*)realDataSource
+                cellConfigurationBlock:(ALTableViewCellConfigurationBlock)cellConfigurationBlock
+                andReuseIdentiferBlock:(ALTableViewCellReuseIdentiferBlock)reuseIdentifierBlock
 {
     if (self = [super initWithCellConfigurationBlock:cellConfigurationBlock
-                              andReuseIdentiferBlock:reuseIdentifierBlock]) {
-        self.fetchRequest = fetchRequest;
-        self.managedObjectContext = managedObjectContext;
+                              andReuseIdentiferBlock:reuseIdentifierBlock])
+    {
+        self.realDataSource = realDataSource;
     }
     return self;
 }
 
-#pragma mark - Predicate - 
-
-- (void)setPredicate:(NSPredicate*)predicate
+- (void)setRealDataSource:(ALDataSourceWithFetchedResultsController *)realDataSource
 {
-    self.fetchResultsController.fetchRequest.predicate = predicate;
-    NSError *error;
-    if(![self.fetchResultsController performFetch:&error]){
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-    [self.tableView reloadData];
+    _realDataSource = realDataSource;
+    _realDataSource.delegate = self;
 }
 
-- (NSPredicate *)predicate
-{
-    return self.fetchResultsController.fetchRequest.predicate;
+#pragma mark - Adapter -
+
+- (void)setPredicate:(NSPredicate *)predicate {
+    [self.realDataSource setPredicate:predicate];
 }
 
-#pragma mark - Object At IndexPath -
-
-- (NSInteger)itemsCount
-{
-    return [[[[self.fetchResultsController sections] firstObject] objects] count];
+- (NSPredicate *)predicate {
+    return self.realDataSource.predicate;
 }
 
-- (id)itemAtIndexPath:(NSIndexPath*)indexPath
-{
-    return [self.fetchResultsController objectAtIndexPath:indexPath];
+- (NSInteger)numberOfSections {
+    return [self.realDataSource numberOfSections];
 }
 
-- (NSIndexPath *)indexPathForItem:(id)item
-{
-    return [self.fetchResultsController indexPathForObject:item];
+- (NSInteger)numberOfObjectsInSection:(NSInteger)sectionIndex {
+    return [self.realDataSource numberOfObjectsInSection:sectionIndex];
 }
 
-#pragma mark - Fetch Request -
+- (id<ALDataSourceAbstractSectionItem>)sectionAtIndex:(NSInteger)sectionIndex {
+    return [self.realDataSource sectionAtIndex:sectionIndex];
+}
 
-- (NSFetchedResultsController*)fetchResultsController
-{
-    if (!_fetchResultsController) {
-        _fetchResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:self.fetchRequest
-                                                                      managedObjectContext:self.managedObjectContext
-                                                                        sectionNameKeyPath:nil
-                                                                                 cacheName:nil];
-        _fetchResultsController.delegate = self;
-        
-        NSError *error = nil;
-        if(![_fetchResultsController performFetch:&error]){
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }
-    }
-    return _fetchResultsController;
+- (id)objectAtIndexPath:(NSIndexPath*)indexPath {
+    return [self.realDataSource objectAtIndexPath:indexPath];
+}
+
+- (NSIndexPath*)indexPathForObject:(id)object {
+    return [self.realDataSource indexPathForObject:object];
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate -
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller{
+- (void)reloadDataWithDataSourceWithFetchedResultsController:(ALDataSourceWithFetchedResultsController *)dataSourceWithFetchedResultsController
+{
+    [self.tableView reloadData];
+}
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
     UITableView *tableView = self.tableView;
     [tableView beginUpdates];
 }
@@ -156,7 +134,8 @@
     }
 }
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
     UITableView *tableView = self.tableView;
     [tableView endUpdates];
 }
