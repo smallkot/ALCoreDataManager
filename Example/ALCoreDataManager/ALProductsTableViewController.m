@@ -48,12 +48,12 @@ static NSString *const kCountry = @"country";
         return TableViewCellReuseIdentifier;
     };
     NSManagedObjectContext *context = [ALCoreDataManager defaultManager].managedObjectContext;
-    ALFetchRequest *request = [[[Product all] orderedBy:@[kTitle, kPrice]] groupedBy:@[kCountry]];
+    ALFetchRequest *request = [[Product all] orderedBy:@[kTitle, kPrice]];
     assert(request);
     ALDataSourceWithFetchedResultsController *realDataSource =
     [[ALDataSourceWithFetchedResultsController alloc] initWithFetchRequest:request
                                                       managedObjectContext:context
-                                                        sectionNameKeyPath:@"country.name"
+                                                        sectionNameKeyPath:nil //@"country.name"
                                                                  cacheName:nil];
 
     self.dataSource = [realDataSource tableViewDataSource];
@@ -100,12 +100,15 @@ static NSString *const kCountry = @"country";
         if (buttonIndex > 0) {
             NSString *title = [[alertView textFieldAtIndex:0] text];
             if ([title length]) {
+                id item =
                 [Product createWithFields:@{
                                             kTitle : title,
                                             kPrice : @(0),
                                             kAmount : @(0)
                                             }
                              usingFactory:[ALManagedObjectFactory defaultFactory]];
+                
+                NSLog(@"%@",item);
             }
         }
     }

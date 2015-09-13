@@ -59,7 +59,7 @@ static const NSInteger ALAlertViewTagAdd = 100;
 }
 
 #pragma mark - TableView DataSource and Delegate
-
+    
 - (void)configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
 {
     id item = [self.dataSource objectAtIndexPath:indexPath];
@@ -89,10 +89,13 @@ static const NSInteger ALAlertViewTagAdd = 100;
                 Class itemsClass = NSClassFromString(self.entityClassName);
                 NSString *titlePath = self.titlePath;
 
+                id item =
                 [itemsClass createWithFields:@{
                                             titlePath : title,
                                             }
                              usingFactory:[ALManagedObjectFactory defaultFactory]];
+
+                NSLog(@"%@",item);
             }
         }
     }

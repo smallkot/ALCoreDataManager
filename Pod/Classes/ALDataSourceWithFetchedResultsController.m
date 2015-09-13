@@ -71,9 +71,9 @@
     return [[self.fetchResultsController sections] count];
 }
 
-- (NSInteger)numberOfItemsInSection:(NSInteger)sectionIndex
+- (NSInteger)numberOfObjectsInSection:(NSInteger)sectionIndex
 {
-    return [[[self.fetchResultsController sections] objectAtIndex:sectionIndex] numberOfObjects];
+    return [[[[self.fetchResultsController sections] objectAtIndex:sectionIndex] objects] count];
 }
 
 - (id<ALDataSourceAbstractSectionItem>)sectionAtIndex:(NSInteger)sectionIndex
@@ -100,6 +100,9 @@
                                                                       managedObjectContext:self.managedObjectContext
                                                                         sectionNameKeyPath:self.sectionNameKeyPath
                                                                                  cacheName:self.cacheName];
+        
+        _fetchResultsController.delegate = self.delegate;
+
         NSError *error = nil;
         if(![_fetchResultsController performFetch:&error]) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -112,8 +115,7 @@
 - (void)setDelegate:(id<ALDataSourceWithFetchedResultsControllerDelegate>)delegate
 {
     _delegate = delegate;
-    
-    self.fetchResultsController.delegate = self.delegate;
+    self.fetchResultsController.delegate = _delegate;
 }
 
 @end
