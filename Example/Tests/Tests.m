@@ -77,16 +77,16 @@ describe(@"in memory store", ^{
 	
 	it(@"should be fetched", ^{
 		
-		Product *a = item(@"A",@(100),@(10));
+		Product *a = item(@"A",@(175),@(10));
 		
 		expect(a).notTo.beNil;
 		expect(a.title).to.equal(@"A");
-		expect(a.price).to.equal(@(100));
+		expect(a.price).to.equal(@(175));
 		expect(a.amount).to.equal(@(10));
 	});
 	
 	it(@"should be update", ^{
-		Product *a = item(@"A",@(100),@(10));
+		Product *a = item(@"A",@(175),@(10));
 		
 		a.title = @"B";
 		a.price = @(120);
