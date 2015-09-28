@@ -239,12 +239,13 @@ describe(@"query builder", ^{
 		expect(onlyDistinct).equal(YES);
 	});
 	
-	it(@"should aggregate", ^{
-		NSArray *items = [[[[[Product allInManagedObjectContext:context
-						   ] aggregatedBy:@[@[kAggregatorMax,@"price"]]
-						   ] groupedBy:@[@"amount"]
-						  ] having:[NSPredicate predicateWithFormat:@"amount >= 10"]
-						  ] execute];
+	it(@"should aggregate", ^{        
+		NSArray *items =
+        [[[[[Product allInManagedObjectContext:context
+             ] aggregatedBy:@[@[kAggregatorMax,@"price"]]
+            ] groupedBy:@[@"amount"]
+           ] having:[NSPredicate predicateWithFormat:@"amount >= 10"]
+          ] execute];
 		
 		double maxPrice = -1;
 		for(NSDictionary *d in items){

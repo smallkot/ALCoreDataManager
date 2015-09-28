@@ -11,6 +11,8 @@
 #import <CoreData/CoreData.h>
 #import <ALCoreDataManager/ALCoreData.h>
 
+#import <ALCoreDataManager/ALFetchRequest+QueryBuilder.h>
+
 static NSString *const CellReuseIdentifierForCell = @"Cell"; // Default Cell Reuse Identifier
 
 

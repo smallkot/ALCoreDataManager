@@ -29,7 +29,6 @@ static NSString *const kCountry = @"country";
 
 @property (strong, nonatomic) ALTableViewDataSourceWithFetchedResultsController *dataSource;
 - (Product*)productAtIndexPath:(NSIndexPath*)indexPath;
-
 @end
 
 @implementation ALProductsTableViewController
@@ -39,7 +38,7 @@ static NSString *const kCountry = @"country";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     __weak typeof(self) weakSelf = self;
     ALTableViewCellConfigurationBlock configurationBlock = ^(UITableViewCell *cell, NSIndexPath *indexPath){
         [weakSelf configureCell:cell atIndexPath:indexPath];
