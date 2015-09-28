@@ -13,7 +13,6 @@
 #import <ALCoreDataManager/NSManagedObject+Create.h>
 #import <ALCoreDataManager/NSManagedObject+FetchRequest.h>
 #import <ALCoreDataManager/ALFetchRequest+QueryBuilder.h>
-#import <ALCoreDataManager/NSManagedObject+ActiveQuery.h>
 #import <ALCoreDataManager/ALFetchRequest+DataSource.h>
 #import <ALCoreDataManager/ALFetchRequest+DataSource.h>
 
