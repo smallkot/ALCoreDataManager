@@ -26,10 +26,4 @@
 	return fetchRequest;
 }
 
-+ (ALFetchRequest*)all
-{
-	NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;
-	return [self allInManagedObjectContext:managedObjectContext];
-}
-
 @end

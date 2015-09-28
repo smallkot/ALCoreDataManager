@@ -9,7 +9,6 @@
 #import "NSManagedObject+Create.h"
 #import "NSManagedObject+Helper.h"
 #import "ALCoreDataManager+Singleton.h"
-#import "ALManagedObjectFactory+Singleton.h"
 
 @implementation NSManagedObject (Create)
 
@@ -25,18 +24,6 @@
 				  forKey:key];
 	}
 	return object;
-}
-
-+ (NSManagedObject*)createWithFields:(NSDictionary*)fields
-{
-	ALManagedObjectFactory *factory = [ALManagedObjectFactory defaultFactory];
-	return [self createWithFields:fields
-					 usingFactory:factory];
-}
-
-+ (NSManagedObject *)create
-{
-	return [self createWithFields:nil];
 }
 
 - (void)remove

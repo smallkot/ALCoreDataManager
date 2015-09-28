@@ -15,35 +15,6 @@
 /**
  A class method for creating new entities.
  
- @returns Returns en entity from caller's class name.
- 
- @code
- Item *item = [Item create];
- @endcode
- 
- Example above returns object of class Item. For building defaultFactory is used.
- */
-+ (NSManagedObject*)create;
-
-/**
- A class method for creating new entities.
- 
- @returns Returns en entity from caller's class name and intialized accroding to given dictionary.
- 
- @code
- Item *item = [Item createWithFields:@{
-                                       @"title":@"ABC", 
-                                       @"price":@(100)
- }];
- @endcode
- 
- Example above returns object of class Item. For building defaultFactory is used.
- */
-+ (NSManagedObject*)createWithFields:(NSDictionary*)fields;
-
-/**
- A class method for creating new entities.
- 
  @returns Returns en entity from caller's class name and intialized accroding to given dictionary.
  
  @code
@@ -59,7 +30,7 @@
 						usingFactory:(ALManagedObjectFactory*)factory;
 
 /**
- Removes the called.
+ Removes the reciever object.
  
  @code
  Item *item = ...;

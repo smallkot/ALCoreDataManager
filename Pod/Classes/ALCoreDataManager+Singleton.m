@@ -8,6 +8,8 @@
 
 #import "ALCoreDataManager+Singleton.h"
 
+@import CoreData;
+
 static NSString *DefaultCoreDataModelName = nil;
 
 @implementation ALCoreDataManager (Singleton)
@@ -29,6 +31,54 @@ static NSString *DefaultCoreDataModelName = nil;
 + (NSManagedObjectContext *)defaultContext
 {
 	return [ALCoreDataManager defaultManager].managedObjectContext;
+}
+
+@end
+
+@implementation ALManagedObjectFactory (Singleton)
+
++ (ALManagedObjectFactory*)defaultFactory
+{
+    static ALManagedObjectFactory *factory;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;
+        factory =
+        [[ALManagedObjectFactory alloc] initWithManagedObjectContext:managedObjectContext
+                                           andEntityDescriptionClass:[NSEntityDescription class]];
+    });
+    return factory;
+}
+
+@end
+
+@implementation NSManagedObject (FetchRequestSingleton)
+
++ (ALFetchRequest*)all
+{
+    NSManagedObjectContext *managedObjectContext = [ALCoreDataManager defaultManager].managedObjectContext;
+    return [self allInManagedObjectContext:managedObjectContext];
+}
+
+@end
+
+@implementation NSManagedObject (CreateSingleton)
+
++ (NSManagedObject*)createWithFields:(NSDictionary*)fields
+{
+    ALManagedObjectFactory *factory = [ALManagedObjectFactory defaultFactory];
+    return [self createWithFields:fields
+                     usingFactory:factory];
+}
+
++ (NSManagedObject *)create
+{
+    return [self createWithFields:nil];
+}
+
+- (void)remove
+{
+    [self.managedObjectContext deleteObject:self];
 }
 
 @end

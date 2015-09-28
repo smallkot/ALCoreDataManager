@@ -47,6 +47,7 @@ static NSString *const kCountry = @"country";
     ALTableViewCellReuseIdentiferBlock reuseIdentiferBlock = ^(NSIndexPath *indexPath){
         return TableViewCellReuseIdentifier;
     };
+    
     NSManagedObjectContext *context = [ALCoreDataManager defaultManager].managedObjectContext;
     ALFetchRequest *request = [[Product all] orderedBy:@[kTitle, kPrice]];
     assert(request);
