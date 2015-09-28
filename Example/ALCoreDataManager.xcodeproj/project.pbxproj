@@ -7,13 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E77BF501BB98FD600C45452 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E77BF4E1BB98FD600C45452 /* LaunchScreen.xib */; settings = {ASSET_TAGS = (); }; };
 		3ED515311B887700006FA2BC /* ALProductInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ED515301B887700006FA2BC /* ALProductInfoTableViewController.m */; };
 		3ED515361B887B3A006FA2BC /* ALTextEditTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ED515351B887B3A006FA2BC /* ALTextEditTableViewCell.m */; };
 		3EEEC8191BA2DB1E00844B82 /* Product.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EEEC8181BA2DB1E00844B82 /* Product.m */; };
-		3EEEC81C1BA2DB1E00844B82 /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EEEC81B1BA2DB1E00844B82 /* Country.m */; };
-		3EEEC8201BA2E11000844B82 /* ALTableViewControllerWithEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EEEC81F1BA2E11000844B82 /* ALTableViewControllerWithEntity.m */; };
-		3EEEC8231BA2F49600844B82 /* ALSelectContryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EEEC8221BA2F49600844B82 /* ALSelectContryTableViewCell.m */; };
-		3EEEC8261BA2F8FA00844B82 /* ALContryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EEEC8251BA2F8FA00844B82 /* ALContryDataSource.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -49,20 +46,13 @@
 		14A0AA846987F614593337FA /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		2AA9F310612F47F5B603067F /* libPods-ALCoreDataManager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ALCoreDataManager.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EB275AB9A4D1391B4F04585 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		3E77BF4F1BB98FD600C45452 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		3ED5152F1B887700006FA2BC /* ALProductInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALProductInfoTableViewController.h; sourceTree = "<group>"; };
 		3ED515301B887700006FA2BC /* ALProductInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALProductInfoTableViewController.m; sourceTree = "<group>"; };
 		3ED515341B887B3A006FA2BC /* ALTextEditTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTextEditTableViewCell.h; sourceTree = "<group>"; };
 		3ED515351B887B3A006FA2BC /* ALTextEditTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTextEditTableViewCell.m; sourceTree = "<group>"; };
 		3EEEC8171BA2DB1E00844B82 /* Product.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Product.h; sourceTree = "<group>"; };
 		3EEEC8181BA2DB1E00844B82 /* Product.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Product.m; sourceTree = "<group>"; };
-		3EEEC81A1BA2DB1E00844B82 /* Country.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Country.h; sourceTree = "<group>"; };
-		3EEEC81B1BA2DB1E00844B82 /* Country.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Country.m; sourceTree = "<group>"; };
-		3EEEC81E1BA2E11000844B82 /* ALTableViewControllerWithEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTableViewControllerWithEntity.h; sourceTree = "<group>"; };
-		3EEEC81F1BA2E11000844B82 /* ALTableViewControllerWithEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTableViewControllerWithEntity.m; sourceTree = "<group>"; };
-		3EEEC8211BA2F49600844B82 /* ALSelectContryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALSelectContryTableViewCell.h; sourceTree = "<group>"; };
-		3EEEC8221BA2F49600844B82 /* ALSelectContryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALSelectContryTableViewCell.m; sourceTree = "<group>"; };
-		3EEEC8241BA2F8FA00844B82 /* ALContryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALContryDataSource.h; sourceTree = "<group>"; };
-		3EEEC8251BA2F8FA00844B82 /* ALContryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALContryDataSource.m; sourceTree = "<group>"; };
 		4E9DE7585F2B49AA8FC6064E /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* ALCoreDataManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ALCoreDataManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -122,11 +112,7 @@
 			children = (
 				3EEEC8171BA2DB1E00844B82 /* Product.h */,
 				3EEEC8181BA2DB1E00844B82 /* Product.m */,
-				3EEEC81A1BA2DB1E00844B82 /* Country.h */,
-				3EEEC81B1BA2DB1E00844B82 /* Country.m */,
 				8F9BDCF71997F73000B79B79 /* Model.xcdatamodeld */,
-				3EEEC8241BA2F8FA00844B82 /* ALContryDataSource.h */,
-				3EEEC8251BA2F8FA00844B82 /* ALContryDataSource.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -145,8 +131,6 @@
 			children = (
 				6003F59F195388D20070C39A /* Main_iPhone.storyboard */,
 				3ED5152E1B8876E0006FA2BC /* ViewControllers */,
-				3EEEC81E1BA2E11000844B82 /* ALTableViewControllerWithEntity.h */,
-				3EEEC81F1BA2E11000844B82 /* ALTableViewControllerWithEntity.m */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -176,8 +160,6 @@
 				3ED515301B887700006FA2BC /* ALProductInfoTableViewController.m */,
 				3ED515341B887B3A006FA2BC /* ALTextEditTableViewCell.h */,
 				3ED515351B887B3A006FA2BC /* ALTextEditTableViewCell.m */,
-				3EEEC8211BA2F49600844B82 /* ALSelectContryTableViewCell.h */,
-				3EEEC8221BA2F49600844B82 /* ALSelectContryTableViewCell.m */,
 			);
 			name = ProductDetail;
 			sourceTree = "<group>";
@@ -230,6 +212,7 @@
 		6003F594195388D20070C39A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3E77BF4E1BB98FD600C45452 /* LaunchScreen.xib */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F595195388D20070C39A /* ALCoreDataManager-Info.plist */,
 				6003F596195388D20070C39A /* InfoPlist.strings */,
@@ -360,6 +343,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E77BF501BB98FD600C45452 /* LaunchScreen.xib in Resources */,
 				8FC594CE1AA6B71C002A110A /* ALCoreDataManager.podspec in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F5A1195388D20070C39A /* Main_iPhone.storyboard in Resources */,
@@ -445,17 +429,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3EEEC81C1BA2DB1E00844B82 /* Country.m in Sources */,
 				3EEEC8191BA2DB1E00844B82 /* Product.m in Sources */,
 				6003F59E195388D20070C39A /* ALAppDelegate.m in Sources */,
 				3ED515361B887B3A006FA2BC /* ALTextEditTableViewCell.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
-				3EEEC8261BA2F8FA00844B82 /* ALContryDataSource.m in Sources */,
-				3EEEC8231BA2F49600844B82 /* ALSelectContryTableViewCell.m in Sources */,
 				8F9BDCF91997F73000B79B79 /* Model.xcdatamodeld in Sources */,
 				3ED515311B887700006FA2BC /* ALProductInfoTableViewController.m in Sources */,
 				8FFD97551AB55952003D417E /* ALProductsTableViewController.m in Sources */,
-				3EEEC8201BA2E11000844B82 /* ALTableViewControllerWithEntity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -478,6 +458,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		3E77BF4E1BB98FD600C45452 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3E77BF4F1BB98FD600C45452 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
 		6003F596195388D20070C39A /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -581,8 +569,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D348B717734FBFFF3CB43425 /* Pods-ALCoreDataManager.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ALCoreDataManager/ALCoreDataManager-Prefix.pch";
 				INFOPLIST_FILE = "ALCoreDataManager/ALCoreDataManager-Info.plist";
@@ -597,8 +583,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0E5EB074FD4D7E3A13706BDC /* Pods-ALCoreDataManager.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ALCoreDataManager/ALCoreDataManager-Prefix.pch";
 				INFOPLIST_FILE = "ALCoreDataManager/ALCoreDataManager-Info.plist";

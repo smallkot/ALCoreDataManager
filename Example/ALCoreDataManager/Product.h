@@ -9,13 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Country;
-
 @interface Product : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * amount;
 @property (nonatomic, retain) NSNumber * price;
 @property (nonatomic, retain) NSString * title;
-@property (nonatomic, retain) Country *country;
+@property (nonatomic, retain) NSString * country;
 
 @end

@@ -48,13 +48,11 @@ static NSString *const kCountry = @"country";
         return TableViewCellReuseIdentifier;
     };
     NSManagedObjectContext *context = [ALCoreDataManager defaultManager].managedObjectContext;
-    ALFetchRequest *request = [[[Product all] orderedBy:@[kTitle, kPrice]] groupedBy:@[kCountry]];
+    ALFetchRequest *request = [[Product all] orderedBy:@[kTitle, kPrice]];
     assert(request);
     ALDataSourceWithFetchedResultsController *realDataSource =
     [[ALDataSourceWithFetchedResultsController alloc] initWithFetchRequest:request
-                                                      managedObjectContext:context
-                                                        sectionNameKeyPath:@"country.name"
-                                                                 cacheName:nil];
+                                                      managedObjectContext:context];
 
     self.dataSource = [realDataSource tableViewDataSource];
     self.dataSource.cellConfigurationBlock = configurationBlock;
@@ -104,8 +102,7 @@ static NSString *const kCountry = @"country";
                                             kTitle : title,
                                             kPrice : @(0),
                                             kAmount : @(0)
-                                            }
-                             usingFactory:[ALManagedObjectFactory defaultFactory]];
+                                            }];
             }
         }
     }

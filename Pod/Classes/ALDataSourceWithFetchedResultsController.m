@@ -71,7 +71,7 @@
     return [[self.fetchResultsController sections] count];
 }
 
-- (NSInteger)numberOfItemsInSection:(NSInteger)sectionIndex
+- (NSInteger)numberOfObjectsInSection:(NSInteger)sectionIndex
 {
     return [[[self.fetchResultsController sections] objectAtIndex:sectionIndex] numberOfObjects];
 }
