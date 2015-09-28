@@ -19,7 +19,7 @@ SpecBegin(ALCoreDataManager)
 
 describe(@"default managed object context", ^{
 	it(@"should not be nil", ^{
-		expect([ALCoreDataManager defaultManager].managedObjectContext).notTo.beNil;
+		expect([ALCoreDataManager defaultManager].managedObjectContext).notTo.beNil();
 	});
 });
 
@@ -63,14 +63,14 @@ describe(@"in memory store", ^{
 		
 		Product *a = (Product*)[Product createWithFields:@{
 												  @"title" : @"A",
-												  @"price" : @(100),
+												  @"price" : @(175),
 												  @"amount" : @(10)
 												  }
 								   usingFactory:factory];
 		
 		expect(a).notTo.beNil;
 		expect([a valueForKey:@"title"]).equal(@"A");
-		expect([a valueForKey:@"price"]).equal(@(100));
+		expect([a valueForKey:@"price"]).equal(@(175));
 		expect([a valueForKey:@"amount"]).equal(@(10));
 		
 	});
@@ -141,8 +141,8 @@ describe(@"query builder", ^{
 									   usingFactory:factory];
 			
 			a.title = [NSString stringWithFormat:@"%c",'A'+i];
-			a.price = @(100 + (rand()%10));
-			a.amount = @(10 + (rand()%10));
+			a.price = @(144 + (rand()%64));
+			a.amount = @(8 + (rand()%32));
 		}
 		
 		Product *a = (Product*)[Product createWithFields:nil
