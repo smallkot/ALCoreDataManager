@@ -8,8 +8,6 @@
 
 #import <Specta/Specta.h>
 #import <Expecta/Expecta.h>
-#define MOCKITO_SHORTHAND
-#import <OCMockito/OCMockito.h>
 
 #import <ALCoreDataManager/ALCoreData.h>
 
