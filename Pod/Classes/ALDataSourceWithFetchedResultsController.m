@@ -43,6 +43,14 @@
                             cacheName:nil];
 }
 
+- (instancetype)init
+{
+    return [self initWithFetchRequest:nil
+                 managedObjectContext:nil
+                   sectionNameKeyPath:nil
+                            cacheName:nil];
+}
+
 #pragma mark - Predicate -
 
 - (void)setPredicate:(NSPredicate*)predicate

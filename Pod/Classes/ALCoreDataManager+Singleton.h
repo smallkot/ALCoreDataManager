@@ -92,4 +92,15 @@
  */
 + (ALFetchRequest*)all;
 
+/**
+ Fetch request for query builder. Synonim for ``all'' method.
+ 
+ @code
+ NSArray *items =
+ [[[Item fetch] orderBy:@[@"title"]] execute];
+ @endcode
+
+ */
++ (ALFetchRequest*)fetch;
+
 @end

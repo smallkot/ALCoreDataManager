@@ -12,6 +12,8 @@
 
 static NSString *DefaultCoreDataModelName = nil;
 
+#pragma mark -
+
 @implementation ALCoreDataManager (Singleton)
 
 + (void)setDefaultCoreDataModelName:(NSString*)modelName
@@ -35,6 +37,8 @@ static NSString *DefaultCoreDataModelName = nil;
 
 @end
 
+#pragma mark - Factory -
+
 @implementation ALManagedObjectFactory (Singleton)
 
 + (ALManagedObjectFactory*)defaultFactory
@@ -52,6 +56,8 @@ static NSString *DefaultCoreDataModelName = nil;
 
 @end
 
+#pragma mark - Fetch - 
+
 @implementation NSManagedObject (FetchRequestSingleton)
 
 + (ALFetchRequest*)all
@@ -60,7 +66,14 @@ static NSString *DefaultCoreDataModelName = nil;
     return [self allInManagedObjectContext:managedObjectContext];
 }
 
++ (ALFetchRequest*)fetch 
+{
+    return [self all];
+}
+
 @end
+
+#pragma mark - Create -
 
 @implementation NSManagedObject (CreateSingleton)
 
@@ -74,11 +87,6 @@ static NSString *DefaultCoreDataModelName = nil;
 + (NSManagedObject *)create
 {
     return [self createWithFields:nil];
-}
-
-- (void)remove
-{
-    [self.managedObjectContext deleteObject:self];
 }
 
 @end

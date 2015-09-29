@@ -37,8 +37,10 @@
                   sectionNameKeyPath:(NSString *)sectionNameKeyPath
                            cacheName:(NSString *)cacheName NS_DESIGNATED_INITIALIZER;
 
--(instancetype)initWithFetchRequest:(NSFetchRequest *)fetchRequest
-               managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (instancetype)initWithFetchRequest:(NSFetchRequest *)fetchRequest
+                managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+
+- (instancetype)init;
 
 @end
 
