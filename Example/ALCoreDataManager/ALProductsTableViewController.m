@@ -26,36 +26,16 @@ static NSString *const kPrice = @"price";
 static NSString *const kAmount = @"amount";
 static NSString *const kCountry = @"country";
 
-@interface ALProductsTableViewController () <UIAlertViewDelegate, UIActionSheetDelegate>
+@interface ALProductsTableViewController ()
 @end
 
 @implementation ALProductsTableViewController
 
-#pragma mark - View Lifecycle -
+#pragma mark - View Controller Lifecycle -
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    __weak typeof(self) weakSelf = self;
-    
-    NSManagedObjectContext *context = [ALCoreDataManager defaultManager].managedObjectContext;
-    ALFetchRequest *request = [[Product all] orderedBy:@[kTitle, kPrice]];
-    assert(request);
-    ALDataSourceWithFetchedResultsController *realDataSource =
-    [[ALDataSourceWithFetchedResultsController alloc] initWithFetchRequest:request
-                                                      managedObjectContext:context];
-
-    self.dataSource = [realDataSource tableViewDataSource];
-    self.dataSource.cellConfigurationBlock = ^(UITableViewCell *cell, NSIndexPath *indexPath){
-        Product *item = (Product *)[weakSelf.dataSource objectAtIndexPath:indexPath];
-        cell.textLabel.text = item.title;
-        cell.detailTextLabel.text = [item.price stringValue];
-    };
-    
-    self.dataSource.reuseIdentifierBlock = ^(NSIndexPath *indexPath){
-        return @"Cell";
-    };
     
     self.dataSource.tableView = self.tableView;
 }
@@ -81,10 +61,12 @@ static NSString *const kCountry = @"country";
                                             kTitle : title,
                                             kPrice : @(0),
                                             kAmount : @(0)
-                                            }];
+                                            }
+                             usingFactory:self.factory];
             }
         }
     };
+    
     [alertView show];
 }
 
@@ -105,29 +87,28 @@ static NSString *const kCountry = @"country";
             case 1:
                 request = [[Product all] aggregatedBy:@[@[kAggregatorSum, kAmount]]];
                 break;
-                
-                
             case 2:
                 request = [[Product all] aggregatedBy:@[@[kAggregatorAverage, kPrice]]];
                 break;
-                
             default:
                 break;
         }
         
-        NSLog(@"REQUEST: %@", request);
-        
-        NSArray *result = [request execute];
-        NSDictionary *d = [result firstObject];
-        
-        UIAlertView *alertView =
-        [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LOG", @"")
-                                   message:[NSString stringWithFormat:NSLocalizedString(@"RESULT: %@", @""), d]
-                                  delegate:nil
-                         cancelButtonTitle:NSLocalizedString(@"Good", @"")
-                         otherButtonTitles:nil];
-        
-        [alertView show];
+        if (request) {
+            NSLog(@"REQUEST: %@", request);
+
+            NSArray *result = [request execute];
+            NSDictionary *d = [result firstObject];
+            
+            UIAlertView *alertView =
+            [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LOG", @"")
+                                       message:[NSString stringWithFormat:NSLocalizedString(@"RESULT: %@", @""), d]
+                                      delegate:nil
+                             cancelButtonTitle:NSLocalizedString(@"Good", @"")
+                             otherButtonTitles:nil];
+            
+            [alertView show];
+        }
     };
     
     [actionSheet showFromToolbar:self.navigationController.toolbar];
@@ -144,6 +125,50 @@ static NSString *const kCountry = @"country";
             [(ALProductInfoTableViewController*)segue.destinationViewController setProduct:product];
         }
     }
+}
+
+#pragma - Lazy Dependencies -
+
+- (ALTableViewDataSource *)dataSource
+{
+    if (!_dataSource) {
+        __weak typeof(self) weakSelf = self;
+        
+        ALFetchRequest *request = [[Product all] orderedBy:@[kTitle, kPrice]];
+        assert(request);
+        ALDataSourceWithFetchedResultsController *realDataSource =
+        [[ALDataSourceWithFetchedResultsController alloc] initWithFetchRequest:request
+                                                          managedObjectContext:self.context];
+        
+        _dataSource = [realDataSource tableViewDataSource];
+        _dataSource.cellConfigurationBlock =
+        ^(UITableViewCell *cell, NSIndexPath *indexPath) {
+            Product *item = (Product *)[weakSelf.dataSource objectAtIndexPath:indexPath];
+            cell.textLabel.text = item.title;
+            cell.detailTextLabel.text = [item.price stringValue];
+        };
+        
+        _dataSource.reuseIdentifierBlock = ^(NSIndexPath *indexPath) {
+            return @"Cell";
+        };
+    }
+    return _dataSource;
+}
+
+- (NSManagedObjectContext *)context
+{
+    if (!_context) {
+        _context = [ALCoreDataManager defaultManager].managedObjectContext;
+    }
+    return _context;
+}
+
+- (ALManagedObjectFactory *)factory
+{
+    if (!_factory) {
+        _factory = [ALManagedObjectFactory defaultFactory];
+    }
+    return _factory;
 }
 
 @end
