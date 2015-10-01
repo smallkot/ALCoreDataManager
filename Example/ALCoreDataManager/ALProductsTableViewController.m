@@ -74,7 +74,7 @@ static NSString *const kCountry = @"country";
     alertView.alertViewStyle=UIAlertViewStylePlainTextInput;
     
     alertView.clickedBlock = ^(ALAlertView *alertView, NSUInteger buttonIndex) {
-        if (buttonIndex > 0) {
+        if (buttonIndex == 1) {
             NSString *title = [[alertView textFieldAtIndex:0] text];
             if ([title length]) {
                 [Product createWithFields:@{

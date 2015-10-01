@@ -16,9 +16,16 @@
 
 - (instancetype)initWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ...
 {
+    self = [super initWithTitle:title message:message delegate:self cancelButtonTitle:cancelButtonTitle otherButtonTitles:nil];
     va_list args;
     va_start(args, otherButtonTitles);
-    self = [super initWithTitle:title message:message delegate:self cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles, args, nil];
+    id arg = nil;
+    if (otherButtonTitles) {
+        [self addButtonWithTitle:otherButtonTitles];
+    }
+    while ((arg = va_arg(args,id))) {
+        [self addButtonWithTitle:arg];
+    }
     va_end(args);
     return self;
 }
