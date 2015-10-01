@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E625A3F1BBD21A50090440C /* ALAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E625A3E1BBD21A50090440C /* ALAlertView.m */; settings = {ASSET_TAGS = (); }; };
+		3E625A431BBD23570090440C /* ALActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E625A421BBD23570090440C /* ALActionSheet.m */; settings = {ASSET_TAGS = (); }; };
 		3E77BF501BB98FD600C45452 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E77BF4E1BB98FD600C45452 /* LaunchScreen.xib */; settings = {ASSET_TAGS = (); }; };
 		3ED515311B887700006FA2BC /* ALProductInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ED515301B887700006FA2BC /* ALProductInfoTableViewController.m */; };
 		3ED515361B887B3A006FA2BC /* ALTextEditTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ED515351B887B3A006FA2BC /* ALTextEditTableViewCell.m */; };
@@ -46,6 +48,10 @@
 		14A0AA846987F614593337FA /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		2AA9F310612F47F5B603067F /* libPods-ALCoreDataManager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ALCoreDataManager.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EB275AB9A4D1391B4F04585 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		3E625A3D1BBD21A50090440C /* ALAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALAlertView.h; sourceTree = "<group>"; };
+		3E625A3E1BBD21A50090440C /* ALAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALAlertView.m; sourceTree = "<group>"; };
+		3E625A411BBD23570090440C /* ALActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALActionSheet.h; sourceTree = "<group>"; };
+		3E625A421BBD23570090440C /* ALActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALActionSheet.m; sourceTree = "<group>"; };
 		3E77BF4F1BB98FD600C45452 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		3ED5152F1B887700006FA2BC /* ALProductInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALProductInfoTableViewController.h; sourceTree = "<group>"; };
 		3ED515301B887700006FA2BC /* ALProductInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALProductInfoTableViewController.m; sourceTree = "<group>"; };
@@ -107,6 +113,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E625A3B1BBD216C0090440C /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				3E625A3C1BBD21730090440C /* AlertView */,
+				3E625A401BBD232C0090440C /* ActionSheet */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		3E625A3C1BBD21730090440C /* AlertView */ = {
+			isa = PBXGroup;
+			children = (
+				3E625A3D1BBD21A50090440C /* ALAlertView.h */,
+				3E625A3E1BBD21A50090440C /* ALAlertView.m */,
+			);
+			name = AlertView;
+			sourceTree = "<group>";
+		};
+		3E625A401BBD232C0090440C /* ActionSheet */ = {
+			isa = PBXGroup;
+			children = (
+				3E625A411BBD23570090440C /* ALActionSheet.h */,
+				3E625A421BBD23570090440C /* ALActionSheet.m */,
+			);
+			name = ActionSheet;
+			sourceTree = "<group>";
+		};
 		3ED515281B8876AA006FA2BC /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +171,7 @@
 		3ED5152E1B8876E0006FA2BC /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				3E625A3B1BBD216C0090440C /* UI */,
 				3ED515321B887717006FA2BC /* Products */,
 				3ED515331B88771F006FA2BC /* ProductDetail */,
 			);
@@ -429,10 +463,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E625A3F1BBD21A50090440C /* ALAlertView.m in Sources */,
 				3EEEC8191BA2DB1E00844B82 /* Product.m in Sources */,
 				6003F59E195388D20070C39A /* ALAppDelegate.m in Sources */,
 				3ED515361B887B3A006FA2BC /* ALTextEditTableViewCell.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				3E625A431BBD23570090440C /* ALActionSheet.m in Sources */,
 				8F9BDCF91997F73000B79B79 /* Model.xcdatamodeld in Sources */,
 				3ED515311B887700006FA2BC /* ALProductInfoTableViewController.m in Sources */,
 				8FFD97551AB55952003D417E /* ALProductsTableViewController.m in Sources */,

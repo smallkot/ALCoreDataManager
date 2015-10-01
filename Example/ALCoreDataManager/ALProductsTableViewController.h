@@ -11,4 +11,7 @@
 
 @interface ALProductsTableViewController : UITableViewController
 
+// dependencies
+@property (strong, nonatomic) ALTableViewDataSource *dataSource;
+
 @end

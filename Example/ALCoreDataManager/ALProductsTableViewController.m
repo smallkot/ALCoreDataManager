@@ -14,9 +14,10 @@
 #import "ALProductsTableViewController.h"
 #import "ALProductInfoTableViewController.h"
 
+#import "ALAlertView.h"
+#import "ALActionSheet.h"
+
 static NSString *const UpdateFinishedNotification = @"UpdateFinished";
-static NSString *const TableViewCellReuseIdentifier = @"Cell";
-static const NSInteger ALAlertViewTagAdd = 100;
 
 static NSString *const SegueIdentifierForProductInfo = @"Segue";
 
@@ -26,10 +27,6 @@ static NSString *const kAmount = @"amount";
 static NSString *const kCountry = @"country";
 
 @interface ALProductsTableViewController () <UIAlertViewDelegate, UIActionSheetDelegate>
-
-@property (strong, nonatomic) ALTableViewDataSourceWithFetchedResultsController *dataSource;
-- (Product*)productAtIndexPath:(NSIndexPath*)indexPath;
-
 @end
 
 @implementation ALProductsTableViewController
@@ -41,12 +38,6 @@ static NSString *const kCountry = @"country";
     [super viewDidLoad];
 
     __weak typeof(self) weakSelf = self;
-    ALTableViewCellConfigurationBlock configurationBlock = ^(UITableViewCell *cell, NSIndexPath *indexPath){
-        [weakSelf configureCell:cell atIndexPath:indexPath];
-    };
-    ALTableViewCellReuseIdentiferBlock reuseIdentiferBlock = ^(NSIndexPath *indexPath){
-        return TableViewCellReuseIdentifier;
-    };
     
     NSManagedObjectContext *context = [ALCoreDataManager defaultManager].managedObjectContext;
     ALFetchRequest *request = [[Product all] orderedBy:@[kTitle, kPrice]];
@@ -56,24 +47,17 @@ static NSString *const kCountry = @"country";
                                                       managedObjectContext:context];
 
     self.dataSource = [realDataSource tableViewDataSource];
-    self.dataSource.cellConfigurationBlock = configurationBlock;
-    self.dataSource.reuseIdentifierBlock = reuseIdentiferBlock;
+    self.dataSource.cellConfigurationBlock = ^(UITableViewCell *cell, NSIndexPath *indexPath){
+        Product *item = (Product *)[weakSelf.dataSource objectAtIndexPath:indexPath];
+        cell.textLabel.text = item.title;
+        cell.detailTextLabel.text = [item.price stringValue];
+    };
+    
+    self.dataSource.reuseIdentifierBlock = ^(NSIndexPath *indexPath){
+        return @"Cell";
+    };
     
     self.dataSource.tableView = self.tableView;
-}
-
-#pragma mark - TableView DataSource and Delegate
-
-- (void)configureCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath
-{
-    Product *item = [self productAtIndexPath:indexPath];
-    cell.textLabel.text = item.title;
-    cell.detailTextLabel.text = [item.price stringValue];
-}
-
-- (Product*)productAtIndexPath:(NSIndexPath*)indexPath
-{
-    return (Product *)[self.dataSource objectAtIndexPath:indexPath];
 }
 
 #pragma mark - Actions -
@@ -82,20 +66,14 @@ static NSString *const kCountry = @"country";
 
 - (IBAction)actionAdd:(id)sender
 {
-    UIAlertView *alertView =
-    [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ADD", @"")
+    ALAlertView *alertView =
+    [[ALAlertView alloc] initWithTitle:NSLocalizedString(@"ADD", @"")
                                message:NSLocalizedString(@"Add product with Title", @"")
-                              delegate:self
                      cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                      otherButtonTitles:NSLocalizedString(@"Create", @""), nil];
-    alertView.tag = ALAlertViewTagAdd;
     alertView.alertViewStyle=UIAlertViewStylePlainTextInput;
-    [alertView show];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView.tag == ALAlertViewTagAdd) {
+    
+    alertView.clickedBlock = ^(ALAlertView *alertView, NSUInteger buttonIndex) {
         if (buttonIndex > 0) {
             NSString *title = [[alertView textFieldAtIndex:0] text];
             if ([title length]) {
@@ -106,51 +84,51 @@ static NSString *const kCountry = @"country";
                                             }];
             }
         }
-    }
+    };
+    [alertView show];
 }
 
 #pragma mark Statistics
 
 - (IBAction)actionStats:(id)sender
 {
-    UIActionSheet *actionSheet =
-    [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"STATISTICS", @"")
-                                delegate:self
+    ALActionSheet *actionSheet =
+    [[ALActionSheet alloc] initWithTitle:NSLocalizedString(@"STATISTICS", @"")
                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                   destructiveButtonTitle:nil
                        otherButtonTitles:NSLocalizedString(@"Total Amount", @""), NSLocalizedString(@"Average Price", @""),
      nil];
+    
+    actionSheet.clickedBlock = ^(ALActionSheet *actionSheet, NSUInteger buttonIndex) {
+        ALFetchRequest *request = nil;
+        switch (buttonIndex) {
+            case 0:
+                request = [[Product all] aggregatedBy:@[@[kAggregatorSum, kAmount]]];
+                break;
+                
+                
+            case 1:
+                request = [[Product all] aggregatedBy:@[@[kAggregatorAverage, kPrice]]];
+                break;
+                
+            default:
+                break;
+        }
+        
+        NSArray *result = [request execute];
+        NSDictionary *d = [result firstObject];
+        
+        UIAlertView *alertView =
+        [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LOG", @"")
+                                   message:[NSString stringWithFormat:NSLocalizedString(@"Request: %@\nResult: %@", @""), request, d]
+                                  delegate:nil
+                         cancelButtonTitle:NSLocalizedString(@"Good", @"")
+                         otherButtonTitles:nil];
+        
+        [alertView show];
+    };
+    
     [actionSheet showFromToolbar:self.navigationController.toolbar];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    ALFetchRequest *request = nil;
-    switch (buttonIndex) {
-        case 0:
-            request = [[Product all] aggregatedBy:@[@[kAggregatorSum, kAmount]]];
-            break;
-            
-
-        case 1:
-            request = [[Product all] aggregatedBy:@[@[kAggregatorAverage, kPrice]]];
-            break;
-            
-        default:
-            break;
-    }
-    
-    NSArray *result = [request execute];
-    NSDictionary *d = [result firstObject];
-    
-    UIAlertView *alertView =
-    [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LOG", @"")
-                               message:[NSString stringWithFormat:NSLocalizedString(@"Request: %@\nResult: %@", @""), request, d]
-                              delegate:self
-                     cancelButtonTitle:NSLocalizedString(@"Good", @"")
-                     otherButtonTitles:nil];
-    
-    [alertView show];
 }
 
 #pragma mark - Segue -
@@ -160,7 +138,7 @@ static NSString *const kCountry = @"country";
     if ([segue.identifier isEqualToString:SegueIdentifierForProductInfo]) {
         if ([sender isKindOfClass:[UITableViewCell class]]) {
             NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-            Product *product = [self productAtIndexPath:indexPath];
+            Product *product = (Product *)[self.dataSource objectAtIndexPath:indexPath];
             [(ALProductInfoTableViewController*)segue.destinationViewController setProduct:product];
         }
     }
