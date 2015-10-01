@@ -115,12 +115,14 @@ static NSString *const kCountry = @"country";
                 break;
         }
         
+        NSLog(@"REQUEST: %@", request);
+        
         NSArray *result = [request execute];
         NSDictionary *d = [result firstObject];
         
         UIAlertView *alertView =
         [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LOG", @"")
-                                   message:[NSString stringWithFormat:NSLocalizedString(@"Request: %@\nResult: %@", @""), request, d]
+                                   message:[NSString stringWithFormat:NSLocalizedString(@"RESULT: %@", @""), d]
                                   delegate:nil
                          cancelButtonTitle:NSLocalizedString(@"Good", @"")
                          otherButtonTitles:nil];
