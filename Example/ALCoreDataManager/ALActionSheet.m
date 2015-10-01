@@ -16,7 +16,18 @@
 
 - (instancetype)initWithTitle:(NSString *)title cancelButtonTitle:(NSString *)cancelButtonTitle destructiveButtonTitle:(NSString *)destructiveButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ...
 {
-    return [super initWithTitle:title delegate:self cancelButtonTitle:cancelButtonTitle destructiveButtonTitle:destructiveButtonTitle otherButtonTitles:otherButtonTitles, nil];
+    self = [super initWithTitle:title delegate:self cancelButtonTitle:cancelButtonTitle destructiveButtonTitle:destructiveButtonTitle otherButtonTitles:nil];
+    va_list args;
+    va_start(args, otherButtonTitles);
+    id arg = nil;
+    if (otherButtonTitles) {
+        [self addButtonWithTitle:otherButtonTitles];
+    }
+    while ((arg = va_arg(args,id))) {
+        [self addButtonWithTitle:arg];
+    }
+    va_end(args);
+    return self;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex

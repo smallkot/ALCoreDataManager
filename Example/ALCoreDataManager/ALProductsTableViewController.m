@@ -102,12 +102,12 @@ static NSString *const kCountry = @"country";
     actionSheet.clickedBlock = ^(ALActionSheet *actionSheet, NSUInteger buttonIndex) {
         ALFetchRequest *request = nil;
         switch (buttonIndex) {
-            case 0:
+            case 1:
                 request = [[Product all] aggregatedBy:@[@[kAggregatorSum, kAmount]]];
                 break;
                 
                 
-            case 1:
+            case 2:
                 request = [[Product all] aggregatedBy:@[@[kAggregatorAverage, kPrice]]];
                 break;
                 
